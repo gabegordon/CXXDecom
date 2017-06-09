@@ -30,3 +30,16 @@
 *.exe
 *.out
 *.app
+
+#Microsoft
+*.tlog
+*.log
+*.VC
+*.VC.db
+*.ilk
+*.pdb
+*.xlsx
+*.lastbuildstate
+*.idb
+*.ipch
+Decom.vcxproj.filters
