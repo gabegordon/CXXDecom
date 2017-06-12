@@ -43,3 +43,6 @@
 *.idb
 *.ipch
 Decom.vcxproj.filters
+Decom.vcxproj.user
+*.opendb
+*.suo
