@@ -1,11 +1,12 @@
 #pragma once
 #include <vector>
 #include <fstream>
+#include "Entry.h"
 
 class Decom
 {
 	public:
-		Decom() :
+		Decom(const std::string& instrument) :
 			m_packets(),
 			m_infile(),
 			m_complete(false),
@@ -13,7 +14,11 @@ class Decom
 			m_secondaryHeader(false),
 			m_APID(),
 			m_packetSequence(0),
-			m_packetLength(0)
+			m_packetLength(0),
+			m_segments(0),
+			m_output(),
+			m_entry(),
+			m_instrument(instrument)
 		{};
 		virtual ~Decom() {};
 
@@ -25,7 +30,7 @@ class Decom
 			STANDALONE
 		};
 
-		bool loadPackets(const std::string& filename);
+		bool loadPackets(const std::string& filename, const std::vector<entry>& entries);
 
 
 	private:
@@ -33,7 +38,11 @@ class Decom
 
 		void readSecondHeader();
 
-		void Decom::debugPrinter();
+		void debugPrinter() const;
+
+		void readData(const std::vector<entry>& entries);
+
+		void writeData();
 
 		std::vector<int> m_packets;
 
@@ -41,7 +50,7 @@ class Decom
 
 		bool m_complete;
 
-		bool m_secondaryHeader;
+		uint32_t m_secondaryHeader;
 
 		SequenceFlag m_sequenceFlag;
 
@@ -50,6 +59,14 @@ class Decom
 		uint32_t m_packetSequence;
 
 		uint32_t m_packetLength;
+
+		uint32_t m_segments;
+
+		std::vector<std::string> m_output;
+
+		entry m_entry;
+
+		std::string m_instrument;
 
 		template <class T>
 		void read(T& buffer)

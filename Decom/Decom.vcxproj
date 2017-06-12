@@ -148,6 +148,7 @@
     <ClInclude Include="CSVRow.h" />
     <ClInclude Include="Decom.h" />
     <ClInclude Include="ByteManipulation.h" />
+    <ClInclude Include="Entry.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="targetver.h" />
   </ItemGroup>

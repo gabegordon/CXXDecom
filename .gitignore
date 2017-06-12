@@ -46,3 +46,6 @@ Decom.vcxproj.filters
 Decom.vcxproj.user
 *.opendb
 *.suo
+*.txt
+!ReadMe.txt
+*.enc

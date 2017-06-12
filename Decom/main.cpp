@@ -5,21 +5,10 @@
 #include <algorithm>
 #include "CSVRow.h"
 #include "Decom.h"
+#include "Entry.h"
 
 using std::cout;
 using std::endl;
-
-struct entry {
-	std::string mnemonic;
-	std::string description;
-	std::string SS;
-	std::string type;
-	std::string s_APID;
-	int32_t i_APID;
-	int32_t byte;
-	int32_t bitLower;
-	int32_t bitUpper;
-};
 
 std::vector<uint32_t> APIDs;
 std::vector<entry> entries;
@@ -136,7 +125,6 @@ void printDataBase()
 
 int main(int argc, char* argv[])
 {	
-	Decom decomEngine;
 	if (argc < 4)
 	{
 		cout << "Specify: database and instrument\n";
@@ -152,12 +140,13 @@ int main(int argc, char* argv[])
 		std::string filename = argv[1];
 		cout << filename << endl;
 		instrument = argv[2];
-		//if (!readDatabase(filename))
-		//{
-		//	std::cerr << "Could not find Database" << endl;
-		//	return 0;
-		//}
-		if (!decomEngine.loadPackets(argv[3]))
+		if (!readDatabase(filename))
+		{
+			std::cerr << "Could not find Database" << endl;
+			return 0;
+		}
+		Decom decomEngine(instrument);
+		if (!decomEngine.loadPackets(argv[3], entries))
 		{
 			std::cerr << "Error in decom engine" << endl;
 		}
