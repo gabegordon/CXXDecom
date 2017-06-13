@@ -6,7 +6,7 @@
 class Decom
 {
 	public:
-		Decom(const std::string& instrument) :
+		Decom(const std::string& instrument, const bool& debug) :
 			m_packets(),
 			m_infile(),
 			m_complete(false),
@@ -18,7 +18,8 @@ class Decom
 			m_segments(0),
 			m_output(),
 			m_entry(),
-			m_instrument(instrument)
+			m_instrument(instrument),
+			m_debug(debug)
 		{};
 		virtual ~Decom() {};
 
@@ -67,6 +68,8 @@ class Decom
 		entry m_entry;
 
 		std::string m_instrument;
+
+		bool m_debug;
 
 		template <class T>
 		void read(T& buffer)

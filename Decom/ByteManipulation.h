@@ -21,7 +21,7 @@ namespace ByteManipulation {
 
 	inline uint16_t mergeBytes(const uint8_t& a, const uint8_t& b)
 	{
-		return a | (b << 8);
+		return (a << 8) | (b & 0xff);
 	}
 
 	std::vector<uint8_t> splitBytes(uint16_t bytes)

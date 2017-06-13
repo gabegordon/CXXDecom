@@ -125,7 +125,7 @@ void printDataBase()
 
 int main(int argc, char* argv[])
 {	
-	if (argc < 4)
+	if (argc < 5)
 	{
 		cout << "Specify: database and instrument\n";
 		return 0;
@@ -145,7 +145,8 @@ int main(int argc, char* argv[])
 			std::cerr << "Could not find Database" << endl;
 			return 0;
 		}
-		Decom decomEngine(instrument);
+		bool debug = !!atoi(argv[4]);
+		Decom decomEngine(instrument, debug);
 		if (!decomEngine.loadPackets(argv[3], entries))
 		{
 			std::cerr << "Error in decom engine" << endl;
