@@ -53,6 +53,7 @@ namespace DataTypes {
 		uint32_t packetSequence;
 		uint32_t packetLength;
 		uint32_t secondaryHeader;
+		uint32_t CCSDS;
 	};
 
 	struct SecondaryHeader

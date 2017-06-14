@@ -3,7 +3,7 @@
 
 namespace DataDecode
 {
-	DataTypes::Packet DecodeData(std::ifstream& infile);
+	DataTypes::Packet decodeData(std::ifstream& infile, const std::vector<DataTypes::Entry>& entries, const uint32_t& packetLength);
 
 }
 

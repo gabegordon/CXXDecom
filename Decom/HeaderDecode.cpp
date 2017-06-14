@@ -1,68 +1,103 @@
 #include "stdafx.h"
 #include <iostream>
-#include <stdlib.h>  
 #include "HeaderDecode.h"
 #include "ReadFile.h"
 #include "ByteManipulation.h"
-
-#define LAST(k,n) ((k) & ((1<<(n))-1))
-#define BITS(k,m,n) LAST((k)>>(m),((n)-(m)))
-
-using namespace DataTypes;
-using namespace ByteManipulation;
-using namespace ReadFile;
 
 namespace HeaderDecode
 {
 	uint32_t sh_flag;
 	DataTypes::SequenceFlag seq_flag;
+	bool isValid = false;
 
-	std::pair<PrimaryHeader, SecondaryHeader> decodeHeaders(std::ifstream& infile)
+	std::tuple<DataTypes::PrimaryHeader, DataTypes::SecondaryHeader, bool> decodeHeaders(std::ifstream& infile)
 	{
-		return std::make_pair<PrimaryHeader, SecondaryHeader>(decodePrimary(infile), decodeSecondary(infile));
+		return std::make_tuple(decodePrimary(infile), decodeSecondary(infile), isValid);
 	}
 
 
-	PrimaryHeader decodePrimary(std::ifstream& infile)
+	DataTypes::PrimaryHeader decodePrimary(std::ifstream& infile)
 	{
-		PrimaryHeader ph = p_defaults;
+		DataTypes::PrimaryHeader ph = p_defaults;
 		uint32_t firstFourBytes;
 		uint16_t fifthSixByte;
-		read(firstFourBytes, infile);
-		read(fifthSixByte, infile);
-		firstFourBytes = swapEndian32(firstFourBytes);
-		fifthSixByte = swapEndian16(fifthSixByte);
+		ReadFile::read(firstFourBytes, infile);
+		ReadFile::read(fifthSixByte, infile);
+		firstFourBytes = ByteManipulation::swapEndian32(firstFourBytes);
+		fifthSixByte = ByteManipulation::swapEndian16(fifthSixByte);
+		
+		//Set CCSDS from bits 0-3
+		ph.CCSDS = ByteManipulation::extract32(firstFourBytes, 0, 3);
 
 		//Set secondaryHeader from bit 4
-		ph.secondaryHeader = extract32(firstFourBytes, 4, 1);
+		ph.secondaryHeader = ByteManipulation::extract32(firstFourBytes, 4, 1);
 		sh_flag = ph.secondaryHeader;
 		
 		//Set APID from bits 4-15
-		ph.APID = extract32(firstFourBytes, 5, 11);
+		ph.APID = ByteManipulation::extract32(firstFourBytes, 5, 11);
 		
 		//Set sequenceFlag from bits 16-17
-		ph.sequenceFlag = static_cast<SequenceFlag>(extract32(firstFourBytes, 16, 2));
-		
+		ph.sequenceFlag = static_cast<DataTypes::SequenceFlag>(ByteManipulation::extract32(firstFourBytes, 16, 2));
+		seq_flag = ph.sequenceFlag;
+
 		//Set packetSequence from bits 18-31
-		ph.packetSequence = extract32(firstFourBytes, 18, 14);
+		ph.packetSequence = ByteManipulation::extract32(firstFourBytes, 18, 14);
 		
 		//Set packetLength from entire byte
-		ph.packetLength = fifthSixByte;
+		ph.packetLength = fifthSixByte + 1;
 
-		std::cout << ph.secondaryHeader << "," << ph.APID << "," << std::bitset<2>(ph.sequenceFlag) << "," << ph.packetSequence << "," << ph.packetLength;
-		return ph;
-	}
-
-	SecondaryHeader decodeSecondary(std::ifstream& infile)
-	{
-		SecondaryHeader sh = s_defaults;
+		//Account for secondary header length
 		if (sh_flag)
 		{
 			if (seq_flag == DataTypes::FIRST)
-			{
+				ph.packetLength -= 10;
+			else
+				ph.packetLength -= 8;
+		}
 
+		checkValidHeader(ph);
+		return ph;
+	}
+
+	DataTypes::SecondaryHeader decodeSecondary(std::ifstream& infile)
+	{
+		DataTypes::SecondaryHeader sh = s_defaults;
+		if (sh_flag)
+		{
+			uint64_t timeCode;
+			ReadFile::read(timeCode, infile);
+			sh.timeCode = ByteManipulation::swapEndian64(timeCode);
+			if (seq_flag == DataTypes::FIRST)
+			{
+				//If first segmented packet, then bits 0-8 are segment count
+				uint16_t packetSegments;
+				ReadFile::read(packetSegments, infile);
+				packetSegments = ByteManipulation::swapEndian16(packetSegments);
+				sh.segments = ByteManipulation::extract16(packetSegments, 0, 8);
 			}
 		}
 		return sh;
+	}
+
+	void checkValidHeader(const DataTypes::PrimaryHeader& pheader)
+	{
+		if (pheader.CCSDS != 0)
+			isValid = false;
+		else if (pheader.APID > 1449)
+			isValid = false;
+		else if (pheader.packetSequence > 16383)
+			isValid = false;
+		else if (pheader.packetLength > 65535)
+			isValid = false;
+		else if (pheader.sequenceFlag == DataTypes::FIRST && pheader.secondaryHeader == 0)
+			isValid = false;
+		else if (pheader.sequenceFlag == DataTypes::STANDALONE && pheader.secondaryHeader == 0)
+			isValid = false;
+		else if (pheader.sequenceFlag == DataTypes::MIDDLE && pheader.secondaryHeader == 1)
+			isValid = false;
+		else if (pheader.sequenceFlag == DataTypes::LAST && pheader.secondaryHeader == 1)
+			isValid = false;
+		else
+			isValid = true;
 	}
 }

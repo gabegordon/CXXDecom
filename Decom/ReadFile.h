@@ -1,6 +1,6 @@
 #pragma once
-#include <bitset>
 #include <fstream>
+
 namespace ReadFile
 {
 	template <typename T>

@@ -16,13 +16,14 @@ int main(int argc, char* argv[])
 	}
 	else
 	{
-		std::string filename = argv[1];
+		std::string databaseFile = argv[1];
 		std::string instrument = argv[2];
+		std::string packetFile = argv[3];
 		bool debug = !!atoi(argv[4]);
 
-		DatabaseReader dr(filename);
+		DatabaseReader dr(databaseFile);
 		Decom decomEngine(instrument, debug, dr.getEntries());
-		decomEngine.init(filename);
+		decomEngine.init(packetFile);
 	}
 
 	//printDataBase();
