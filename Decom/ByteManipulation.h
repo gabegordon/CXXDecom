@@ -2,9 +2,6 @@
 #include <iostream>
 #include <typeinfo>
 #include <cinttypes>
-#include <vector>
-
-typedef uint8_t BYTE;
 
 namespace ByteManipulation {
 	inline std::ostream &operator<<(std::ostream &os, char c) {
@@ -20,38 +17,22 @@ namespace ByteManipulation {
 		return os << static_cast<unsigned int>(c);
 	}
 
-
-	inline uint16_t mergeBytes(const uint8_t& a, const uint8_t& b)
+	static inline uint16_t swapEndian16(const uint16_t& val)
 	{
-		return (a << 8) | (b & 0xff);
+		return _byteswap_ushort(val);
+	}
+	static inline uint32_t swapEndian32(const uint32_t& val)
+	{
+		return _byteswap_ulong(val);
 	}
 
-	inline int16_t mergeBytesSigned(const int8_t& a, const int8_t& b)
+	static inline uint64_t swapEndian64(const uint64_t& val)
 	{
-		return (a << 8) | (b & 0xff);
+		return _byteswap_uint64(val);
 	}
 
-	inline uint32_t mergeShorts(const uint16_t& a, const uint16_t& b)
+	static inline uint32_t extract32(const uint32_t& val, uint32_t start, uint32_t len)
 	{
-		return (a << 16) | (b & 0xff);
-	}
-
-	inline int32_t mergeShortsSigned(const int16_t& a, const int16_t& b)
-	{
-		return (a << 16) | (b & 0xff);
-	}
-	
-	inline float mergeInts(const int32_t& a, const int32_t& b)
-	{
-		return (a << 32) | (b & 0xff);
-	}
-
-
-	std::vector<BYTE> splitBytes(uint16_t bytes)
-	{
-		std::vector<BYTE> arr(2);
-		arr.at(0) = bytes & 0xff;
-		arr.at(1) = bytes >> 8;
-		return arr;
+		return std::stoul((std::bitset<32>(val).to_string().substr(start, len)), nullptr, 2);
 	}
 }
