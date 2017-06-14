@@ -33,6 +33,7 @@ namespace DataTypes {
 	struct Numeric
 	{
 		enum { U32, I32, F64, NLINE } tag;
+		std::string mnem;
 		union
 		{
 			uint32_t u32;
