@@ -90,7 +90,7 @@ bool readDatabase(const std::string filename)
 
 		if (std::find(APIDs.begin(), APIDs.end(), i_APID) != APIDs.end())
 		{
-			entry tmp;
+			entry tmp = defaults;
 			tmp.mnemonic = dataRow[0];
 			tmp.description = dataRow[1];
 			tmp.SS = dataRow[2];

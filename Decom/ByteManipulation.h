@@ -4,6 +4,8 @@
 #include <cinttypes>
 #include <vector>
 
+typedef uint8_t BYTE;
+
 namespace ByteManipulation {
 	inline std::ostream &operator<<(std::ostream &os, char c) {
 		return os << (std::is_signed<char>::value ? static_cast<int>(c)
@@ -24,9 +26,30 @@ namespace ByteManipulation {
 		return (a << 8) | (b & 0xff);
 	}
 
-	std::vector<uint8_t> splitBytes(uint16_t bytes)
+	inline int16_t mergeBytesSigned(const int8_t& a, const int8_t& b)
 	{
-		std::vector<uint8_t> arr(2);
+		return (a << 8) | (b & 0xff);
+	}
+
+	inline uint32_t mergeShorts(const uint16_t& a, const uint16_t& b)
+	{
+		return (a << 16) | (b & 0xff);
+	}
+
+	inline int32_t mergeShortsSigned(const int16_t& a, const int16_t& b)
+	{
+		return (a << 16) | (b & 0xff);
+	}
+	
+	inline float mergeInts(const int32_t& a, const int32_t& b)
+	{
+		return (a << 32) | (b & 0xff);
+	}
+
+
+	std::vector<BYTE> splitBytes(uint16_t bytes)
+	{
+		std::vector<BYTE> arr(2);
 		arr.at(0) = bytes & 0xff;
 		arr.at(1) = bytes >> 8;
 		return arr;

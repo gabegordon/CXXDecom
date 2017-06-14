@@ -7,7 +7,11 @@ struct entry {
 	std::string type;
 	std::string s_APID;
 	uint32_t i_APID;
-	int32_t byte;
-	int32_t bitLower;
-	int32_t bitUpper;
+	uint32_t byte;
+	uint32_t bitLower;
+	uint32_t bitUpper;
+};
+
+const struct entry defaults = { 
+	"","","","","",0,0,0,0
 };
