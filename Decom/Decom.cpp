@@ -23,8 +23,7 @@ void Decom::init(const std::string& infile)
 	while (true)
 	{	
 		//Check if we are at EOF
-		int64_t currPos = m_infile.tellg();
-		if (currPos == -1 || m_infile.eof())
+		if (m_infile.eof())
 			break;
 
 		std::tuple<DataTypes::PrimaryHeader, DataTypes::SecondaryHeader, bool> headers = HeaderDecode::decodeHeaders(m_infile);
@@ -34,9 +33,16 @@ void Decom::init(const std::string& infile)
 		
 		if (m_debug)
 			debugPrinter(std::get<0>(headers));
-
+		
 		getEntries(std::get<0>(headers).APID);
-		DataTypes::Packet pack = DataDecode::decodeData(m_infile, m_matchingEntries, std::get<0>(headers).packetLength, std::get<1>(headers));
+		
+		DataTypes::Packet pack; 
+		DataDecode dc(std::get<0>(headers), std::get<1>(headers), m_matchingEntries);
+		if(std::get<0>(headers).sequenceFlag == DataTypes::FIRST)
+			 pack = dc.decodeDataSegmented(m_infile);
+		else
+			 pack = dc.decodeData(m_infile);
+
 		m_map[std::get<0>(headers).APID].push_back(pack);
 	}
 	writeData();
@@ -74,7 +80,7 @@ void Decom::writeData()
 	{
 		std::ofstream outfile(m_instrument + "_" + std::to_string(apid.first) + ".txt");
 		
-		outfile << std::setw(15) << "Day" << "," << std::setw(15) <<  "Millis" << "," << std::setw(15) << "Micros";
+		outfile << std::setw(15) << "Day" << "," << std::setw(15) <<  "Millis" << "," << std::setw(15) << "Micros" << ",";
 		
 		for (const DataTypes::Numeric& num : apid.second.at(0).data)
 		{
