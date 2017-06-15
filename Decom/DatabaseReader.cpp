@@ -38,7 +38,7 @@ void DatabaseReader::getByteBit(std::string& bytebit, uint32_t& i_byte, uint32_t
 
 void DatabaseReader::readAPIDList()
 {
-	std::ifstream CXXParams("C:\\JPSS\\CXXParams.csv");
+	std::ifstream CXXParams(m_paramsFile);
 	if (!CXXParams)
 	{
 		std::cerr << "Could not find CXXParams" << std::endl;

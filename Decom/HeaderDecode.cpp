@@ -65,8 +65,6 @@ namespace HeaderDecode
 		DataTypes::SecondaryHeader sh = s_defaults;
 		if (sh_flag)
 		{
-			//std::vector<uint8_t> buf(8); //reserve space for bytes
-			//infile.read(reinterpret_cast<char*>(buf.data()), buf.size()); //read bytes
 			uint16_t day;
 			uint32_t millis;
 			uint16_t micros;

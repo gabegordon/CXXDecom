@@ -9,7 +9,7 @@ using std::endl;
 
 int main(int argc, char* argv[])
 {	
-	if (argc < 4)
+	if (argc < 5)
 	{
 		cout << "Specify: database and instrument\n";
 		return 0;
@@ -19,9 +19,11 @@ int main(int argc, char* argv[])
 		std::string databaseFile = argv[1];
 		std::string instrument = argv[2];
 		std::string packetFile = argv[3];
-		bool debug = true;
+		std::string paramsFile = argv[4];
+		bool debug = false;
+		bool allAPIDs = true;
 
-		DatabaseReader dr(databaseFile);
+		DatabaseReader dr(databaseFile, paramsFile, allAPIDs);
 		Decom decomEngine(instrument, debug, dr.getEntries());
 		decomEngine.init(packetFile);
 	}
