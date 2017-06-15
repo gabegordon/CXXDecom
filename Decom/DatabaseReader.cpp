@@ -30,6 +30,7 @@ void DatabaseReader::getByteBit(std::string& bytebit, int32_t& i_byte, int32_t& 
 		else
 		{
 			i_bitLower = std::stoi(s_bit);
+			i_bitUpper = i_bitLower;
 		}
 	}
 

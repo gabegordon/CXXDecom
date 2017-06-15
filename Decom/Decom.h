@@ -23,7 +23,8 @@ class Decom
 
 	private:
 		void debugPrinter(DataTypes::PrimaryHeader) const;
-		void Decom::getEntries(const DataTypes::PrimaryHeader& pheader);
+		void Decom::getEntries(const uint32_t& APID);
+		void Decom::writeData();
 
 		std::unordered_map<uint32_t, std::vector<DataTypes::Packet>> m_map;
 		std::vector<DataTypes::Entry> m_entries;
