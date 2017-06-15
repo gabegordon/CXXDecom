@@ -33,6 +33,11 @@ void DatabaseReader::getByteBit(std::string& bytebit, int32_t& i_byte, int32_t& 
 			i_bitUpper = i_bitLower;
 		}
 	}
+	else
+	{
+		i_bitLower = 0;
+		i_bitUpper = 0;
+	}
 
 }
 
