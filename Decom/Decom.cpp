@@ -3,6 +3,7 @@
 #include <bitset>
 #include <iterator>
 #include <tuple>
+#include <iomanip>
 #include <stdlib.h>  
 #include "Decom.h"
 #include "ByteManipulation.h"
@@ -35,7 +36,7 @@ void Decom::init(const std::string& infile)
 			debugPrinter(std::get<0>(headers));
 
 		getEntries(std::get<0>(headers).APID);
-		DataTypes::Packet pack = DataDecode::decodeData(m_infile, m_matchingEntries, std::get<0>(headers).packetLength);
+		DataTypes::Packet pack = DataDecode::decodeData(m_infile, m_matchingEntries, std::get<0>(headers).packetLength, std::get<1>(headers));
 		m_map[std::get<0>(headers).APID].push_back(pack);
 	}
 	writeData();
@@ -73,23 +74,27 @@ void Decom::writeData()
 	{
 		std::ofstream outfile(m_instrument + "_" + std::to_string(apid.first) + ".txt");
 		
+		outfile << std::setw(15) << "Day" << "," << std::setw(15) <<  "Millis" << "," << std::setw(15) << "Micros";
+		
 		for (const DataTypes::Numeric& num : apid.second.at(0).data)
 		{
-			outfile << num.mnem << "," << "\t";
+			outfile << std::setw(15) << num.mnem << ",";
 		}
 
 		outfile << "\n";
 
 		for (const DataTypes::Packet& pack: apid.second)
 		{
+			outfile << std::setw(15) << pack.day << "," << std::setw(15) << pack.millis << "," << std::setw(15) << pack.micros << ",";
 			for (const DataTypes::Numeric& num : pack.data)
 			{
 				switch (num.tag)
 				{
-				case DataTypes::Numeric::I32: outfile << num.i32 << "," << '\t'; break;
-				case DataTypes::Numeric::U32: outfile << num.u32 << "," << '\t'; break;
-				case DataTypes::Numeric::F64: outfile << num.f64 << "," << '\t'; break;
+				case DataTypes::Numeric::I32: outfile << std::setw(15) << std::right << num.i32; break;
+				case DataTypes::Numeric::U32: outfile << std::setw(15) << std::right << num.u32; break;
+				case DataTypes::Numeric::F64: outfile << std::setw(15) << std::right << num.f64; break;
 				}
+				outfile << ",";
 			}
 			outfile << "\n";
 		}

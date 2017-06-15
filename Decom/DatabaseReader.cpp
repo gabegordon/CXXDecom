@@ -10,11 +10,12 @@ std::istream& operator >> (std::istream& str, CSVRow& data)
 	return str;
 }
 
-void DatabaseReader::getByteBit(std::string& bytebit, int32_t& i_byte, int32_t& i_bitLower, int32_t& i_bitUpper)
+void DatabaseReader::getByteBit(std::string& bytebit, uint32_t& i_byte, uint32_t& i_bitLower, uint32_t& i_bitUpper)
 {
 	bytebit.erase(0, 1);
 	std::string s_byte = bytebit.substr(0, 4);
 	i_byte = std::stoi(s_byte);
+
 	if (bytebit.length() > 4)
 	{
 		std::string s_bit = bytebit.substr(5);
@@ -33,12 +34,6 @@ void DatabaseReader::getByteBit(std::string& bytebit, int32_t& i_byte, int32_t& 
 			i_bitUpper = i_bitLower;
 		}
 	}
-	else
-	{
-		i_bitLower = 0;
-		i_bitUpper = 0;
-	}
-
 }
 
 void DatabaseReader::readAPIDList()
@@ -76,11 +71,21 @@ void DatabaseReader::readDatabase(const std::string& filename)
 			m_firstRun = false;
 			continue;
 		}
+
 		std::string s_APID = dataRow[4];
 		s_APID.erase(0, 4);
-		uint32_t i_APID = atoi(s_APID.c_str());
-
-		if (std::find(m_APIDs.begin(), m_APIDs.end(), i_APID) != m_APIDs.end())
+		uint32_t i_APID = 0;
+		
+		try
+		{
+			i_APID = std::stoul(s_APID);
+		}
+		catch (std::invalid_argument e)
+		{
+			std::cout << "Invalid argument " << s_APID << std::endl;
+		}
+		
+		if (m_allAPIDs)
 		{
 			DataTypes::Entry tmp = defaults;
 			tmp.mnemonic = dataRow[0];
@@ -89,16 +94,40 @@ void DatabaseReader::readDatabase(const std::string& filename)
 			tmp.s_APID = dataRow[4];
 			tmp.i_APID = i_APID;
 
-			std::string bytebit = dataRow[5];
-			int32_t i_byte = -1;
-			int32_t i_bitLower = -1;
-			int32_t i_bitUpper = -1;
+			std::string bytebit = "";
+			bytebit = dataRow[5];
+			uint32_t i_byte = 0;
+			uint32_t i_bitLower = 0;
+			uint32_t i_bitUpper = 0;
 			getByteBit(bytebit, i_byte, i_bitLower, i_bitUpper);
 
 			tmp.byte = i_byte;
 			tmp.bitLower = i_bitLower;
 			tmp.bitUpper = i_bitUpper;
 			m_entries.push_back(tmp);
+		}
+		else
+		{
+			if (std::find(m_APIDs.begin(), m_APIDs.end(), i_APID) != m_APIDs.end())
+			{
+				DataTypes::Entry tmp = defaults;
+				tmp.mnemonic = dataRow[0];
+				tmp.SS = dataRow[2];
+				tmp.type = dataRow[3];
+				tmp.s_APID = dataRow[4];
+				tmp.i_APID = i_APID;
+
+				std::string bytebit = dataRow[5];
+				uint32_t i_byte = 0;
+				uint32_t i_bitLower = 0;
+				uint32_t i_bitUpper = 0;
+				getByteBit(bytebit, i_byte, i_bitLower, i_bitUpper);
+
+				tmp.byte = i_byte;
+				tmp.bitLower = i_bitLower;
+				tmp.bitUpper = i_bitUpper;
+				m_entries.push_back(tmp);
+			}
 		}
 	}
 }

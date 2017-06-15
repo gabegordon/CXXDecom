@@ -49,3 +49,9 @@ Decom.vcxproj.user
 *.txt
 !ReadMe.txt
 *.enc
+*.xml
+*.lastcodeanalysissucceeded
+*.codeanalysis
+*.iobj
+*.ipdb
+*.pch.codeanalysisast

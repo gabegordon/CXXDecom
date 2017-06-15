@@ -7,7 +7,7 @@ namespace HeaderDecode
 {
 
 	const struct DataTypes::PrimaryHeader p_defaults = { DataTypes::STANDALONE, 0, 0, 0, 0 };
-	const struct DataTypes::SecondaryHeader s_defaults = {0,0};
+	const struct DataTypes::SecondaryHeader s_defaults = {0,0,0,0};
 
 	std::tuple<DataTypes::PrimaryHeader, DataTypes::SecondaryHeader, bool> decodeHeaders(std::ifstream& infile);
 

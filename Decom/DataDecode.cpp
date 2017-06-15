@@ -3,14 +3,17 @@
 #include "DataDecode.h"
 #include "ByteManipulation.h"
 
+using namespace ByteManipulation;
 
 namespace DataDecode
 {	
-	void loadData(uint8_t& extraByte1, uint8_t& extraByte2, uint8_t& extraByte3, const std::vector<uint8_t>& buf, Bytes& bytes, const DataTypes::Entry& currEntry)
+	bool loadData(uint8_t& extraByte1, uint8_t& extraByte2, uint8_t& extraByte3, const std::vector<uint8_t>& buf, Bytes& bytes, const DataTypes::Entry& currEntry)
 	{
 		uint32_t length = std::stoi(currEntry.type.substr(1, std::string::npos));
 		if (length > 24)
 		{
+			if (currEntry.byte + 1 >= buf.size() || currEntry.byte + 2 >= buf.size() || currEntry.byte + 3 >= buf.size())
+				return false;
 			extraByte1 = buf.at(currEntry.byte + 1);
 			extraByte2 = buf.at(currEntry.byte + 2);
 			extraByte3 = buf.at(currEntry.byte + 3);
@@ -18,12 +21,16 @@ namespace DataDecode
 		}
 		else if (length > 16)
 		{
+			if (currEntry.byte + 1 >= buf.size() || currEntry.byte + 2 >= buf.size())
+				return false;
 			extraByte1 = buf.at(currEntry.byte + 1);
 			extraByte2 = buf.at(currEntry.byte + 2);
 			bytes = THREE;
 		}
 		else if (length > 8)
 		{
+			if (currEntry.byte + 1 >= buf.size())
+				return false;
 			extraByte1 = buf.at(currEntry.byte + 1);
 			bytes = TWO;
 		}
@@ -31,34 +38,17 @@ namespace DataDecode
 		{
 			bytes = ONE;
 		}
-	}
-	
-	uint32_t mergeBytes(uint8_t& initialByte, uint8_t& extraByte1, uint8_t& extraByte2, uint8_t& extraByte3, const uint32_t& num)
-	{
-		std::string b1 = std::bitset<8>(initialByte).to_string();
-		std::string b2 = std::bitset<8>(extraByte1).to_string();
-		std::string b3 = std::bitset<8>(extraByte2).to_string();
-		std::string b4 = std::bitset<8>(extraByte3).to_string();
-		std::string s_result;
-		if (num > 3)
-		{
-			s_result = b1 + b2 + b3 + b4;
-		}
-		else
-		{
-			s_result = b1 + b2 + b3;
-		}
-		return std::stoul(s_result, nullptr, 2);
+		return true;
 	}
 
-	uint16_t mergeBytes16(uint8_t& initialByte, uint8_t& extraByte1)
+	void getTimestamp(DataTypes::Packet& pack, const DataTypes::SecondaryHeader& sheader)
 	{
-		std::string b1 = std::bitset<8>(initialByte).to_string();
-		std::string b2 = std::bitset<8>(extraByte1).to_string();
-		std::string s_result = b1 + b2;
-		return std::stoul(s_result, nullptr, 2);
+		pack.day = sheader.day;
+		pack.millis = sheader.millis;
+		pack.micros = sheader.micros;
 	}
-	DataTypes::Packet decodeData(std::ifstream& infile, std::vector<DataTypes::Entry>& entries, const uint32_t& packetLength)
+
+	DataTypes::Packet decodeData(std::ifstream& infile, std::vector<DataTypes::Entry>& entries, const uint32_t& packetLength, const DataTypes::SecondaryHeader& sheader)
 	{
 		DataTypes::Packet pack;
 		std::vector<uint8_t> buf(packetLength); //reserve space for bytes
@@ -68,13 +58,13 @@ namespace DataDecode
 		{
 			DataTypes::Numeric num;
 			Bytes numBytes;
+			uint8_t extraByte1, extraByte2, extraByte3;
 			
-			if (currEntry.byte >= buf.size())
+			if (!loadData(extraByte1, extraByte2, extraByte3, buf, numBytes, currEntry) || currEntry.byte >= buf.size()) //Make sure we don't go past array bounds (entries not contained in packet)
 				break;
 
 			uint8_t initialByte = buf.at(currEntry.byte);
-			uint8_t extraByte1, extraByte2, extraByte3;
-			loadData(extraByte1, extraByte2, extraByte3, buf, numBytes, currEntry);
+			
 			DataTypes::DataType dtype = DataTypes::hashIt(currEntry.type.substr(0, 1));
 			
 			if (dtype == DataTypes::FLOAT) 
@@ -167,10 +157,10 @@ namespace DataDecode
 					num.tag = DataTypes::Numeric::U32;
 				
 				num.mnem = currEntry.mnemonic;
-				
 				pack.data.push_back(num);
 			}
 		}
+		getTimestamp(pack, sheader);
 		return pack;
 	}
 }

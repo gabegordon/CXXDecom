@@ -45,6 +45,9 @@ namespace DataTypes {
 	struct Packet
 	{
 		std::vector<Numeric> data;
+		uint16_t day;
+		uint32_t millis;
+		uint16_t micros;
 	};
 
 	struct PrimaryHeader
@@ -59,7 +62,9 @@ namespace DataTypes {
 
 	struct SecondaryHeader
 	{
-		uint64_t timeCode;
+		uint16_t day;
+		uint32_t millis;
+		uint16_t micros;		
 		uint32_t segments;
 	};
 

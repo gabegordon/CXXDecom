@@ -12,7 +12,9 @@ namespace HeaderDecode
 
 	std::tuple<DataTypes::PrimaryHeader, DataTypes::SecondaryHeader, bool> decodeHeaders(std::ifstream& infile)
 	{
-		return std::make_tuple(decodePrimary(infile), decodeSecondary(infile), isValid);
+		auto ph = decodePrimary(infile);
+		auto sh = decodeSecondary(infile);
+		return std::make_tuple(ph, sh, isValid);
 	}
 
 
@@ -25,7 +27,6 @@ namespace HeaderDecode
 		ReadFile::read(fifthSixByte, infile);
 		firstFourBytes = ByteManipulation::swapEndian32(firstFourBytes);
 		fifthSixByte = ByteManipulation::swapEndian16(fifthSixByte);
-		
 		//Set CCSDS from bits 0-3
 		ph.CCSDS = ByteManipulation::extract32(firstFourBytes, 0, 3);
 
@@ -64,9 +65,19 @@ namespace HeaderDecode
 		DataTypes::SecondaryHeader sh = s_defaults;
 		if (sh_flag)
 		{
-			uint64_t timeCode;
-			ReadFile::read(timeCode, infile);
-			sh.timeCode = ByteManipulation::swapEndian64(timeCode);
+			//std::vector<uint8_t> buf(8); //reserve space for bytes
+			//infile.read(reinterpret_cast<char*>(buf.data()), buf.size()); //read bytes
+			uint16_t day;
+			uint32_t millis;
+			uint16_t micros;
+
+			ReadFile::read(day, infile);
+			ReadFile::read(millis, infile);
+			ReadFile::read(micros, infile);
+
+			sh.day = ByteManipulation::swapEndian16(day);
+			sh.millis = ByteManipulation::swapEndian32(millis);
+			sh.micros = ByteManipulation::swapEndian16(micros);
 			if (seq_flag == DataTypes::FIRST)
 			{
 				//If first segmented packet, then bits 0-8 are segment count

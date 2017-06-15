@@ -9,7 +9,8 @@ public:
 	DatabaseReader(const std::string& filename) :
 		m_APIDs(),
 		m_entries(),
-		m_firstRun()
+		m_firstRun(true),
+		m_allAPIDs(true)
 	{
 		readDatabase(filename);
 	};
@@ -22,9 +23,10 @@ private:
 	std::vector<uint32_t> m_APIDs;
 	std::vector<DataTypes::Entry> m_entries;
 	bool m_firstRun;
+	bool m_allAPIDs;
 
 	void readDatabase(const std::string& filename);
-	void getByteBit(std::string& bytebit, int32_t& i_byte, int32_t& i_bitLower, int32_t& i_bitUpper);
+	void getByteBit(std::string& bytebit, uint32_t& i_byte, uint32_t& i_bitLower, uint32_t& i_bitUpper);
 	void readAPIDList();
 	void printDataBase() const;
 
