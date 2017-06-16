@@ -22,13 +22,14 @@ int main(int argc, char* argv[])
 		std::string paramsFile = argv[4];
 		bool debug = false;
 		bool allAPIDs = true;
-
+		std::cout << packetFile << std::endl;
 		DatabaseReader dr(databaseFile, paramsFile, allAPIDs);
 		Decom decomEngine(instrument, debug, dr.getEntries());
 		decomEngine.init(packetFile);
 	}
 
 	//printDataBase();
+	system("pause");
     return 0;
 }
 

@@ -1,5 +1,6 @@
 #include "stdafx.h"
 #include <fstream>
+#include "HeaderDecode.h"
 #include "DataDecode.h"
 #include "ByteManipulation.h"
 
@@ -39,11 +40,12 @@ bool DataDecode::loadData(const std::vector<uint8_t>& buf, Bytes& bytes, const D
 	return true;
 }
 
-void DataDecode::getTimestamp(DataTypes::Packet& pack)
+void DataDecode::getHeaderData(DataTypes::Packet& pack)
 {
 	pack.day = m_sHeader.day;
 	pack.millis = m_sHeader.millis;
 	pack.micros = m_sHeader.micros;
+	pack.sequenceCount = m_pHeader.packetSequence;
 }
 
 DataTypes::Packet DataDecode::decodeData(std::ifstream& infile)
@@ -158,12 +160,21 @@ DataTypes::Packet DataDecode::decodeData(std::ifstream& infile)
 			pack.data.push_back(num);
 		}
 	}
-	getTimestamp(pack);
+	getHeaderData(pack);
 	return pack;
 }
 
 DataTypes::Packet DataDecode::decodeDataSegmented(std::ifstream& infile)
 {
 	DataTypes::Packet segPack;
+	getHeaderData(segPack);
+	while (m_pHeader.sequenceFlag != DataTypes::LAST)
+	{
+		DataTypes::Packet pack;
+		std::tuple<DataTypes::PrimaryHeader, DataTypes::SecondaryHeader, bool> headers = HeaderDecode::decodeHeaders(infile);
+		m_pHeader = std::get<0>(headers);
+		pack = decodeData(infile);
+		segPack.data.insert(std::end(segPack.data), std::begin(pack.data), std::end(pack.data));
+	}
 	return segPack;
 }

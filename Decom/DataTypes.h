@@ -48,6 +48,7 @@ namespace DataTypes {
 		uint16_t day;
 		uint32_t millis;
 		uint16_t micros;
+		uint16_t sequenceCount;
 	};
 
 	struct PrimaryHeader

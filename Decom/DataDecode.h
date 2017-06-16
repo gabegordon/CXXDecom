@@ -38,6 +38,6 @@ private:
 	DataTypes::SecondaryHeader m_sHeader;
 
 	bool loadData(const std::vector<uint8_t>& buf, Bytes& bytes, const DataTypes::Entry& currEntry);
-	void getTimestamp(DataTypes::Packet& pack);
+	void getHeaderData(DataTypes::Packet& pack);
 };
 

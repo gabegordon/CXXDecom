@@ -39,9 +39,11 @@ void DatabaseReader::getByteBit(std::string& bytebit, uint32_t& i_byte, uint32_t
 void DatabaseReader::readAPIDList()
 {
 	std::ifstream CXXParams(m_paramsFile);
-	if (!CXXParams)
+	if (!CXXParams || !CXXParams.is_open())
 	{
 		std::cerr << "Could not find CXXParams" << std::endl;
+		system("pause");
+		exit(0);
 	}
 
 	CSVRow apidRow;
@@ -58,9 +60,11 @@ void DatabaseReader::readDatabase(const std::string& filename)
 {
 	readAPIDList();
 	std::ifstream database(filename);
-	if (!database)
+	if (!database || !database.is_open())
 	{
 		std::cerr << "Could not find Database" << std::endl;
+		system("pause");
+		exit(0);
 	}
 
 	CSVRow dataRow;

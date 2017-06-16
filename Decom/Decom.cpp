@@ -19,6 +19,8 @@ void Decom::init(const std::string& infile)
 	if (!m_infile || !m_infile.is_open())
 	{
 		std::cerr << "Failed to open .pkt file" << std::endl;
+		system("pause");
+		exit(0);
 	}
 	while (true)
 	{	
@@ -70,7 +72,7 @@ void Decom::getEntries(const uint32_t& APID)
 	}
 	if (!foundEntry)
 	{
-			std::cerr << "Couldn't find matching APID in database" << std::endl;
+			std::cerr << "Couldn't find matching APID in database: " << APID << "\n";
 	}
 }
 
@@ -80,7 +82,7 @@ void Decom::writeData()
 	{
 		std::ofstream outfile(m_instrument + "_" + std::to_string(apid.first) + ".txt");
 		
-		outfile << std::setw(15) << "Day" << "," << std::setw(15) <<  "Millis" << "," << std::setw(15) << "Micros" << ",";
+		outfile << std::setw(15) << "Day" << "," << std::setw(15) <<  "Millis" << "," << std::setw(15) << "Micros" << "," << std::setw(15) << "SeqCount" << ",";
 		
 		for (const DataTypes::Numeric& num : apid.second.at(0).data)
 		{
@@ -91,7 +93,7 @@ void Decom::writeData()
 
 		for (const DataTypes::Packet& pack: apid.second)
 		{
-			outfile << std::setw(15) << pack.day << "," << std::setw(15) << pack.millis << "," << std::setw(15) << pack.micros << ",";
+			outfile << std::setw(15) << pack.day << "," << std::setw(15) << pack.millis << "," << std::setw(15) << pack.micros << "," << std::setw(15) << pack.sequenceCount << ",";
 			for (const DataTypes::Numeric& num : pack.data)
 			{
 				switch (num.tag)
