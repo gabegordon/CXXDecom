@@ -33,7 +33,7 @@ private:
 	void printDataBase() const;
 
 	const struct DataTypes::Entry defaults = {
-		"","","","",0,0,0,0,
+		"","",DataTypes::NILL,"",0,0,0,0,
 	};
 };
 

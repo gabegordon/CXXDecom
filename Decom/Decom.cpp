@@ -22,6 +22,8 @@ void Decom::init(const std::string& infile)
 		system("pause");
 		exit(0);
 	}
+
+	
 	while (true)
 	{	
 		//Check if we are at EOF
@@ -38,8 +40,9 @@ void Decom::init(const std::string& infile)
 		
 		getEntries(std::get<0>(headers).APID);
 		
-		DataTypes::Packet pack; 
-		DataDecode dc(std::get<0>(headers), std::get<1>(headers), m_matchingEntries);
+		DataTypes::Packet pack; 	
+		DataDecode dc(std::get<0>(headers), std::get<1>(headers), m_mapEntries[std::get<0>(headers).APID]);
+
 		if(std::get<0>(headers).sequenceFlag == DataTypes::FIRST)
 			 pack = dc.decodeDataSegmented(m_infile);
 		else
@@ -47,6 +50,7 @@ void Decom::init(const std::string& infile)
 
 		m_map[std::get<0>(headers).APID].push_back(pack);
 	}
+
 	writeData();
 	m_infile.close();
 }
@@ -60,19 +64,21 @@ void Decom::debugPrinter(DataTypes::PrimaryHeader ph) const
 
 void Decom::getEntries(const uint32_t& APID)
 {
-	m_matchingEntries.clear();
-	bool foundEntry = false;
-	for (const auto& entry : m_entries)
+	if (m_mapEntries[APID].empty())
 	{
-		if (entry.i_APID == APID)
+		bool foundEntry = false;
+		for (const auto& entry : m_entries)
 		{
-			m_matchingEntries.push_back(entry);
-			foundEntry = true;
+			if (entry.i_APID == APID)
+			{
+				m_mapEntries[APID].push_back(entry);
+				foundEntry = true;
+			}
 		}
-	}
-	if (!foundEntry)
-	{
+		if (!foundEntry)
+		{
 			std::cerr << "Couldn't find matching APID in database: " << APID << "\n";
+		}
 	}
 }
 
@@ -81,7 +87,7 @@ void Decom::writeData()
 	for (const auto& apid : m_map)
 	{
 		std::ofstream outfile(m_instrument + "_" + std::to_string(apid.first) + ".txt");
-		
+
 		outfile << std::setw(15) << "Day" << "," << std::setw(15) <<  "Millis" << "," << std::setw(15) << "Micros" << "," << std::setw(15) << "SeqCount" << ",";
 		
 		for (const DataTypes::Numeric& num : apid.second.at(0).data)

@@ -36,5 +36,11 @@ namespace ByteManipulation {
 
 	uint32_t mergeBytes(uint8_t& initialByte, uint8_t& extraByte1, uint8_t& extraByte2, uint8_t& extraByte3, const uint32_t& num);
 
-	uint32_t mergeBytes16(uint8_t& initialByte, uint8_t& extraByte1);
+	static inline uint32_t mergeBytes16(uint8_t& initialByte, uint8_t& extraByte1)
+	{
+		std::string b1 = std::bitset<8>(initialByte).to_string();
+		std::string b2 = std::bitset<8>(extraByte1).to_string();
+		std::string s_result = b1 + b2;
+		return std::stoul(s_result, nullptr, 2);
+	}
 }

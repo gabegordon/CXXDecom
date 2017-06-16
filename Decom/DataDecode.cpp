@@ -8,7 +8,7 @@ using namespace ByteManipulation;
 
 bool DataDecode::loadData(const std::vector<uint8_t>& buf, Bytes& bytes, const DataTypes::Entry& currEntry)
 {
-	uint32_t length = std::stoi(currEntry.type.substr(1, std::string::npos));
+	uint32_t length = currEntry.length;
 	if (length > 24)
 	{
 		if (currEntry.byte + 1 >= buf.size() || currEntry.byte + 2 >= buf.size() || currEntry.byte + 3 >= buf.size())
@@ -65,7 +65,7 @@ DataTypes::Packet DataDecode::decodeData(std::ifstream& infile)
 
 		uint8_t initialByte = buf.at(currEntry.byte);
 
-		DataTypes::DataType dtype = DataTypes::hashIt(currEntry.type.substr(0, 1));
+		DataTypes::DataType dtype = currEntry.type;
 
 		if (dtype == DataTypes::FLOAT)
 		{

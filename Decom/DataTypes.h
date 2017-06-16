@@ -3,17 +3,6 @@
 #include <vector>
 
 namespace DataTypes {
-	struct Entry {
-		std::string mnemonic;
-		std::string SS;
-		std::string type;
-		std::string s_APID;
-		uint32_t i_APID;
-		uint32_t byte;
-		uint32_t bitLower;
-		uint32_t bitUpper;
-	};
-
 	enum SequenceFlag
 	{
 		MIDDLE,
@@ -28,6 +17,18 @@ namespace DataTypes {
 		SIGNED,
 		UNSIGNED,
 		FLOAT
+	};
+	
+	struct Entry {
+		std::string mnemonic;
+		std::string SS;
+		DataTypes::DataType type;
+		std::string s_APID;
+		uint32_t i_APID;
+		uint32_t byte;
+		uint32_t bitLower;
+		uint32_t bitUpper;
+		uint32_t length;
 	};
 
 	struct Numeric
@@ -69,7 +70,7 @@ namespace DataTypes {
 		uint32_t segments;
 	};
 
-	static inline DataType hashIt(std::string const& inString) {
+	static inline DataType hashIt(const std::string&  inString) {
 		if (inString == "D") return UNSIGNED;
 		if (inString == "S") return SIGNED;
 		if (inString == "U") return UNSIGNED;

@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include <iostream>
 #include "DatabaseReader.h"
+#include "DataTypes.h"
 #include "CSVRow.h"
 
 
@@ -94,7 +95,7 @@ void DatabaseReader::readDatabase(const std::string& filename)
 			DataTypes::Entry tmp = defaults;
 			tmp.mnemonic = dataRow[0];
 			tmp.SS = dataRow[2];
-			tmp.type = dataRow[3];
+			tmp.type = DataTypes::hashIt(dataRow[3].substr(0, 1));
 			tmp.s_APID = dataRow[4];
 			tmp.i_APID = i_APID;
 
@@ -108,6 +109,7 @@ void DatabaseReader::readDatabase(const std::string& filename)
 			tmp.byte = i_byte;
 			tmp.bitLower = i_bitLower;
 			tmp.bitUpper = i_bitUpper;
+			tmp.length = std::stoi(dataRow[3].substr(1, std::string::npos));
 			m_entries.push_back(tmp);
 		}
 		else
@@ -117,7 +119,7 @@ void DatabaseReader::readDatabase(const std::string& filename)
 				DataTypes::Entry tmp = defaults;
 				tmp.mnemonic = dataRow[0];
 				tmp.SS = dataRow[2];
-				tmp.type = dataRow[3];
+				tmp.type = DataTypes::hashIt(dataRow[3].substr(0, 1));
 				tmp.s_APID = dataRow[4];
 				tmp.i_APID = i_APID;
 
@@ -130,6 +132,7 @@ void DatabaseReader::readDatabase(const std::string& filename)
 				tmp.byte = i_byte;
 				tmp.bitLower = i_bitLower;
 				tmp.bitUpper = i_bitUpper;
+				tmp.length = std::stoi(dataRow[3].substr(1, std::string::npos));
 				m_entries.push_back(tmp);
 			}
 		}
