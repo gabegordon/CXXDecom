@@ -50,15 +50,15 @@ void DataDecode::getHeaderData(DataTypes::Packet& pack)
 
 DataTypes::Packet DataDecode::decodeData(std::ifstream& infile)
 {
-	DataTypes::Packet pack;
 	std::vector<uint8_t> buf(m_pHeader.packetLength); //reserve space for bytes
 	infile.read(reinterpret_cast<char*>(buf.data()), buf.size()); //read bytes
+	DataTypes::Packet pack;
+	pack.data.reserve(m_entries.size());
 
 	for (DataTypes::Entry& currEntry : m_entries)
 	{
 		DataTypes::Numeric num;
 		Bytes numBytes;
-		uint8_t m_byte1, m_byte2, m_byte3;
 
 		if (!loadData(buf, numBytes, currEntry) || currEntry.byte >= buf.size()) //Make sure we don't go past array bounds (entries not contained in packet)
 			break;
@@ -170,10 +170,9 @@ DataTypes::Packet DataDecode::decodeDataSegmented(std::ifstream& infile)
 	getHeaderData(segPack);
 	while (m_pHeader.sequenceFlag != DataTypes::LAST)
 	{
-		DataTypes::Packet pack;
 		std::tuple<DataTypes::PrimaryHeader, DataTypes::SecondaryHeader, bool> headers = HeaderDecode::decodeHeaders(infile);
 		m_pHeader = std::get<0>(headers);
-		pack = decodeData(infile);
+		auto pack = decodeData(infile);
 		segPack.data.insert(std::end(segPack.data), std::begin(pack.data), std::end(pack.data));
 	}
 	return segPack;

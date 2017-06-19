@@ -9,6 +9,7 @@
 #include "ByteManipulation.h"
 #include "HeaderDecode.h"
 #include "DataDecode.h"
+#include "ProgressBar.h"
 
 using std::cout;
 using std::endl;
@@ -22,10 +23,17 @@ void Decom::init(const std::string& infile)
 		system("pause");
 		exit(0);
 	}
-
+	m_infile.seekg(0, std::ios::end);
+	uint64_t fileSize = m_infile.tellg();
+	m_infile.seekg(0, std::ios::beg);
 	
+	ProgressBar* progbar = new ProgressBar(fileSize, "Decoding");
+	progbar->SetFrequencyUpdate(10000);
+	uint64_t progress;
 	while (true)
 	{	
+		progress = m_infile.tellg();
+		progbar->Progressed(progress);
 		//Check if we are at EOF
 		if (m_infile.eof())
 			break;
@@ -40,7 +48,7 @@ void Decom::init(const std::string& infile)
 		
 		getEntries(std::get<0>(headers).APID);
 		
-		DataTypes::Packet pack; 	
+		DataTypes::Packet pack;
 		DataDecode dc(std::get<0>(headers), std::get<1>(headers), m_mapEntries[std::get<0>(headers).APID]);
 
 		if(std::get<0>(headers).sequenceFlag == DataTypes::FIRST)
@@ -49,10 +57,10 @@ void Decom::init(const std::string& infile)
 			 pack = dc.decodeData(m_infile);
 
 		m_map[std::get<0>(headers).APID].push_back(pack);
-	}
 
-	writeData();
+	}
 	m_infile.close();
+	writeData();
 }
 
 
@@ -84,6 +92,10 @@ void Decom::getEntries(const uint32_t& APID)
 
 void Decom::writeData()
 {
+	uint64_t len = getLength();
+	ProgressBar* progbar = new ProgressBar(len, "Writing");
+	progbar->SetFrequencyUpdate(len/10);
+	uint64_t i = 0;
 	for (const auto& apid : m_map)
 	{
 		std::ofstream outfile(m_instrument + "_" + std::to_string(apid.first) + ".txt");
@@ -109,9 +121,26 @@ void Decom::writeData()
 				case DataTypes::Numeric::F64: outfile << std::setw(15) << std::right << num.f64; break;
 				}
 				outfile << ",";
+				progbar->Progressed(++i);
 			}
 			outfile << "\n";
 		}
 		outfile.close();
 	}
+}
+
+uint64_t Decom::getLength()
+{
+	uint64_t len = 0;
+	for (const auto& apid : m_map)
+	{
+		for (const auto& packet : apid.second)
+		{
+			for (const auto& num : packet.data)
+			{
+				len++;
+			}
+		}
+	}
+	return len;
 }

@@ -85,6 +85,4 @@ namespace ByteManipulation {
 		}
 		return std::stoul(s_result, nullptr, 2);
 	}
-
-
 }

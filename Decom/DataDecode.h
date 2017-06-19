@@ -14,7 +14,6 @@ public:
 	};
 
 	DataDecode(const DataTypes::PrimaryHeader& ph, const DataTypes::SecondaryHeader& sh, std::vector<DataTypes::Entry>& entries) :
-		m_byte0(),
 		m_byte1(),
 		m_byte2(),
 		m_byte3(),
@@ -29,7 +28,6 @@ public:
 	DataTypes::Packet decodeDataSegmented(std::ifstream& infile);
 
 private:
-	uint8_t m_byte0;
 	uint8_t m_byte1;
 	uint8_t m_byte2;
 	uint8_t m_byte3;
