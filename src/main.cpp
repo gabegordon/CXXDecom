@@ -1,6 +1,5 @@
 #include <iostream>
 #include <cstdint>
-#include <chrono>
 #include "Decom.h"
 #include "DatabaseReader.h"
 
@@ -9,7 +8,6 @@ using std::endl;
 
 int main(int argc, char* argv[])
 {
-    auto start = std::chrono::high_resolution_clock::now();
     if (argc < 6)
     {
         cout << "Specify: database and instrument\n";
@@ -28,10 +26,6 @@ int main(int argc, char* argv[])
         Decom decomEngine(instrument, debug, dr.getEntries());
         decomEngine.init(packetFile);
     }
-
     //printDataBase();
-    auto finish = std::chrono::high_resolution_clock::now();
-    std::chrono::duration<double> elapsed = finish - start;
-    std::cout << "Elapsed time: " << elapsed.count() << " s\n";
     return 0;
 }

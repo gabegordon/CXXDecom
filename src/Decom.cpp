@@ -58,6 +58,7 @@ void Decom::init(const std::string& infile)
         m_map[std::get<0>(headers).APID].push_back(pack);
     }
     m_infile.close();
+    delete progbar;
     writeData();
 }
 
@@ -95,6 +96,7 @@ void Decom::writeData()
     ProgressBar* progbar = new ProgressBar(len, "Writing");
     progbar->SetFrequencyUpdate(len/10);
     uint64_t i = 0;
+    progbar->Progressed(i); //Initialize progress bar
     for (const auto& apid : m_map)
     {
         if(apid.second.at(0).ignored)
