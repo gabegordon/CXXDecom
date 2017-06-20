@@ -29,6 +29,7 @@ namespace DataTypes {
         uint32_t bitLower;
         uint32_t bitUpper;
         uint32_t length;
+        bool ignored;
     };
 
     struct Numeric
@@ -50,6 +51,7 @@ namespace DataTypes {
         uint32_t millis;
         uint16_t micros;
         uint16_t sequenceCount;
+        bool ignored;
     };
 
     struct PrimaryHeader

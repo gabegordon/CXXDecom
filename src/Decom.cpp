@@ -56,7 +56,6 @@ void Decom::init(const std::string& infile)
             pack = dc.decodeData(m_infile);
 
         m_map[std::get<0>(headers).APID].push_back(pack);
-
     }
     m_infile.close();
     writeData();
@@ -76,7 +75,10 @@ void Decom::getEntries(const uint32_t& APID)
         {
             if (entry.i_APID == APID)
             {
-                m_mapEntries[APID].push_back(entry);
+                if(!entry.ignored)
+                {
+                    m_mapEntries[APID].push_back(entry);
+                }
                 foundEntry = true;
             }
         }
@@ -95,6 +97,9 @@ void Decom::writeData()
     uint64_t i = 0;
     for (const auto& apid : m_map)
     {
+        if(apid.second.at(0).ignored)
+            continue;
+
         std::ofstream outfile(m_instrument + "_" + std::to_string(apid.first) + ".txt");
 
         outfile << std::setw(15) << "Day" << "," << std::setw(15) <<  "Millis" << "," << std::setw(15) << "Micros" << "," << std::setw(15) << "SeqCount" << ",";
@@ -124,6 +129,7 @@ void Decom::writeData()
         }
         outfile.close();
     }
+    std::cout << std::endl;
     system("pause");
 }
 

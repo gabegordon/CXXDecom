@@ -10,7 +10,7 @@ using std::endl;
 int main(int argc, char* argv[])
 {
     auto start = std::chrono::high_resolution_clock::now();
-    if (argc < 5)
+    if (argc < 6)
     {
         cout << "Specify: database and instrument\n";
         return 0;
@@ -22,7 +22,7 @@ int main(int argc, char* argv[])
         std::string packetFile = argv[3];
         std::string paramsFile = argv[4];
         bool debug = false;
-        bool allAPIDs = true;
+        bool allAPIDs = !!std::stoi(argv[5]);
         std::cout << packetFile << std::endl;
         DatabaseReader dr(databaseFile, paramsFile, allAPIDs);
         Decom decomEngine(instrument, debug, dr.getEntries());

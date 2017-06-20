@@ -52,6 +52,16 @@ DataTypes::Packet DataDecode::decodeData(std::ifstream& infile)
     std::vector<uint8_t> buf(m_pHeader.packetLength); //reserve space for bytes
     infile.read(reinterpret_cast<char*>(buf.data()), buf.size()); //read bytes
     DataTypes::Packet pack;
+
+    if(m_entries.size() < 1)
+    {
+        pack.ignored = true;
+        return pack;
+    }
+    else
+        pack.ignored = false;
+
+
     pack.data.reserve(m_entries.size() * sizeof(DataTypes::Numeric));
 
     for (DataTypes::Entry& currEntry : m_entries)

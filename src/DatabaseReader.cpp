@@ -109,31 +109,34 @@ void DatabaseReader::readDatabase(const std::string& filename)
             tmp.bitLower = i_bitLower;
             tmp.bitUpper = i_bitUpper;
             tmp.length = std::stoi(dataRow[3].substr(1, std::string::npos));
+            tmp.ignored = false;
             m_entries.push_back(tmp);
         }
         else
         {
+            DataTypes::Entry tmp = defaults;
+            tmp.ignored = true;
             if (std::find(m_APIDs.begin(), m_APIDs.end(), i_APID) != m_APIDs.end())
             {
-                DataTypes::Entry tmp = defaults;
-                tmp.mnemonic = dataRow[0];
-                tmp.SS = dataRow[2];
-                tmp.type = DataTypes::hashIt(dataRow[3].substr(0, 1));
-                tmp.s_APID = dataRow[4];
-                tmp.i_APID = i_APID;
-
-                std::string bytebit = dataRow[5];
-                uint32_t i_byte = 0;
-                uint32_t i_bitLower = 0;
-                uint32_t i_bitUpper = 0;
-                getByteBit(bytebit, i_byte, i_bitLower, i_bitUpper);
-
-                tmp.byte = i_byte;
-                tmp.bitLower = i_bitLower;
-                tmp.bitUpper = i_bitUpper;
-                tmp.length = std::stoi(dataRow[3].substr(1, std::string::npos));
-                m_entries.push_back(tmp);
+                tmp.ignored = false;
             }
+            tmp.mnemonic = dataRow[0];
+            tmp.SS = dataRow[2];
+            tmp.type = DataTypes::hashIt(dataRow[3].substr(0, 1));
+            tmp.s_APID = dataRow[4];
+            tmp.i_APID = i_APID;
+
+            std::string bytebit = dataRow[5];
+            uint32_t i_byte = 0;
+            uint32_t i_bitLower = 0;
+            uint32_t i_bitUpper = 0;
+            getByteBit(bytebit, i_byte, i_bitLower, i_bitUpper);
+
+            tmp.byte = i_byte;
+            tmp.bitLower = i_bitLower;
+            tmp.bitUpper = i_bitUpper;
+            tmp.length = std::stoi(dataRow[3].substr(1, std::string::npos));
+            m_entries.push_back(tmp);
         }
     }
 }
