@@ -22,12 +22,10 @@ uint32_t swapEndian32(const uint32_t& val)
 {
     return _byteswap_ulong(val);
 }
-
 uint64_t swapEndian64(const uint64_t& val)
 {
     return _byteswap_uint64(val);
 }
-
 uint32_t extract8(const uint8_t& val, uint32_t start, uint32_t len)
 {
     return std::stoul((std::bitset<8>(val).to_string().substr(start, len)), nullptr, 2);

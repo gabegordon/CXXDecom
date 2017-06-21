@@ -21,7 +21,6 @@ namespace DataTypes {
 
     struct Entry {
         std::string mnemonic;
-        std::string SS;
         DataTypes::DataType type;
         std::string s_APID;
         uint32_t i_APID;

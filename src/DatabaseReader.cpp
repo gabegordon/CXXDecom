@@ -93,13 +93,11 @@ void DatabaseReader::readDatabase(const std::string& filename)
         {
             DataTypes::Entry tmp = defaults;
             tmp.mnemonic = dataRow[0];
-            tmp.SS = dataRow[2];
-            tmp.type = DataTypes::hashIt(dataRow[3].substr(0, 1));
-            tmp.s_APID = dataRow[4];
+            tmp.type = DataTypes::hashIt(dataRow[1].substr(0, 1));
+            tmp.s_APID = dataRow[2];
             tmp.i_APID = i_APID;
 
-            std::string bytebit = "";
-            bytebit = dataRow[5];
+            std::string bytebit = dataRow[3];
             uint32_t i_byte = 0;
             uint32_t i_bitLower = 0;
             uint32_t i_bitUpper = 0;
@@ -108,7 +106,7 @@ void DatabaseReader::readDatabase(const std::string& filename)
             tmp.byte = i_byte;
             tmp.bitLower = i_bitLower;
             tmp.bitUpper = i_bitUpper;
-            tmp.length = std::stoi(dataRow[3].substr(1, std::string::npos));
+            tmp.length = std::stoi(dataRow[1].substr(1, std::string::npos));
             tmp.ignored = false;
             m_entries.push_back(tmp);
         }
@@ -121,12 +119,11 @@ void DatabaseReader::readDatabase(const std::string& filename)
                 tmp.ignored = false;
             }
             tmp.mnemonic = dataRow[0];
-            tmp.SS = dataRow[2];
-            tmp.type = DataTypes::hashIt(dataRow[3].substr(0, 1));
-            tmp.s_APID = dataRow[4];
+            tmp.type = DataTypes::hashIt(dataRow[1].substr(0, 1));
+            tmp.s_APID = dataRow[2];
             tmp.i_APID = i_APID;
 
-            std::string bytebit = dataRow[5];
+            std::string bytebit = dataRow[3];
             uint32_t i_byte = 0;
             uint32_t i_bitLower = 0;
             uint32_t i_bitUpper = 0;
@@ -135,7 +132,7 @@ void DatabaseReader::readDatabase(const std::string& filename)
             tmp.byte = i_byte;
             tmp.bitLower = i_bitLower;
             tmp.bitUpper = i_bitUpper;
-            tmp.length = std::stoi(dataRow[3].substr(1, std::string::npos));
+            tmp.length = std::stoi(dataRow[1].substr(1, std::string::npos));
             m_entries.push_back(tmp);
         }
     }
@@ -145,7 +142,7 @@ void DatabaseReader::printDataBase() const
 {
     for (const auto& entry : m_entries)
     {
-        std::cout << entry.mnemonic << "," << entry.SS << "," << entry.type << "," << entry.s_APID << "," << entry.i_APID << "," << entry.byte << "," << entry.bitLower << "," << entry.bitUpper << "\n";
+        std::cout << entry.mnemonic << "," << entry.type << "," << entry.s_APID << "," << entry.i_APID << "," << entry.byte << "," << entry.bitLower << "," << entry.bitUpper << "\n";
     }
 }
 

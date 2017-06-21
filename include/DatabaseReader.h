@@ -33,6 +33,6 @@ class DatabaseReader
     void printDataBase() const;
 
     const struct DataTypes::Entry defaults = {
-        "","",DataTypes::NILL,"",0,0,0,0,true
+        "",DataTypes::NILL,"",0,0,0,0,true
     };
 };

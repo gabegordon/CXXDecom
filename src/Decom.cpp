@@ -102,7 +102,7 @@ void Decom::writeData()
         if(apid.second.at(0).ignored)
             continue;
 
-        std::ofstream outfile(m_instrument + "_" + std::to_string(apid.first) + ".txt");
+        std::ofstream outfile("output/" + m_instrument + "_" + std::to_string(apid.first) + ".txt");
 
         outfile << std::setw(15) << "Day" << "," << std::setw(15) <<  "Millis" << "," << std::setw(15) << "Micros" << "," << std::setw(15) << "SeqCount" << ",";
 
@@ -112,7 +112,6 @@ void Decom::writeData()
         }
 
         outfile << "\n";
-
         for (const DataTypes::Packet& pack: apid.second)
         {
             outfile << std::setw(15) << pack.day << "," << std::setw(15) << pack.millis << "," << std::setw(15) << pack.micros << "," << std::setw(15) << pack.sequenceCount << ",";

@@ -70,7 +70,7 @@ DataTypes::Packet DataDecode::decodeData(std::ifstream& infile)
         Bytes numBytes;
 
         if (!loadData(buf, numBytes, currEntry) || currEntry.byte >= buf.size()) //Make sure we don't go past array bounds (entries not contained in packet)
-            break;
+            continue;
 
         uint8_t initialByte = buf.at(currEntry.byte);
 
