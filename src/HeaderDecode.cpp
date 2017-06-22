@@ -9,15 +9,19 @@ uint32_t sh_flag;
 DataTypes::SequenceFlag seq_flag;
 bool isValid = false;
 
-std::tuple<DataTypes::PrimaryHeader, DataTypes::SecondaryHeader, bool> decodeHeaders(std::ifstream& infile)
+std::tuple<DataTypes::PrimaryHeader, DataTypes::SecondaryHeader> decodeHeaders(std::ifstream& infile, const bool debug)
 {
-    auto ph = decodePrimary(infile);
+    auto ph = decodePrimary(infile, debug);
     auto sh = decodeSecondary(infile);
-    return std::make_tuple(ph, sh, isValid);
+    return std::make_tuple(ph, sh);
 }
 
+void debugPrinter(const DataTypes::PrimaryHeader& ph)
+{
+    std::cout << ph.secondaryHeader << "," << ph.APID << "," << std::bitset<2>(ph.sequenceFlag) << "," << ph.packetSequence << "," << ph.packetLength << "\n";
+}
 
-DataTypes::PrimaryHeader decodePrimary(std::ifstream& infile)
+DataTypes::PrimaryHeader decodePrimary(std::ifstream& infile, const bool debug)
 {
     DataTypes::PrimaryHeader ph = p_defaults;
     uint32_t firstFourBytes;
@@ -54,6 +58,8 @@ DataTypes::PrimaryHeader decodePrimary(std::ifstream& infile)
         else
             ph.packetLength -= 8;
     }
+    if (debug)
+        debugPrinter(ph);
 
     checkValidHeader(ph);
     return ph;
@@ -97,14 +103,14 @@ void checkValidHeader(const DataTypes::PrimaryHeader& pheader)
         isValid = false;
     else if (pheader.packetLength > 65535)
         isValid = false;
-    else if (pheader.sequenceFlag == DataTypes::FIRST && pheader.secondaryHeader == 0)
-        isValid = false;
-    else if (pheader.sequenceFlag == DataTypes::STANDALONE && pheader.secondaryHeader == 0)
-        isValid = false;
-    else if (pheader.sequenceFlag == DataTypes::MIDDLE && pheader.secondaryHeader == 1)
-        isValid = false;
-    else if (pheader.sequenceFlag == DataTypes::LAST && pheader.secondaryHeader == 1)
-        isValid = false;
+    /*else if (pheader.sequenceFlag == DataTypes::FIRST && pheader.secondaryHeader == 0)
+      isValid = false;
+      else if (pheader.sequenceFlag == DataTypes::STANDALONE && pheader.secondaryHeader == 0)
+      isValid = false;
+      else if (pheader.sequenceFlag == DataTypes::MIDDLE && pheader.secondaryHeader == 1)
+      isValid = false;
+      else if (pheader.sequenceFlag == DataTypes::LAST && pheader.secondaryHeader == 1)
+      isValid = false;*/
     else
         isValid = true;
 }

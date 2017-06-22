@@ -180,12 +180,12 @@ DataTypes::Packet DataDecode::decodeDataSegmented(std::ifstream& infile)
 {
     DataTypes::Packet segPack;
     getHeaderData(segPack);
-    while (m_pHeader.sequenceFlag != DataTypes::LAST)
+    do
     {
-        std::tuple<DataTypes::PrimaryHeader, DataTypes::SecondaryHeader, bool> headers = HeaderDecode::decodeHeaders(infile);
-        m_pHeader = std::get<0>(headers);
-        auto pack = decodeData(infile);
-        segPack.data.insert(std::end(segPack.data), std::begin(pack.data), std::end(pack.data));
-    }
-    return segPack;
+		auto pack = decodeData(infile);
+	  segPack.data.insert(std::end(segPack.data), std::begin(pack.data), std::end(pack.data));
+		std::tuple<DataTypes::PrimaryHeader, DataTypes::SecondaryHeader> headers = HeaderDecode::decodeHeaders(infile, m_debug);
+		m_pHeader = std::get<0>(headers);
+	} while (m_pHeader.sequenceFlag != DataTypes::LAST);
+	return segPack;
 }

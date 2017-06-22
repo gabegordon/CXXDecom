@@ -3,6 +3,7 @@
 #include <iterator>
 #include <tuple>
 #include <iomanip>
+#include <memory>
 #include <stdlib.h>
 #include "Decom.h"
 #include "ByteManipulation.h"
@@ -26,8 +27,8 @@ void Decom::init(const std::string& infile)
     uint64_t fileSize = m_infile.tellg();
     m_infile.seekg(0, std::ios::beg);
 
-    ProgressBar* progbar = new ProgressBar(fileSize, "Parsing");
-    progbar->SetFrequencyUpdate(10000);
+    std::unique_ptr<ProgressBar> progbar(new ProgressBar(fileSize, "Parsing"));
+    progbar->SetFrequencyUpdate(1000);
     uint64_t progress = 0;
     while (true)
     {
@@ -37,36 +38,23 @@ void Decom::init(const std::string& infile)
         progress = m_infile.tellg();
         progbar->Progressed(progress);
 
-        std::tuple<DataTypes::PrimaryHeader, DataTypes::SecondaryHeader, bool> headers = HeaderDecode::decodeHeaders(m_infile);
-
-        if (!std::get<2>(headers)) //If invalid header
-            break;
-
-        if (m_debug)
-            debugPrinter(std::get<0>(headers));
+        std::tuple<DataTypes::PrimaryHeader, DataTypes::SecondaryHeader> headers = HeaderDecode::decodeHeaders(m_infile, m_debug);
 
         getEntries(std::get<0>(headers).APID);
 
         DataTypes::Packet pack;
-        DataDecode dc(std::get<0>(headers), std::get<1>(headers), m_mapEntries[std::get<0>(headers).APID]);
+        DataDecode dc(std::get<0>(headers), std::get<1>(headers), m_mapEntries[std::get<0>(headers).APID], m_debug);
 
-        if(std::get<0>(headers).sequenceFlag == DataTypes::FIRST)
+        if (std::get<0>(headers).sequenceFlag == DataTypes::FIRST)
             pack = dc.decodeDataSegmented(m_infile);
         else
             pack = dc.decodeData(m_infile);
 
         m_map[std::get<0>(headers).APID].push_back(pack);
     }
-    m_infile.close();
-    delete progbar;
-    writeData();
+        m_infile.close();
+        writeData();
 }
-
-void Decom::debugPrinter(DataTypes::PrimaryHeader ph) const
-{
-    std::cout << ph.secondaryHeader << "," << ph.APID << "," << std::bitset<2>(ph.sequenceFlag) << "," << ph.packetSequence << "," << ph.packetLength << "\n";
-}
-
 void Decom::getEntries(const uint32_t& APID)
 {
     if (m_mapEntries[APID].empty())
@@ -101,7 +89,7 @@ void Decom::writeData()
         return;
     }
 
-    ProgressBar* progbar = new ProgressBar(len, "Writing");
+    std::unique_ptr<ProgressBar> progbar(new ProgressBar(len, "Writing"));
     progbar->SetFrequencyUpdate(len/10);
     uint64_t i = 0;
     progbar->Progressed(i); //Initialize progress bar

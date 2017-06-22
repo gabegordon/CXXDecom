@@ -22,7 +22,6 @@ class Decom
     void init(const std::string& infile);
 
   private:
-    void debugPrinter(DataTypes::PrimaryHeader) const;
     void getEntries(const uint32_t& APID);
     void writeData();
     uint64_t getLength();
