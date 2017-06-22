@@ -35,6 +35,6 @@ class DataDecode
     DataTypes::PrimaryHeader m_pHeader;
     DataTypes::SecondaryHeader m_sHeader;
 
-    bool loadData(const std::vector<uint8_t>& buf, Bytes& bytes, const DataTypes::Entry& currEntry);
+    bool loadData(const std::vector<uint8_t>& buf, Bytes& bytes, const DataTypes::Entry& currEntry, const uint32_t& offset);
     void getHeaderData(DataTypes::Packet& pack);
 };

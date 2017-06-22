@@ -5,31 +5,31 @@
 
 using namespace ByteManipulation;
 
-bool DataDecode::loadData(const std::vector<uint8_t>& buf, Bytes& bytes, const DataTypes::Entry& currEntry)
+bool DataDecode::loadData(const std::vector<uint8_t>& buf, Bytes& bytes, const DataTypes::Entry& currEntry, const uint32_t& offset)
 {
     uint32_t length = currEntry.length;
     if (length > 24)
     {
-        if (currEntry.byte + 1 >= buf.size() || currEntry.byte + 2 >= buf.size() || currEntry.byte + 3 >= buf.size())
+        if (currEntry.byte - offset + 1 >= buf.size() || currEntry.byte - offset + 2 >= buf.size() || currEntry.byte - offset + 3 >= buf.size())
             return false;
-        m_byte1 = buf.at(currEntry.byte + 1);
-        m_byte2 = buf.at(currEntry.byte + 2);
-        m_byte3 = buf.at(currEntry.byte + 3);
+        m_byte1 = buf.at(currEntry.byte - offset + 1);
+        m_byte2 = buf.at(currEntry.byte - offset + 2);
+        m_byte3 = buf.at(currEntry.byte - offset + 3);
         bytes = FOUR;
     }
     else if (length > 16)
     {
-        if (currEntry.byte + 1 >= buf.size() || currEntry.byte + 2 >= buf.size())
+        if (currEntry.byte - offset + 1 >= buf.size() || currEntry.byte - offset + 2 >= buf.size())
             return false;
-        m_byte1 = buf.at(currEntry.byte + 1);
-        m_byte2 = buf.at(currEntry.byte + 2);
+        m_byte1 = buf.at(currEntry.byte - offset + 1);
+        m_byte2 = buf.at(currEntry.byte - offset + 2);
         bytes = THREE;
     }
     else if (length > 8)
     {
-        if (currEntry.byte + 1 >= buf.size())
+        if (currEntry.byte - offset + 1 >= buf.size())
             return false;
-        m_byte1 = buf.at(currEntry.byte + 1);
+        m_byte1 = buf.at(currEntry.byte - offset + 1);
         bytes = TWO;
     }
     else
@@ -61,6 +61,9 @@ DataTypes::Packet DataDecode::decodeData(std::ifstream& infile)
     else
         pack.ignored = false;
 
+    uint32_t offset = 6;
+    if(m_pHeader.secondaryHeader)
+        offset = 14;
 
     pack.data.reserve(m_entries.size() * sizeof(DataTypes::Numeric));
 
@@ -69,10 +72,10 @@ DataTypes::Packet DataDecode::decodeData(std::ifstream& infile)
         DataTypes::Numeric num;
         Bytes numBytes;
 
-        if (!loadData(buf, numBytes, currEntry) || currEntry.byte >= buf.size()) //Make sure we don't go past array bounds (entries not contained in packet)
+        if (!loadData(buf, numBytes, currEntry, offset) || currEntry.byte - offset >= buf.size()) //Make sure we don't go past array bounds (entries not contained in packet)
             continue;
 
-        uint8_t initialByte = buf.at(currEntry.byte);
+        uint8_t initialByte = buf.at(currEntry.byte - offset);
 
         DataTypes::DataType dtype = currEntry.type;
 

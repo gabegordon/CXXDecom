@@ -18,11 +18,12 @@ class DatabaseReader
 
     virtual ~DatabaseReader() {};
 
-    std::vector<DataTypes::Entry> getEntries() const;
+    std::vector<DataTypes::Entry> getEntries();
 
   private:
     std::vector<uint32_t> m_APIDs;
     std::vector<DataTypes::Entry> m_entries;
+    std::vector<std::string> m_skip = {"PVNO", "PPTYPE", "PSHDF", "PID", "PSEGF", "PSCNT", "PLEN", "PTDAY", "PTMS", "PTUS"};
     bool m_firstRun;
     bool m_allAPIDs;
     std::string m_paramsFile;
@@ -31,7 +32,7 @@ class DatabaseReader
     void getByteBit(std::string& bytebit, uint32_t& i_byte, uint32_t& i_bitLower, uint32_t& i_bitUpper);
     void readAPIDList();
     void printDataBase() const;
-
+    bool bannedAPID(std::string& mnem);
     const struct DataTypes::Entry defaults = {
         "",DataTypes::NILL,"",0,0,0,0,true
     };

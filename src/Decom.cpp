@@ -93,6 +93,14 @@ void Decom::getEntries(const uint32_t& APID)
 void Decom::writeData()
 {
     uint64_t len = getLength();
+
+    if(!checkForMissingOutput())
+    {
+        std::cerr << endl << "No APIDs matching selected APIDs" << endl;
+        system("pause");
+        return;
+    }
+
     ProgressBar* progbar = new ProgressBar(len, "Writing");
     progbar->SetFrequencyUpdate(len/10);
     uint64_t i = 0;
@@ -148,4 +156,24 @@ uint64_t Decom::getLength()
         }
     }
     return len;
+}
+
+bool Decom::checkForMissingOutput()
+{
+    uint32_t packets = 0;
+    uint32_t ignored_packets = 0;
+
+    for(const auto& apid: m_map)
+    {
+        for(const auto& pack: apid.second)
+        {
+            packets++;
+            if(pack.ignored)
+                ignored_packets++;
+        }
+    }
+    if(ignored_packets == packets)
+        return false;
+    else
+        return true;
 }
