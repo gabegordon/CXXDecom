@@ -199,7 +199,7 @@ DataTypes::Packet DataDecode::decodeDataSegmented(std::ifstream& infile)
     {
 		auto pack = decodeData(infile);
 	  segPack.data.insert(std::end(segPack.data), std::begin(pack.data), std::end(pack.data));
-		std::tuple<DataTypes::PrimaryHeader, DataTypes::SecondaryHeader> headers = HeaderDecode::decodeHeaders(infile, m_debug);
+		std::tuple<DataTypes::PrimaryHeader, DataTypes::SecondaryHeader, bool> headers = HeaderDecode::decodeHeaders(infile, m_debug);
 		m_pHeader = std::get<0>(headers);
 	} while (m_pHeader.sequenceFlag != DataTypes::LAST);
 	return segPack;

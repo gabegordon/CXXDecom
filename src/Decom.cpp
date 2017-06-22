@@ -32,13 +32,16 @@ void Decom::init(const std::string& infile)
     uint64_t progress = 0;
     while (true)
     {
-        if (m_infile.eof())
+        progress = m_infile.tellg();
+        if (m_infile.eof() || progress >= fileSize)
             break;
 
-        progress = m_infile.tellg();
         progbar->Progressed(progress);
 
-        std::tuple<DataTypes::PrimaryHeader, DataTypes::SecondaryHeader> headers = HeaderDecode::decodeHeaders(m_infile, m_debug);
+        std::tuple<DataTypes::PrimaryHeader, DataTypes::SecondaryHeader, bool> headers = HeaderDecode::decodeHeaders(m_infile, m_debug);
+
+        if(!std::get<2>(headers))
+            break;
 
         getEntries(std::get<0>(headers).APID);
 

@@ -9,17 +9,18 @@ uint32_t sh_flag;
 DataTypes::SequenceFlag seq_flag;
 bool isValid = false;
 
-std::tuple<DataTypes::PrimaryHeader, DataTypes::SecondaryHeader> decodeHeaders(std::ifstream& infile, const bool debug)
+std::tuple<DataTypes::PrimaryHeader, DataTypes::SecondaryHeader, bool> decodeHeaders(std::ifstream& infile, const bool debug)
 {
     auto ph = decodePrimary(infile, debug);
     auto sh = decodeSecondary(infile);
     checkValidHeader(ph);
     if(!isValid)
     {
-        std::cerr << "Invalid header" << std::endl;
+        std::cerr << "Invalid header: " << std::endl;
+        debugPrinter(ph);
     }
 
-    return std::make_tuple(ph, sh);
+    return std::make_tuple(ph, sh, isValid);
 }
 
 void debugPrinter(const DataTypes::PrimaryHeader& ph)
