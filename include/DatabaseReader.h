@@ -6,14 +6,14 @@
 class DatabaseReader
 {
   public:
-  DatabaseReader(const std::string& filename, const std::string& paramsfile, const bool allAPIDs) :
+  DatabaseReader(const std::string& paramsfile, const bool allAPIDs) :
     m_APIDs(),
     m_entries(),
     m_firstRun(true),
     m_allAPIDs(allAPIDs),
     m_paramsFile(paramsfile)
     {
-        readDatabase(filename);
+        init();
     };
 
     virtual ~DatabaseReader() {};
@@ -28,6 +28,7 @@ class DatabaseReader
     bool m_allAPIDs;
     std::string m_paramsFile;
 
+    void init();
     void readDatabase(const std::string& filename);
     void getByteBit(std::string& bytebit, uint32_t& i_byte, uint32_t& i_bitLower, uint32_t& i_bitUpper);
     void readAPIDList();

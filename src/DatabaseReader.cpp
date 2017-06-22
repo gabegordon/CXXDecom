@@ -11,6 +11,11 @@ std::istream& operator >> (std::istream& str, CSVRow& data)
     return str;
 }
 
+void DatabaseReader::init()
+{
+    readDatabase("databases/scdatabase.csv");
+    readDatabase("databases/atmsdatabase.csv");
+}
 void DatabaseReader::getByteBit(std::string& bytebit, uint32_t& i_byte, uint32_t& i_bitLower, uint32_t& i_bitUpper)
 {
     bytebit.erase(0, 1);
@@ -140,6 +145,7 @@ void DatabaseReader::readDatabase(const std::string& filename)
             m_entries.push_back(tmp);
         }
     }
+    m_firstRun = true;
 }
 
 void DatabaseReader::printDataBase() const

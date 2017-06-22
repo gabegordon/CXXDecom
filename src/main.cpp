@@ -8,21 +8,20 @@ using std::endl;
 
 int main(int argc, char* argv[])
 {
-    if (argc < 6)
+    if (argc < 5)
     {
         cout << "Specify: database and instrument\n";
         return 0;
     }
     else
     {
-        std::string databaseFile = argv[1];
-        std::string instrument = argv[2];
-        std::string packetFile = argv[3];
-        std::string paramsFile = argv[4];
+        std::string instrument = argv[1];
+        std::string packetFile = argv[2];
+        std::string paramsFile = argv[3];
         bool debug = false;
-        bool allAPIDs = !!std::stoi(argv[5]);
+        bool allAPIDs = !!std::stoi(argv[4]);
         std::cout << packetFile << std::endl;
-        DatabaseReader dr(databaseFile, paramsFile, allAPIDs);
+        DatabaseReader dr(paramsFile, allAPIDs);
         Decom decomEngine(instrument, debug, dr.getEntries());
         decomEngine.init(packetFile);
     }
