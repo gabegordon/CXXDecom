@@ -39,6 +39,20 @@ bool DataDecode::loadData(const std::vector<uint8_t>& buf, Bytes& bytes, const D
     return true;
 }
 
+float DataDecode::getFloat(const std::vector<uint8_t>& buf, const DataTypes::Entry& currEntry, const uint32_t& offset, uint8_t initialByte)
+{
+    uint8_t b1,b2,b3,b4,b5,b6,b7;
+    b1 = buf.at(currEntry.byte - offset + 1);
+    b2 = buf.at(currEntry.byte - offset + 2);
+    b3 = buf.at(currEntry.byte - offset + 3);
+    b4 = buf.at(currEntry.byte - offset + 4);
+    b5 = buf.at(currEntry.byte - offset + 5);
+    b6 = buf.at(currEntry.byte - offset + 6);
+    b7 = buf.at(currEntry.byte - offset + 7);
+    uint64_t result = mergeBytes64(initialByte,b1,b2,b3,b4,b5,b6,b7);
+    return static_cast<float>(result);
+}
+
 void DataDecode::getHeaderData(DataTypes::Packet& pack)
 {
     pack.day = m_sHeader.day;
@@ -81,6 +95,7 @@ DataTypes::Packet DataDecode::decodeData(std::ifstream& infile)
 
         if (dtype == DataTypes::FLOAT)
         {
+            num.f64 = getFloat(buf,currEntry,offset,initialByte);
         }
         else
         {

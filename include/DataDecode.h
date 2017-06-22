@@ -37,4 +37,6 @@ class DataDecode
     bool m_debug;
     bool loadData(const std::vector<uint8_t>& buf, Bytes& bytes, const DataTypes::Entry& currEntry, const uint32_t& offset);
     void getHeaderData(DataTypes::Packet& pack);
+    float getFloat(const std::vector<uint8_t>& buf, const DataTypes::Entry& currEntry, const uint32_t& offset, uint8_t initialByte);
+
 };

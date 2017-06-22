@@ -19,7 +19,7 @@ int main(int argc, char* argv[])
         std::string instrument = argv[2];
         std::string packetFile = argv[3];
         std::string paramsFile = argv[4];
-        bool debug = false;
+        bool debug = true;
         bool allAPIDs = !!std::stoi(argv[5]);
         std::cout << packetFile << std::endl;
         DatabaseReader dr(databaseFile, paramsFile, allAPIDs);

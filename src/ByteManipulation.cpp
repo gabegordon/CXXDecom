@@ -82,4 +82,18 @@ uint32_t mergeBytes(uint8_t& initialByte, uint8_t& extraByte1, uint8_t& extraByt
     }
     return std::stoul(s_result, nullptr, 2);
 }
+
+uint64_t mergeBytes64(uint8_t& b0, uint8_t& b1, uint8_t& b2, uint8_t& b3, uint8_t& b4, uint8_t& b5, uint8_t& b6, uint8_t& b7)
+{
+    std::string b0s = std::bitset<8>(b0).to_string();
+    std::string b1s = std::bitset<8>(b1).to_string();
+    std::string b2s = std::bitset<8>(b2).to_string();
+    std::string b3s = std::bitset<8>(b3).to_string();
+    std::string b4s = std::bitset<8>(b4).to_string();
+    std::string b5s = std::bitset<8>(b5).to_string();
+    std::string b6s = std::bitset<8>(b6).to_string();
+    std::string b7s = std::bitset<8>(b7).to_string();
+    std::string s_result = b0s + b1s + b2s + b3s + b4s + b5s + b6s + b7s;
+    return std::stoull(s_result, nullptr, 2);
+}
 }
