@@ -1,0 +1,4 @@
+namespace InstrumentFormat
+{
+    void formatATMS();
+}

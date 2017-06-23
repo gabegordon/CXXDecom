@@ -26,6 +26,7 @@ class Decom
     void writeData();
     uint64_t getLength();
     bool checkForMissingOutput();
+    void formatInstruments();
 
     std::unordered_map<uint32_t, std::vector<DataTypes::Packet>> m_map;
     std::unordered_map<uint32_t, std::vector<DataTypes::Entry>> m_mapEntries;

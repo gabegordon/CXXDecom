@@ -10,6 +10,7 @@
 #include "HeaderDecode.h"
 #include "DataDecode.h"
 #include "ProgressBar.h"
+#include "InstrumentFormat.h"
 
 using std::cout;
 using std::endl;
@@ -57,6 +58,7 @@ void Decom::init(const std::string& infile)
     }
         m_infile.close();
         writeData();
+        formatInstruments();
 }
 void Decom::getEntries(const uint32_t& APID)
 {
@@ -167,4 +169,12 @@ bool Decom::checkForMissingOutput()
         return false;
     else
         return true;
+}
+
+void Decom::formatInstruments()
+{
+    if(m_map.count(528) > 0)
+        InstrumentFormat::formatATMS();
+    else if(m_map.count(536) > 0)
+        InstrumentFormat::formatATMS();
 }
