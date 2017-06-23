@@ -59,6 +59,7 @@ void Decom::init(const std::string& infile)
         m_infile.close();
         writeData();
         formatInstruments();
+        system("pause");
 }
 void Decom::getEntries(const uint32_t& APID)
 {
@@ -132,7 +133,6 @@ void Decom::writeData()
         outfile.close();
     }
     std::cout << std::endl;
-    system("pause");
 }
 
 uint64_t Decom::getLength()
