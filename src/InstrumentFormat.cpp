@@ -12,12 +12,12 @@
 
 struct atms_pack
 {
-    uint32_t day;
-    uint32_t millis;
-    uint32_t micros;
-    uint32_t scanangle;
+    std::string day;
+    std::string millis;
+    std::string micros;
+    std::string scanangle;
     uint32_t errflags;
-    std::vector<uint32_t> chans;
+    std::vector<std::string> chans;
 };
 
 namespace InstrumentFormat
@@ -33,8 +33,11 @@ void writeChans(std::vector<atms_pack>& buf)
 {
     uint32_t i = 0;
     bool firstRun = true;
+    std::unique_ptr<ProgressBar> progbar(new ProgressBar(buf.size(), "Writing ATMS"));
+    progbar->SetFrequencyUpdate(1000);
     while(i < buf.size())
     {
+        progbar->Progressed(i);
         if(firstRun)
         {
             for(uint16_t k = i; k < buf.size(); k++)
@@ -50,11 +53,11 @@ void writeChans(std::vector<atms_pack>& buf)
             }
             firstRun = false;
         }
-        std::vector<uint32_t> rawcounts = buf.at(i).chans;
-        std::vector<uint32_t> scanangles = {buf.at(i).scanangle};
-        uint32_t day = buf.at(i).day;
-        uint32_t millis = buf.at(i).millis;
-        uint32_t micros = buf.at(i).micros;
+        std::vector<std::string> rawcounts = buf.at(i).chans;
+        std::vector<std::string> scanangles = {buf.at(i).scanangle};
+        std::string day = buf.at(i).day;
+        std::string millis = buf.at(i).millis;
+        std::string micros = buf.at(i).micros;
 
         for(uint16_t k = i; k < buf.size(); k++)
         {
@@ -75,12 +78,13 @@ void writeChans(std::vector<atms_pack>& buf)
             std::string filename = "output/ATMS_CHAN" + std::to_string(channelNumber) + ".txt";
             outfile.open(filename, std::ios_base::app);
             outfile << day << "," << millis << "," << micros << ",";
-            for(const uint32_t& scan: scanangles)
+            for(const std::string& scan: scanangles)
                 outfile << scan << ",";
+            std::cout << "HERE" << rawcounts.size();
             for(size_t channels = 0; channels < rawcounts.size(); channels++)
             {
-                if(channels == channelNumber - 1)
-                    outfile << rawcounts.at(channels) << ",";
+                for(int scanlength = 0; scanlength < 104*22; scanlength+=22)
+                    outfile << rawcounts.at(scanlength+channels) << ",";
             }
             outfile << "\n";
         }
@@ -113,15 +117,15 @@ void InstrumentFormat::formatATMS()
             continue;
         }
         atms_pack pack;
-        pack.day = std::stoul(atms_row[0]);
-        pack.millis = std::stoul(atms_row[1]);
-        pack.micros = std::stoul(atms_row[2]);
-        pack.scanangle = std::stoul(atms_row[4]);
+        pack.day = atms_row[0];
+        pack.millis = atms_row[1];
+        pack.micros = atms_row[2];
+        pack.scanangle = atms_row[4];
         pack.errflags = std::stoul(atms_row[5]);
 
         for(int i = 6; i < 28; ++i)
         {
-            pack.chans.push_back(std::stoul(atms_row[i]));
+            pack.chans.push_back(atms_row[i]);
         }
         buf.push_back(pack);
     }
