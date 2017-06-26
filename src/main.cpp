@@ -25,6 +25,6 @@ int main(int argc, char* argv[])
         Decom decomEngine(instrument, debug, dr.getEntries());
         decomEngine.init(packetFile);
     }
-    //printDataBase();
+    system("pause");
     return 0;
 }

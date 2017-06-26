@@ -50,7 +50,7 @@ void Decom::init(const std::string& infile)
         else if (std::get<0>(headers).sequenceFlag == DataTypes::FIRST)
             pack = dc.decodeDataSegmented(m_infile);
         else
-            pack = dc.decodeData(m_infile);
+            pack = dc.decodeData(m_infile,0);
 
         m_map[std::get<0>(headers).APID].push_back(pack);
     }

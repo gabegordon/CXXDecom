@@ -17,6 +17,7 @@ class DataDecode
     m_byte1(),
     m_byte2(),
     m_byte3(),
+    segmentLastByte(0),
     m_entries(entries),
     m_pHeader(ph),
     m_sHeader(sh),
@@ -25,13 +26,14 @@ class DataDecode
 
     virtual ~DataDecode() {};
 
-    DataTypes::Packet decodeData(std::ifstream& infile);
+    DataTypes::Packet decodeData(std::ifstream& infile, const uint32_t& index);
     DataTypes::Packet decodeDataSegmented(std::ifstream& infile);
     DataTypes::Packet decodeOMPS(std::ifstream& infile);
   private:
     uint8_t m_byte1;
     uint8_t m_byte2;
     uint8_t m_byte3;
+    uint32_t segmentLastByte;
     std::vector<DataTypes::Entry>& m_entries;
     DataTypes::PrimaryHeader m_pHeader;
     DataTypes::SecondaryHeader m_sHeader;
