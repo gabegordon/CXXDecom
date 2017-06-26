@@ -47,6 +47,7 @@ Decom.vcxproj.user
 *.opendb
 *.suo
 *.txt
+!CMakeLists.txt
 !ReadMe.txt
 *.enc
 *.xml
@@ -56,3 +57,6 @@ Decom.vcxproj.user
 *.ipdb
 *.pch.codeanalysisast
 TAGS
+build/*
+*.manifest
+build/makefile

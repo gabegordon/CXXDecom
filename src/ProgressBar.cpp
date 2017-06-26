@@ -1,15 +1,5 @@
 #include "ProgressBar.h"
 
-void ProgressBar::SetFrequencyUpdate(uint64_t frequency_update_) {
-
-    if (frequency_update_ > n) {
-        frequency_update = n;  // prevents crash if freq_updates_ > n_
-    }
-    else {
-        frequency_update = frequency_update_;
-    }
-}
-
 void ProgressBar::SetStyle(const char* unit_bar_, const char* unit_space_) {
 
     unit_bar = unit_bar_;
@@ -54,10 +44,9 @@ void ProgressBar::Progressed(uint64_t idx_)
 {
     try {
         if (idx_ > n) throw idx_;
-
         // determines whether to update the progress bar from frequency_update
-        if ((idx_ != n) && (idx_ % (frequency_update) != 0)) return;
-
+        if((idx_ !=n) && (idx_ < frequency_update)) return;
+        frequency_update += tenth;
         // calculate the size of the progress bar
         int bar_size = GetBarLength();
 
@@ -68,7 +57,7 @@ void ProgressBar::Progressed(uint64_t idx_)
         double percent_per_unit_bar = TOTAL_PERCENTAGE / bar_size;
 
         // display progress bar
-        *out << " " << description << " [";
+        *out << " " << std::right << std::setw(12) << description << " [";
 
         for (int bar_length = 0; bar_length <= bar_size - 1; ++bar_length) {
             if (bar_length*percent_per_unit_bar<progress_percent) {
