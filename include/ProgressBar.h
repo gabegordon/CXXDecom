@@ -19,8 +19,10 @@ class ProgressBar {
   ProgressBar(uint64_t n_, const char* description_ = "", std::ostream& out_ = std::cerr) :
     n(n_),
     desc_width(0),
-    frequency_update(n_),
-    description(description_)
+    frequency_update(n_/10),
+    tenth(n_/10),
+    description(description_),
+    counter(0)
     {
         unit_bar = "=";
         unit_space = " ";
@@ -28,7 +30,6 @@ class ProgressBar {
         out = &out_;
     }
 
-    void SetFrequencyUpdate(uint64_t frequency_update_);
     void SetStyle(const char* unit_bar_, const char* unit_space_);
 
     void Progressed(uint64_t idx_);
@@ -38,6 +39,8 @@ class ProgressBar {
     uint64_t n;
     uint64_t desc_width;
     uint64_t frequency_update;
+    uint64_t tenth;
+    uint64_t counter;
     std::ostream* out;
 
     const char *description;

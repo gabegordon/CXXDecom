@@ -3,7 +3,6 @@
 #include <iterator>
 #include <tuple>
 #include <iomanip>
-#include <memory>
 #include <stdlib.h>
 #include "Decom.h"
 #include "ByteManipulation.h"
@@ -27,17 +26,14 @@ void Decom::init(const std::string& infile)
     m_infile.seekg(0, std::ios::end);
     uint64_t fileSize = m_infile.tellg();
     m_infile.seekg(0, std::ios::beg);
-
-    std::unique_ptr<ProgressBar> progbar(new ProgressBar(fileSize, "Parsing"));
-    progbar->SetFrequencyUpdate(1000);
+    ProgressBar readProgress(fileSize, "Read Packet");
     uint64_t progress = 0;
     while (true)
     {
         progress = m_infile.tellg();
+        readProgress.Progressed(progress);
         if (m_infile.eof() || progress >= fileSize)
             break;
-
-        progbar->Progressed(progress);
 
         std::tuple<DataTypes::PrimaryHeader, DataTypes::SecondaryHeader, bool> headers = HeaderDecode::decodeHeaders(m_infile, m_debug);
 
@@ -49,7 +45,9 @@ void Decom::init(const std::string& infile)
         DataTypes::Packet pack;
         DataDecode dc(std::get<0>(headers), std::get<1>(headers), m_mapEntries[std::get<0>(headers).APID], m_debug);
 
-        if (std::get<0>(headers).sequenceFlag == DataTypes::FIRST)
+        if(m_instrument == "OMPS")
+            pack = dc.decodeOMPS(m_infile);
+        else if (std::get<0>(headers).sequenceFlag == DataTypes::FIRST)
             pack = dc.decodeDataSegmented(m_infile);
         else
             pack = dc.decodeData(m_infile);
@@ -85,19 +83,16 @@ void Decom::getEntries(const uint32_t& APID)
 
 void Decom::writeData()
 {
+    std::cout << std::endl;
     uint64_t len = getLength();
-
+    ProgressBar writeProgress(len, "Write CSVs");
     if(!checkForMissingOutput())
     {
         std::cerr << endl << "No APIDs matching selected APIDs" << endl;
         system("pause");
         return;
     }
-
-    std::unique_ptr<ProgressBar> progbar(new ProgressBar(len, "Writing"));
-    progbar->SetFrequencyUpdate(len/10);
     uint64_t i = 0;
-    progbar->Progressed(i); //Initialize progress bar
     for (const auto& apid : m_map)
     {
         if(apid.second.at(0).ignored)
@@ -118,6 +113,7 @@ void Decom::writeData()
             outfile << std::setw(15) << pack.day << "," << std::setw(15) << pack.millis << "," << std::setw(15) << pack.micros << "," << std::setw(15) << pack.sequenceCount << ",";
             for (const DataTypes::Numeric& num : pack.data)
             {
+                writeProgress.Progressed(i++);
                 switch (num.tag)
                 {
                 case DataTypes::Numeric::I32: outfile << std::setw(15) << std::right << num.i32; break;
@@ -125,7 +121,6 @@ void Decom::writeData()
                 case DataTypes::Numeric::F64: outfile << std::setw(15) << std::right << num.f64; break;
                 }
                 outfile << ",";
-                progbar->Progressed(++i);
             }
             outfile << "\n";
         }

@@ -5,8 +5,8 @@
 #include <iostream>
 #include <memory>
 #include <unordered_map>
-#include "InstrumentFormat.h"
 #include "ProgressBar.h"
+#include "InstrumentFormat.h"
 #include "CSVRow.h"
 
 
@@ -40,36 +40,27 @@ std::istream& operator >> (std::istream& str, CSVRow& data)
 
 void writeChans(std::vector<atms_pack>& buf)
 {
-    uint32_t i = 0;
+    uint64_t i = 0;
+    uint64_t bufSize = buf.size();
+
+    ProgressBar writeProgress(bufSize, "Write ATMS");
+
     std::ofstream outfile;
-    bool firstRun = true;
-    auto bufSize = buf.size();
     out_pack blank = { "","","",{0}};
     std::vector<out_pack> outpacks(22);
     std::vector<float> scans(104);
+
     for (uint8_t init = 0; init < 22; init++)
     {
         outpacks[init] = blank;
         outpacks[init].chans.resize(104);
     }
+
     while(i < bufSize)
     {
-        /*       if(firstRun)
-                 {
-                 firstRun = false;
-                 for(uint16_t first = i; first < buf.size(); first++)
-                 {
-                 if(buf.at(first).errflags == 0)
-                 continue;
-                 else
-                 {
-                 i = first;
-                 break;
-                 }
-                 }
-                 }*/
-
+        writeProgress.Progressed(i);
         uint8_t packCounter = 0;
+
         for (auto& pack : outpacks)
         {
             pack.day = buf.at(i).day;
@@ -80,7 +71,7 @@ void writeChans(std::vector<atms_pack>& buf)
         scans[0] = buf.at(i).scanangle;
         i++;
         uint16_t scanCounter = 1;
-        for(uint32_t k = i; k < bufSize; k++)
+        for(uint64_t k = i; k < bufSize; k++)
         {
             if(buf.at(k).errflags == 0)
             {
@@ -121,22 +112,24 @@ void InstrumentFormat::formatATMS()
 {
     CSVRow atms_row;
     std::ifstream m_infile;
-    m_infile.open("C:/Users/ggordon5/MSVC/Decom/output/SC_528.txt", std::ios::in | std::ios::ate);
+    m_infile.open("output/ATMS_528.txt", std::ios::in | std::ios::ate);
     if (!m_infile || !m_infile.is_open())
     {
         std::cerr << "Failed to find ATMS output" << std::endl;
+        system("pause");
         return;
     }
+
     uint64_t fileSize = m_infile.tellg();
     m_infile.seekg(0, std::ios::beg);
-    std::unique_ptr<ProgressBar> progbar(new ProgressBar(fileSize, "Reading ATMS"));
-    progbar->SetFrequencyUpdate(10000);
+    ProgressBar readProgress(fileSize, "Read ATMS");
 
     bool firstRow = true;
     std::vector<atms_pack> buf;
+
     while(m_infile >> atms_row)
     {
-        progbar->Progressed(m_infile.tellg());
+        readProgress.Progressed(m_infile.tellg());
         if(firstRow)
         {
             firstRow = false;
@@ -148,12 +141,18 @@ void InstrumentFormat::formatATMS()
         pack.micros = atms_row[2];
         pack.scanangle = static_cast<float>(0.005493) * static_cast<float>(std::stoul(atms_row[4]));
         pack.errflags = std::stoul(atms_row[5]);
-        for(int i = 6; i < 28; ++i)
+        for(uint8_t i = 6; i < 28; ++i)
         {
             pack.chans.push_back(std::stoul(atms_row[i]));
         }
         buf.push_back(pack);
     }
+    std::cout << std::endl;
     writeChans(buf);
+}
+void InstrumentFormat::formatOMPS()
+{
+    CSVRow omps_row;
+    std::ifstream m_infile;
 }
 }

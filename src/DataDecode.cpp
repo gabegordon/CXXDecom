@@ -2,6 +2,7 @@
 #include "HeaderDecode.h"
 #include "DataDecode.h"
 #include "ByteManipulation.h"
+#include "ReadFile.h"
 
 using namespace ByteManipulation;
 
@@ -213,5 +214,38 @@ DataTypes::Packet DataDecode::decodeDataSegmented(std::ifstream& infile)
         std::tuple<DataTypes::PrimaryHeader, DataTypes::SecondaryHeader, bool> headers = HeaderDecode::decodeHeaders(infile, m_debug);
         m_pHeader = std::get<0>(headers);
     } while (m_pHeader.sequenceFlag != DataTypes::LAST);
+    return segPack;
+}
+
+DataTypes::Packet DataDecode::decodeOMPS(std::ifstream& infile)
+{
+    DataTypes::Packet segPack;
+    uint32_t versionNum;
+    uint16_t contCount;
+    uint16_t contFlag;
+    ReadFile::read(versionNum, infile);
+    ReadFile::read(contCount, infile);
+    ReadFile::read(contFlag, infile);
+    if(m_pHeader.sequenceFlag == DataTypes::STANDALONE)
+    {
+        segPack = decodeData(infile);
+    }
+    else
+    {
+        if(!contCount)
+        {
+            segPack = decodeDataSegmented(infile);
+        }
+        else
+        {
+            uint16_t segPacketCount = 0;
+            while(segPacketCount != contCount)
+            {
+                DataTypes::Packet tmpPack = decodeDataSegmented(infile);
+                segPack.data.insert(std::begin(segPack.data), std::begin(tmpPack.data), std::end(tmpPack.data));
+                segPacketCount++;
+            }
+        }
+    }
     return segPack;
 }

@@ -13,6 +13,7 @@ std::tuple<DataTypes::PrimaryHeader, DataTypes::SecondaryHeader, bool> decodeHea
 {
     auto ph = decodePrimary(infile, debug);
     auto sh = decodeSecondary(infile);
+
     if(!isValid)
     {
         std::cerr << "Invalid header: " << std::endl;
@@ -120,4 +121,6 @@ void checkValidHeader(const DataTypes::PrimaryHeader& pheader)
     else
         isValid = true;
 }
+
+
 }

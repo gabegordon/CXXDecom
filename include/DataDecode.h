@@ -27,6 +27,7 @@ class DataDecode
 
     DataTypes::Packet decodeData(std::ifstream& infile);
     DataTypes::Packet decodeDataSegmented(std::ifstream& infile);
+    DataTypes::Packet decodeOMPS(std::ifstream& infile);
   private:
     uint8_t m_byte1;
     uint8_t m_byte2;
