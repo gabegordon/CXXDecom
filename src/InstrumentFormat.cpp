@@ -4,6 +4,7 @@
 #include <string>
 #include <iostream>
 #include <memory>
+#include <unordered_map>
 #include "InstrumentFormat.h"
 #include "ProgressBar.h"
 #include "CSVRow.h"
@@ -15,9 +16,17 @@ struct atms_pack
     std::string day;
     std::string millis;
     std::string micros;
-    std::string scanangle;
+    float scanangle;
     uint32_t errflags;
-    std::vector<std::string> chans;
+    std::vector<uint32_t> chans;
+};
+
+struct out_pack
+{
+    std::string day;
+    std::string millis;
+    std::string micros;
+    std::vector<uint32_t> chans;
 };
 
 namespace InstrumentFormat
@@ -32,41 +41,55 @@ std::istream& operator >> (std::istream& str, CSVRow& data)
 void writeChans(std::vector<atms_pack>& buf)
 {
     uint32_t i = 0;
+    std::ofstream outfile;
     bool firstRun = true;
-    std::unique_ptr<ProgressBar> progbar(new ProgressBar(buf.size(), "Writing ATMS"));
-    progbar->SetFrequencyUpdate(1000);
-    while(i < buf.size())
+    auto bufSize = buf.size();
+    out_pack blank = { "","","",{0}};
+    std::vector<out_pack> outpacks(22);
+    std::vector<float> scans(104);
+    for (uint8_t init = 0; init < 22; init++)
     {
-        progbar->Progressed(i);
+        outpacks[init] = blank;
+        outpacks[init].chans.resize(104);
+    }
+    while(i < bufSize)
+    {
+        /*       if(firstRun)
+                 {
+                 firstRun = false;
+                 for(uint16_t first = i; first < buf.size(); first++)
+                 {
+                 if(buf.at(first).errflags == 0)
+                 continue;
+                 else
+                 {
+                 i = first;
+                 break;
+                 }
+                 }
+                 }*/
 
-        if(firstRun)
+        uint8_t packCounter = 0;
+        for (auto& pack : outpacks)
         {
-            for(uint16_t k = i; k < buf.size(); k++)
-            {
-                if(buf.at(k).errflags == 0)
-                    continue;
-                else
-                {
-                    i = k;
-                    break;
-                }
-
-            }
-            firstRun = false;
+            pack.day = buf.at(i).day;
+            pack.millis = buf.at(i).millis;
+            pack.micros = buf.at(i).micros;
+            pack.chans[0] = (buf.at(i).chans.at(packCounter++));
         }
-        std::vector<std::string> rawcounts = buf.at(i).chans;
-        std::vector<std::string> scanangles = {buf.at(i).scanangle};
-        std::string day = buf.at(i).day;
-        std::string millis = buf.at(i).millis;
-        std::string micros = buf.at(i).micros;
-		i++;
-
-        for(uint16_t k = i; k < buf.size(); k++)
+        scans[0] = buf.at(i).scanangle;
+        i++;
+        uint16_t scanCounter = 1;
+        for(uint32_t k = i; k < bufSize; k++)
         {
             if(buf.at(k).errflags == 0)
             {
-                scanangles.push_back(buf.at(k).scanangle);
-                rawcounts.insert(std::end(rawcounts), std::begin(buf.at(k).chans), std::end(buf.at(k).chans));
+                for (uint16_t l = 0; l < 22; l++)
+                {
+                    outpacks.at(l).chans[scanCounter] = (buf.at(k).chans.at(l));
+                    scans[scanCounter] = (buf.at(k).scanangle);
+                }
+                scanCounter++;
             }
             else
             {
@@ -74,22 +97,22 @@ void writeChans(std::vector<atms_pack>& buf)
                 break;
             }
         }
-        for(uint16_t channelNumber = 1; channelNumber < 23; channelNumber++)
+
+        if (scanCounter < 104)
+            continue;
+
+        for (uint16_t channelNumber = 1; channelNumber < 23; channelNumber++)
         {
-			if (scanangles.size() < 104)
-			{
-				break;
-			}
-            std::ofstream outfile;
             std::string filename = "output/ATMS_CHAN" + std::to_string(channelNumber) + ".txt";
-            outfile.open(filename, std::ios_base::app);
-            outfile << day << "," << millis << "," << micros << ",";
-            for(const std::string& scan: scanangles)
+            outfile.open(filename, std::ios::app);
+            auto out = outpacks.at(channelNumber - 1);
+            outfile << out.day << "," << out.millis << "," << out.micros << ",";
+            for (const float& scan : scans)
                 outfile << scan << ",";
-            for(uint32_t scanlength = 0; scanlength < ((104*22)-22); scanlength+=22)
-                 outfile << rawcounts.at(scanlength+channelNumber-1) << ",";
+            for (const uint32_t& chan : out.chans)
+                outfile << chan << ",";
             outfile << "\n";
-			outfile.close();
+            outfile.close();
         }
     }
 }
@@ -123,17 +146,14 @@ void InstrumentFormat::formatATMS()
         pack.day = atms_row[0];
         pack.millis = atms_row[1];
         pack.micros = atms_row[2];
-        pack.scanangle = atms_row[4];
+        pack.scanangle = static_cast<float>(0.005493) * static_cast<float>(std::stoul(atms_row[4]));
         pack.errflags = std::stoul(atms_row[5]);
-
         for(int i = 6; i < 28; ++i)
         {
-            pack.chans.push_back(atms_row[i]);
+            pack.chans.push_back(std::stoul(atms_row[i]));
         }
         buf.push_back(pack);
     }
     writeChans(buf);
 }
-
-
 }

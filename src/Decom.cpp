@@ -56,10 +56,9 @@ void Decom::init(const std::string& infile)
 
         m_map[std::get<0>(headers).APID].push_back(pack);
     }
-        m_infile.close();
-        writeData();
-        formatInstruments();
-        system("pause");
+    m_infile.close();
+    writeData();
+    formatInstruments();
 }
 void Decom::getEntries(const uint32_t& APID)
 {
@@ -173,8 +172,14 @@ bool Decom::checkForMissingOutput()
 
 void Decom::formatInstruments()
 {
-    if(m_map.count(528) > 0)
+    if (m_map.count(528) > 0)
+    {
+        m_map.clear();
         InstrumentFormat::formatATMS();
-    else if(m_map.count(536) > 0)
+    }
+    else if (m_map.count(536) > 0)
+    {
+        m_map.clear();
         InstrumentFormat::formatATMS();
+    }
 }
