@@ -26,7 +26,7 @@ namespace ByteManipulation {
 
     uint64_t extract64(const uint64_t& val, uint32_t start, uint32_t len);
 
-    int32_t extract8Signed(const int8_t& val, uint32_t start, uint32_t len);
+    int32_t extract8Signed(const uint8_t& val, uint32_t start, uint32_t len);
 
     int32_t extract16Signed(const uint16_t& val, uint32_t start, uint32_t len);
 
@@ -36,9 +36,7 @@ namespace ByteManipulation {
 
     uint32_t mergeBytes(uint8_t& initialByte, uint8_t& extraByte1, uint8_t& extraByte2, uint8_t& extraByte3, const uint32_t& num);
 
-    static inline uint32_t mergeBytes16(uint8_t& initialByte, uint8_t& extraByte1)
-    {
-        return (initialByte << 8) | extraByte1;
-    }
     uint64_t mergeBytes64(uint8_t& b0, uint8_t& b1, uint8_t& b2, uint8_t& b3, uint8_t& b4, uint8_t& b5, uint8_t& b6, uint8_t& b7);
+
+    uint32_t mergeBytes16(uint8_t& initialByte, uint8_t& extraByte1);
 }

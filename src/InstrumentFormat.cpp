@@ -32,13 +32,26 @@ struct out_pack
 namespace InstrumentFormat
 {
 
+/**
+ * Overide stream operator for reading from our CSVRow class.
+ *
+ * @param str Stream to read from
+ * @param data Our CSVRow object
+ * @return Stream containing row
+ */
 std::istream& operator >> (std::istream& str, CSVRow& data)
 {
     data.readNextRow(str);
     return str;
 }
 
-void writeChans(std::vector<atms_pack>& buf)
+/**
+ * Handles accumulating data from between scans and writing it to file.
+ *
+ * @param buf Buffer of atms_pack read in from output file
+ * @return N/A
+ */
+void writeChans(const std::vector<atms_pack>& buf)
 {
     uint64_t i = 0;
     uint64_t bufSize = buf.size();
@@ -98,16 +111,22 @@ void writeChans(std::vector<atms_pack>& buf)
             outfile.open(filename, std::ios::app);
             auto out = outpacks.at(channelNumber - 1);
             outfile << out.day << "," << out.millis << "," << out.micros << ",";
-            for (const float& scan : scans)
+            for (const float scan : scans)
                 outfile << scan << ",";
-            for (const uint32_t& chan : out.chans)
+            for (const uint32_t chan : out.chans)
                 outfile << chan << ",";
             outfile << "\n";
             outfile.close();
         }
     }
+    writeProgress.Progressed(bufSize);
 }
 
+/**
+ * Read ATMS science data in so that it can be properly formatted.
+ *
+ * @return N/A
+ */
 void InstrumentFormat::formatATMS()
 {
     CSVRow atms_row;
@@ -150,6 +169,7 @@ void InstrumentFormat::formatATMS()
     std::cout << std::endl;
     writeChans(buf);
 }
+
 void InstrumentFormat::formatOMPS()
 {
     CSVRow omps_row;
