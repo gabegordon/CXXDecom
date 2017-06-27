@@ -6,6 +6,15 @@
 
 using namespace ByteManipulation;
 
+/**
+ * Loads bytes from buffer vector based on entry length and adjusts offset to account for database entries included header bytes.
+ *
+ * @param buf Vector containing binary data
+ * @param bytes Number of bytes that need to be loaded
+ * @param currEntry Entry we are using to decode
+ * @param offset Offset based on whether we have headers
+ * @return True if successful. False if outside vector bounds
+ */
 bool DataDecode::loadData(const std::vector<uint8_t>& buf, Bytes& bytes, const DataTypes::Entry& currEntry, const uint32_t& offset)
 {
     uint32_t length = currEntry.length;
@@ -40,6 +49,15 @@ bool DataDecode::loadData(const std::vector<uint8_t>& buf, Bytes& bytes, const D
     return true;
 }
 
+/**
+ * Special function to handle loading all eight bytes for a floating point entry.
+ *
+ * @param buf Vector containing binary data
+ * @param currEntry Entry we are using to decode
+ * @param offset Offset based on whether we have headers
+ * @param initialByte First byte that was loaded previously
+ * @return Final floating point value
+ */
 float DataDecode::getFloat(const std::vector<uint8_t>& buf, const DataTypes::Entry& currEntry, const uint32_t& offset, uint8_t initialByte)
 {
     uint8_t b1,b2,b3,b4,b5,b6,b7;
@@ -65,6 +83,12 @@ float DataDecode::getFloat(const std::vector<uint8_t>& buf, const DataTypes::Ent
     }
 }
 
+/**
+ * Set packet data from secondary header.
+ *
+ * @param pack Packet to be set
+ * @return N/A
+ */
 void DataDecode::getHeaderData(DataTypes::Packet& pack)
 {
     pack.day = m_sHeader.day;
@@ -73,6 +97,13 @@ void DataDecode::getHeaderData(DataTypes::Packet& pack)
     pack.sequenceCount = m_pHeader.packetSequence;
 }
 
+/**
+ * Main decode function. Handles decoding all entries for current APID.
+ *
+ * @param infile File to read binary data from
+ * @param index Index to begin from (used only in segmented packets)
+ * @return Packet containing all data from binary stream
+ */
 DataTypes::Packet DataDecode::decodeData(std::ifstream& infile, const uint32_t& index)
 {
     std::vector<uint8_t> buf(m_pHeader.packetLength); //reserve space for bytes
@@ -206,6 +237,12 @@ DataTypes::Packet DataDecode::decodeData(std::ifstream& infile, const uint32_t& 
     return pack;
 }
 
+/**
+ * Handles decoding segmented functions. Acts as a wrapper function for standard decodeData function. Builds one large packet until encountering LAST flag.
+ *
+ * @param infile File to read from
+ * @return Single packet containing all segmented packets
+ */
 DataTypes::Packet DataDecode::decodeDataSegmented(std::ifstream& infile)
 {
     DataTypes::Packet segPack;
@@ -220,6 +257,12 @@ DataTypes::Packet DataDecode::decodeDataSegmented(std::ifstream& infile)
     return segPack;
 }
 
+/**
+ * Special OMPS decode function. Handles OMPS extra header. Uses standard dataDecode as underlying decode method.
+ *
+ * @param infile File to read from
+ * @return Single packet containing all [segmented] packets
+ */
 DataTypes::Packet DataDecode::decodeOMPS(std::ifstream& infile)
 {
     DataTypes::Packet segPack;

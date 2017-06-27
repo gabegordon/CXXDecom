@@ -21,6 +21,7 @@ int main(int argc, char* argv[])
         bool debug = false;
         bool allAPIDs = !!std::stoi(argv[4]);
         std::cout << packetFile << std::endl;
+        system("cd output && del /Q *.txt");
         DatabaseReader dr(paramsFile, allAPIDs);
         Decom decomEngine(instrument, debug, dr.getEntries());
         decomEngine.init(packetFile);

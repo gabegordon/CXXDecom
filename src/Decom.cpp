@@ -14,6 +14,13 @@
 using std::cout;
 using std::endl;
 
+/**
+ * Decom engine initializer. Main event loop for calling all Decom helper functions. Stops reading upon reaching end of input file. Writes data once finished reading.
+ * Handles instrument formatting after writing (if necessary).
+ *
+ * @param infile File to read from
+ * @return N/A
+ */
 void Decom::init(const std::string& infile)
 {
     m_infile.open(infile, std::ios::binary | std::ios::in);
@@ -58,6 +65,13 @@ void Decom::init(const std::string& infile)
     writeData();
     formatInstruments();
 }
+
+/**
+ * Finds database entries that match our current APID.
+ *
+ * @param APID APID to search for
+ * @return N/A
+ */
 void Decom::getEntries(const uint32_t& APID)
 {
     if (m_mapEntries[APID].empty())
@@ -81,6 +95,11 @@ void Decom::getEntries(const uint32_t& APID)
     }
 }
 
+/**
+ * Writes data to output files for each APID.
+ *
+ * @return N/A
+ */
 void Decom::writeData()
 {
     std::cout << std::endl;
@@ -126,9 +145,15 @@ void Decom::writeData()
         }
         outfile.close();
     }
+    writeProgress.Progressed(len);
     std::cout << std::endl;
 }
 
+/**
+ * Helper function to get output length. For progress bar purposes.
+ *
+ * @return N/A
+ */
 uint64_t Decom::getLength()
 {
     uint64_t len = 0;
@@ -145,6 +170,11 @@ uint64_t Decom::getLength()
     return len;
 }
 
+/**
+ * Check to see if we are missing database entries for the current APID. IF we are missing them, then caller function will throw error.
+ *
+ * @return True if missing entries for APID. Otherwise false.
+ */
 bool Decom::checkForMissingOutput()
 {
     uint32_t packets = 0;
@@ -165,6 +195,11 @@ bool Decom::checkForMissingOutput()
         return true;
 }
 
+/**
+ * Handles any special formatting requirements for instrument science data. Checks to see if we had instrument APID and then calls corresponding formatter function.
+ *
+ * @return N/A
+ */
 void Decom::formatInstruments()
 {
     if (m_map.count(528) > 0)

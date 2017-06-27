@@ -9,6 +9,13 @@ uint32_t sh_flag;
 DataTypes::SequenceFlag seq_flag;
 bool isValid = false;
 
+/**
+ * Wrapper function to call primary and secondary decoder functions. Also checks if header is valid.
+ *
+ * @param infile File to read from
+ * @param debug Print debug info flag
+ * @return Tuple containing headers and valid flag
+ */
 std::tuple<DataTypes::PrimaryHeader, DataTypes::SecondaryHeader, bool> decodeHeaders(std::ifstream& infile, const bool debug)
 {
     auto ph = decodePrimary(infile, debug);
@@ -23,11 +30,24 @@ std::tuple<DataTypes::PrimaryHeader, DataTypes::SecondaryHeader, bool> decodeHea
     return std::make_tuple(ph, sh, isValid);
 }
 
+/**
+ * Debug function that prints header contents.
+ *
+ * @param ph Header to print
+ * @return N/A
+ */
 void debugPrinter(const DataTypes::PrimaryHeader& ph)
 {
     std::cout << ph.secondaryHeader << "," << ph.APID << "," << std::bitset<2>(ph.sequenceFlag) << "," << ph.packetSequence << "," << ph.packetLength << "\n";
 }
 
+/**
+ * Function to handle primary header decoding.
+ *
+ * @param infile File to read from
+ * @param debug Debug flag
+ * @return PrimaryHeader struct
+ */
 DataTypes::PrimaryHeader decodePrimary(std::ifstream& infile, const bool debug)
 {
     DataTypes::PrimaryHeader ph = p_defaults;
@@ -72,6 +92,12 @@ DataTypes::PrimaryHeader decodePrimary(std::ifstream& infile, const bool debug)
     return ph;
 }
 
+/**
+ * Function to handle secondary header decoding.
+ *
+ * @param infile File to read from
+ * @return SecondaryHeader struct
+ */
 DataTypes::SecondaryHeader decodeSecondary(std::ifstream& infile)
 {
     DataTypes::SecondaryHeader sh = s_defaults;
@@ -100,6 +126,12 @@ DataTypes::SecondaryHeader decodeSecondary(std::ifstream& infile)
     return sh;
 }
 
+/**
+ * Checks if primary header contains valid information.
+ *
+ * @param pheader Header to check
+ * @return N/A
+ */
 void checkValidHeader(const DataTypes::PrimaryHeader& pheader)
 {
     if (pheader.CCSDS != 0)
@@ -110,17 +142,15 @@ void checkValidHeader(const DataTypes::PrimaryHeader& pheader)
         isValid = false;
     else if (pheader.packetLength > 65535)
         isValid = false;
-    /*else if (pheader.sequenceFlag == DataTypes::FIRST && pheader.secondaryHeader == 0)
-      isValid = false;
-      else if (pheader.sequenceFlag == DataTypes::STANDALONE && pheader.secondaryHeader == 0)
-      isValid = false;
-      else if (pheader.sequenceFlag == DataTypes::MIDDLE && pheader.secondaryHeader == 1)
-      isValid = false;
-      else if (pheader.sequenceFlag == DataTypes::LAST && pheader.secondaryHeader == 1)
-      isValid = false;*/
+    else if (pheader.sequenceFlag == DataTypes::FIRST && pheader.secondaryHeader == 0)
+        isValid = false;
+    else if (pheader.sequenceFlag == DataTypes::STANDALONE && pheader.secondaryHeader == 0)
+        isValid = false;
+    else if (pheader.sequenceFlag == DataTypes::MIDDLE && pheader.secondaryHeader == 1)
+        isValid = false;
+    else if (pheader.sequenceFlag == DataTypes::LAST && pheader.secondaryHeader == 1)
+        isValid = false;
     else
         isValid = true;
 }
-
-
 }
