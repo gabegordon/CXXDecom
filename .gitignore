@@ -60,3 +60,4 @@ TAGS
 build/*
 *.manifest
 build/makefile
+documentation/*
