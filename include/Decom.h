@@ -15,7 +15,8 @@ class Decom
     m_entries(entries),
     m_infile(),
     m_instrument(instrument),
-    m_debug(debug)
+    m_debug(debug),
+    m_missingAPIDs()
     {};
     virtual ~Decom() {};
 
@@ -35,4 +36,5 @@ class Decom
     std::ifstream m_infile;
     std::string m_instrument;
     bool m_debug;
+    std::vector<uint32_t> m_missingAPIDs;
 };

@@ -14,7 +14,7 @@ std::string const& CSVRow::operator[](std::size_t index) const
 
 /**
  * Get CSVRow data vector size.
- * 
+ *
 
  * @return Number of vector elements
  */
@@ -47,10 +47,10 @@ void CSVRow::readNextRow(std::istream& str)
             if (*p == '"')
                 instring = !instring;
             else if (*p == ',' && !instring) {
-                m_data.push_back(std::string(mystart, p - mystart));
+                m_data.emplace_back(std::string(mystart, p - mystart));
                 mystart = p + 1;
             }
         }
-        m_data.push_back(std::string(mystart));
+        m_data.emplace_back(std::string(mystart));
     }
 }

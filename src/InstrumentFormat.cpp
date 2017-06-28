@@ -62,11 +62,10 @@ void writeChans(const std::vector<atms_pack>& buf)
     out_pack blank = { "","","",{0}};
     std::vector<out_pack> outpacks(22);
     std::vector<float> scans(104);
-
     for (uint8_t init = 0; init < 22; init++)
     {
-        outpacks[init] = blank;
-        outpacks[init].chans.resize(104);
+        outpacks.at(init) = blank;
+        outpacks.at(init).chans.resize(104);
     }
 
     while(i < bufSize)
@@ -79,9 +78,9 @@ void writeChans(const std::vector<atms_pack>& buf)
             pack.day = buf.at(i).day;
             pack.millis = buf.at(i).millis;
             pack.micros = buf.at(i).micros;
-            pack.chans[0] = (buf.at(i).chans.at(packCounter++));
+            pack.chans.at(0) = (buf.at(i).chans.at(packCounter++));
         }
-        scans[0] = buf.at(i).scanangle;
+        scans.at(0) = buf.at(i).scanangle;
         i++;
         uint16_t scanCounter = 1;
         for(uint64_t k = i; k < bufSize; k++)
@@ -92,8 +91,8 @@ void writeChans(const std::vector<atms_pack>& buf)
             {
                 for (uint16_t l = 0; l < 22; l++)
                 {
-                    outpacks.at(l).chans[scanCounter] = (buf.at(k).chans.at(l));
-                    scans[scanCounter] = (buf.at(k).scanangle);
+                    outpacks.at(l).chans.at(scanCounter) = (buf.at(k).chans.at(l));
+                    scans.at(scanCounter) = (buf.at(k).scanangle);
                 }
                 scanCounter++;
             }
@@ -164,9 +163,9 @@ void InstrumentFormat::formatATMS()
         pack.errflags = std::stoul(atms_row[5]);
         for(uint8_t i = 6; i < 28; ++i)
         {
-            pack.chans.push_back(std::stoul(atms_row[i]));
+            pack.chans.emplace_back(std::stoul(atms_row[i]));
         }
-        buf.push_back(pack);
+        buf.emplace_back(pack);
     }
     std::cout << std::endl;
     writeChans(buf);

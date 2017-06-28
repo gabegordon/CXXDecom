@@ -5,7 +5,6 @@
 
 using std::cout;
 using std::endl;
-
 int main(int argc, char* argv[])
 {
     if (argc < 5)
@@ -26,8 +25,6 @@ int main(int argc, char* argv[])
         Decom decomEngine(instrument, debug, dr.getEntries());
         decomEngine.init(packetFile);
     }
-    std::ofstream finished("output/done");
-    finished.close();
     system("pause");
     return 0;
 }

@@ -43,7 +43,14 @@ void DatabaseReader::getByteBit(std::string& bytebit, uint32_t& i_byte, uint32_t
 {
     bytebit.erase(0, 1);
     std::string s_byte = bytebit.substr(0, 4);
-    i_byte = std::stoi(s_byte);
+    try
+    {
+        i_byte = std::stoi(s_byte);
+    }
+    catch(...)
+    {
+        std::cerr << "stoi failed for i_byte: " << s_byte << std::endl;
+    }
     if (bytebit.length() > 4)
     {
         std::string s_bit = bytebit.substr(5);
@@ -52,13 +59,27 @@ void DatabaseReader::getByteBit(std::string& bytebit, uint32_t& i_byte, uint32_t
             size_t found;
             if ((found = s_bit.find("-")) != std::string::npos)
             {
-                i_bitLower = std::stoi(s_bit.substr(0, found));
-                i_bitUpper = std::stoi(s_bit.substr(found + 1));
+                try
+                {
+                    i_bitLower = std::stoi(s_bit.substr(0, found));
+                    i_bitUpper = std::stoi(s_bit.substr(found + 1));
+                }
+                catch(...)
+                {
+                    std::cerr << "stoi failed for i_bitLower or i_bitUpper: " << s_bit.substr(0,found) << "," << s_bit.substr(found + 1) << std::endl;
+                }
             }
         }
         else
         {
-            i_bitLower = std::stoi(s_bit);
+            try
+            {
+                i_bitLower = std::stoi(s_bit);
+            }
+            catch (...)
+            {
+                std::cerr << "i_bitLower stoi failed with: " << s_bit << std::endl;
+            }
             i_bitUpper = i_bitLower;
         }
     }
@@ -85,7 +106,7 @@ void DatabaseReader::readAPIDList()
     {
         for (size_t cell = 0; cell < apidRow.size(); ++cell)
         {
-            m_APIDs.push_back(std::stoi(apidRow[cell]));
+            m_APIDs.emplace_back(std::stoi(apidRow[cell]));
         }
     }
 }
@@ -124,18 +145,16 @@ void DatabaseReader::readDatabase(const std::string& filename)
         {
             i_APID = std::stoul(s_APID);
         }
-        catch (std::invalid_argument e)
+        catch (...)
         {
-            std::cout << "Invalid argument " << s_APID << std::endl;
+            std::cout << "i_APID stoul failed for: " << s_APID << std::endl;
         }
 
         std::string mnem = dataRow[0];
-        if(bannedAPID(mnem)) //Skip entries containing header info, as we already decode it.
-            continue;
+        DataTypes::Entry tmp = defaults;
 
         if (m_allAPIDs)
         {
-            DataTypes::Entry tmp = defaults;
             tmp.mnemonic = mnem;
             tmp.type = DataTypes::hashIt(dataRow[1].substr(0, 1));
             tmp.s_APID = s_APID;
@@ -152,11 +171,9 @@ void DatabaseReader::readDatabase(const std::string& filename)
             tmp.bitUpper = i_bitUpper;
             tmp.length = std::stoi(dataRow[1].substr(1, std::string::npos));
             tmp.ignored = false;
-            m_entries.push_back(tmp);
         }
         else
         {
-            DataTypes::Entry tmp = defaults;
             tmp.ignored = true;
             if (std::find(m_APIDs.begin(), m_APIDs.end(), i_APID) != m_APIDs.end())
             {
@@ -177,8 +194,10 @@ void DatabaseReader::readDatabase(const std::string& filename)
             tmp.bitLower = i_bitLower;
             tmp.bitUpper = i_bitUpper;
             tmp.length = std::stoi(dataRow[1].substr(1, std::string::npos));
-            m_entries.push_back(tmp);
         }
+        if(bannedAPID(mnem)) //Skip entries containing header info, as we already decode it.
+            tmp.ignored = true;
+        m_entries.emplace_back(tmp);
     }
     m_firstRun = true;
 }

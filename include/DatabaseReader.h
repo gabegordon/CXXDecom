@@ -23,7 +23,7 @@ class DatabaseReader
   private:
     std::vector<uint32_t> m_APIDs;
     std::vector<DataTypes::Entry> m_entries;
-    std::vector<std::string> m_skip = {"PVNO", "PPTYPE", "PSHDF", "PID", "PSEGF", "PSCNT", "PLEN", "PTDAY", "PTMS", "PTUS"};
+    std::vector<std::string> m_skip = {"PVNO", "PPTYPE", "PSHDF", "PID", "PSEGF", "PSCNT", "PLEN", "PTDAY", "PTMS", "PTUS", "OMRDRRCV", "OMRDRVER", "OMCONTCNT", "OMCONTFLG"};
     bool m_firstRun;
     bool m_allAPIDs;
     std::string m_paramsFile;

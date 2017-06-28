@@ -45,8 +45,9 @@ void ProgressBar::Progressed(uint64_t idx_)
     try {
         if (idx_ > n) throw idx_;
         // determines whether to update the progress bar from frequency_update
-        if((idx_ !=n) && (idx_ < frequency_update)) return;
+        if((idx_ !=n) && (idx_ < frequency_update) && !firstRun) return;
         frequency_update += tenth;
+        firstRun = false;
         // calculate the size of the progress bar
         int bar_size = GetBarLength();
 

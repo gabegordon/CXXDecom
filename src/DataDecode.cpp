@@ -96,7 +96,21 @@ void DataDecode::getHeaderData(DataTypes::Packet& pack)
     pack.micros = m_sHeader.micros;
     pack.sequenceCount = m_pHeader.packetSequence;
 }
-
+/**
+ * Get correct offset based on input data type
+ *
+ * @return Unsigned 32-bit integer offset
+ */
+uint32_t DataDecode::getOffset()
+{
+    if(m_pHeader.secondaryHeader)
+        if(m_Instrument == "OMPS")
+            return 20;
+        else
+            return 14;
+    else
+        return 6;
+}
 /**
  * Main decode function. Handles decoding all entries for current APID.
  *
@@ -118,9 +132,7 @@ DataTypes::Packet DataDecode::decodeData(std::ifstream& infile, const uint32_t& 
     else
         pack.ignored = false;
 
-    uint32_t offset = 6;
-    if(m_pHeader.secondaryHeader)
-        offset = 14;
+    uint32_t offset = getOffset();
     uint32_t entryIndex;
     pack.data.reserve(m_entries.size() * sizeof(DataTypes::Numeric));
     for(entryIndex = index; entryIndex < m_entries.size(); entryIndex++)
@@ -229,7 +241,7 @@ DataTypes::Packet DataDecode::decodeData(std::ifstream& infile, const uint32_t& 
                 num.tag = DataTypes::Numeric::U32;
 
             num.mnem = currEntry.mnemonic;
-            pack.data.push_back(num);
+            pack.data.emplace_back(num);
         }
     }
     segmentLastByte = entryIndex;

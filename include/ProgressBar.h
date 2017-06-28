@@ -19,10 +19,11 @@ class ProgressBar {
   ProgressBar(uint64_t n_, const char* description_ = "", std::ostream& out_ = std::cerr) :
     n(n_),
     desc_width(0),
-    frequency_update(n_/10),
-    tenth(n_/10),
+    frequency_update(n_/100),
+    tenth(n_/100),
     description(description_),
-    counter(0)
+    counter(0),
+    firstRun(true)
     {
         unit_bar = "=";
         unit_space = " ";
@@ -46,7 +47,7 @@ class ProgressBar {
     const char *description;
     const char *unit_bar;
     const char *unit_space;
-
+    bool firstRun;
     void ClearBarField();
     int GetConsoleWidth();
     int GetBarLength();

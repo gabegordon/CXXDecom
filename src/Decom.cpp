@@ -50,7 +50,7 @@ void Decom::init(const std::string& infile)
         getEntries(std::get<0>(headers).APID);
 
         DataTypes::Packet pack;
-        DataDecode dc(std::get<0>(headers), std::get<1>(headers), m_mapEntries[std::get<0>(headers).APID], m_debug);
+        DataDecode dc(std::get<0>(headers), std::get<1>(headers), m_mapEntries[std::get<0>(headers).APID], m_debug, m_instrument);
 
         if(m_instrument == "OMPS")
             pack = dc.decodeOMPS(m_infile);
@@ -59,7 +59,7 @@ void Decom::init(const std::string& infile)
         else
             pack = dc.decodeData(m_infile,0);
 
-        m_map[std::get<0>(headers).APID].push_back(pack);
+        m_map[std::get<0>(headers).APID].emplace_back(pack);
     }
     m_infile.close();
     writeData();
@@ -74,6 +74,9 @@ void Decom::init(const std::string& infile)
  */
 void Decom::getEntries(const uint32_t& APID)
 {
+    if(std::find(std::begin(m_missingAPIDs), std::end(m_missingAPIDs), APID) != std::end(m_missingAPIDs)){
+        return;
+    }
     if (m_mapEntries[APID].empty())
     {
         bool foundEntry = false;
@@ -83,13 +86,14 @@ void Decom::getEntries(const uint32_t& APID)
             {
                 if(!entry.ignored)
                 {
-                    m_mapEntries[APID].push_back(entry);
+                    m_mapEntries[APID].emplace_back(entry);
                 }
                 foundEntry = true;
             }
         }
         if (!foundEntry)
         {
+            m_missingAPIDs.emplace_back(APID);
             std::cerr << "Couldn't find matching APID in database: " << APID << "\n";
         }
     }
@@ -105,7 +109,7 @@ void Decom::writeData()
     std::cout << std::endl;
     uint64_t len = getLength();
     ProgressBar writeProgress(len, "Write CSVs");
-    if(!checkForMissingOutput())
+    if(checkForMissingOutput())
     {
         std::cerr << endl << "No APIDs matching selected APIDs" << endl;
         system("pause");
@@ -156,7 +160,7 @@ void Decom::writeData()
  */
 uint64_t Decom::getLength()
 {
-    uint64_t len = 0;
+    uint64_t len = 1;
     for (const auto& apid : m_map)
     {
         for (const auto& packet : apid.second)
@@ -177,22 +181,10 @@ uint64_t Decom::getLength()
  */
 bool Decom::checkForMissingOutput()
 {
-    uint32_t packets = 0;
-    uint32_t ignored_packets = 0;
-
-    for(const auto& apid: m_map)
-    {
-        for(const auto& pack: apid.second)
-        {
-            packets++;
-            if(pack.ignored)
-                ignored_packets++;
-        }
-    }
-    if(ignored_packets == packets)
-        return false;
-    else
+    if(m_map.empty())
         return true;
+    else
+        return false;
 }
 
 /**
