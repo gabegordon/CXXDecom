@@ -21,11 +21,13 @@ int main(int argc, char* argv[])
         bool debug = false;
         bool allAPIDs = !!std::stoi(argv[4]);
         std::cout << packetFile << std::endl;
-        system("cd output && del /Q *.txt");
+        system("cd output && del /Q *.txt 2>NUL");
         DatabaseReader dr(paramsFile, allAPIDs);
         Decom decomEngine(instrument, debug, dr.getEntries());
         decomEngine.init(packetFile);
     }
+    std::ofstream finished("output/done");
+    finished.close();
     system("pause");
     return 0;
 }

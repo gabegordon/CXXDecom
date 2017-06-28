@@ -86,6 +86,8 @@ void writeChans(const std::vector<atms_pack>& buf)
         uint16_t scanCounter = 1;
         for(uint64_t k = i; k < bufSize; k++)
         {
+            if (scanCounter > 103)
+                break;
             if(buf.at(k).errflags == 0)
             {
                 for (uint16_t l = 0; l < 22; l++)
