@@ -35,7 +35,6 @@ void Decom::init(const std::string& infile)
     m_infile.seekg(0, std::ios::beg);
     ProgressBar readProgress(fileSize, "Read Packet");
     uint64_t progress = 0;
-    uint64_t writeCounter = 0;
     while (true)
     {
         progress = m_infile.tellg();
@@ -60,17 +59,8 @@ void Decom::init(const std::string& infile)
         else
             pack = std::move(dc.decodeData(m_infile,0));
 
-        m_map[std::get<0>(headers).APID].emplace_back(pack);
-        if(writeCounter % 400000 == 0)
-        {
-			//return;
-            writeData();
-            while (m_map.size())
-                m_map.erase(m_map.begin());
-        }
-        writeCounter++;
+        writeData(std::get<0>(headers).APID, pack);
     }
-    writeData();
     m_infile.close();
     formatInstruments();
 }
@@ -113,87 +103,40 @@ void Decom::getEntries(const uint32_t& APID)
  *
  * @return N/A
  */
-void Decom::writeData()
+void Decom::writeData(const uint32_t& apid, const DataTypes::Packet& pack)
 {
-    if(checkForMissingOutput())
-    {
-        std::cerr << endl << "No APIDs matching selected APIDs" << endl;
-        system("pause");
-        return;
-    }
-    uint64_t i = 0;
-    for (const auto& apid : m_map)
-    {
-        if(apid.second.at(0).ignored)
-            continue;
-        std::ofstream outfile;
-        if(m_firstRun)
-        {
-            outfile.open("output/" + m_instrument + "_" + std::to_string(apid.first) + ".txt", std::ios::ate);
-            outfile << std::setw(15) << "Day" << "," << std::setw(15) <<  "Millis" << "," << std::setw(15) << "Micros" << "," << std::setw(15) << "SeqCount" << ",";
-        }
-        else
-            outfile = std::move(m_outfiles.at(apid.first));
 
-        for (const DataTypes::Numeric& num : apid.second.at(0).data)
+    if(pack.ignored)
+        return;
+    std::ofstream outfile;
+    if(m_outfiles.count(apid) == 0)
+    {
+        outfile.open("output/" + m_instrument + "_" + std::to_string(apid) + ".txt", std::ios::ate);
+        outfile << std::setw(15) << "Day" << "," << std::setw(15) <<  "Millis" << "," << std::setw(15) << "Micros" << "," << std::setw(15) << "SeqCount" << ",";
+        for (const DataTypes::Numeric& num : pack.data)
         {
             outfile << std::setw(15) << num.mnem << ",";
         }
-
-        outfile << "\n";
-        for (const DataTypes::Packet& pack: apid.second)
-        {
-            outfile << std::setw(15) << pack.day << "," << std::setw(15) << pack.millis << "," << std::setw(15) << pack.micros << "," << std::setw(15) << pack.sequenceCount << ",";
-            for (const DataTypes::Numeric& num : pack.data)
-            {
-                switch (num.tag)
-                {
-                case DataTypes::Numeric::I32: outfile << std::setw(15) << std::right << num.i32; break;
-                case DataTypes::Numeric::U32: outfile << std::setw(15) << std::right << num.u32; break;
-                case DataTypes::Numeric::F64: outfile << std::setw(15) << std::right << num.f64; break;
-                }
-                outfile << ",";
-            }
-            outfile << "\n";
-        }
-        m_outfiles[apid.first] = std::move(outfile);
-        m_firstRun = true;
     }
-}
-
-/**
- * Helper function to get output length. For progress bar purposes.
- *
- * @return N/A
- */
-uint64_t Decom::getLength()
-{
-    uint64_t len = 1;
-    for (const auto& apid : m_map)
-    {
-        for (const auto& packet : apid.second)
-        {
-            for (const auto& num : packet.data)
-            {
-                len++;
-            }
-        }
-    }
-    return len;
-}
-
-/**
- * Check to see if we are missing database entries for the current APID. IF we are missing them, then caller function will throw error.
- *
- * @return True if missing entries for APID. Otherwise false.
- */
-bool Decom::checkForMissingOutput()
-{
-    if(m_map.empty())
-        return true;
     else
-        return false;
+        outfile = std::move(m_outfiles.at(apid));
+
+    outfile << "\n";
+    outfile << std::setw(15) << pack.day << "," << std::setw(15) << pack.millis << "," << std::setw(15) << pack.micros << "," << std::setw(15) << pack.sequenceCount << ",";
+    for (const DataTypes::Numeric& num : pack.data)
+    {
+        switch (num.tag)
+        {
+        case DataTypes::Numeric::I32: outfile << std::setw(15) << std::right << num.i32; break;
+        case DataTypes::Numeric::U32: outfile << std::setw(15) << std::right << num.u32; break;
+        case DataTypes::Numeric::F64: outfile << std::setw(15) << std::right << num.f64; break;
+        }
+        outfile << ",";
+    }
+    outfile << "\n";
+    m_outfiles[apid] = std::move(outfile);
 }
+
 
 /**
  * Handles any special formatting requirements for instrument science data. Checks to see if we had instrument APID and then calls corresponding formatter function.

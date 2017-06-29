@@ -26,7 +26,7 @@ class Decom
 
   private:
     void getEntries(const uint32_t& APID);
-    void writeData();
+    void writeData(const uint32_t& apid, const DataTypes::Packet& pack);
     uint64_t getLength();
     bool checkForMissingOutput();
     void formatInstruments();
