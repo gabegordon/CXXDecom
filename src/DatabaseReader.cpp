@@ -26,6 +26,7 @@ std::istream& operator >> (std::istream& str, CSVRow& data)
  */
 void DatabaseReader::init()
 {
+	readAPIDList();
     readDatabase("databases/scdatabase.csv");
     readDatabase("databases/atmsdatabase.csv");
 }
@@ -119,7 +120,6 @@ void DatabaseReader::readAPIDList()
  */
 void DatabaseReader::readDatabase(const std::string& filename)
 {
-    readAPIDList();
     std::ifstream database(filename);
     if (!database || !database.is_open())
     {

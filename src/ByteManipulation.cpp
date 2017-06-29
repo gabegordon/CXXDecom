@@ -78,7 +78,7 @@ uint64_t swapEndian64(const uint64_t& val)
  */
 uint32_t extract8(const uint8_t& val, uint32_t start, uint32_t len)
 {
-    return std::stoul((std::bitset<8>(val).to_string().substr(start, len)), nullptr, 2);
+		return (val >> start) & ((1 << (len - start)) - 1);
 }
 
 /**

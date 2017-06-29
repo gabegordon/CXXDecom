@@ -35,6 +35,7 @@ void Decom::init(const std::string& infile)
     m_infile.seekg(0, std::ios::beg);
     ProgressBar readProgress(fileSize, "Read Packet");
     uint64_t progress = 0;
+    uint64_t writeCounter = 0;
     while (true)
     {
         progress = m_infile.tellg();
@@ -53,16 +54,24 @@ void Decom::init(const std::string& infile)
         DataDecode dc(std::get<0>(headers), std::get<1>(headers), m_mapEntries[std::get<0>(headers).APID], m_debug, m_instrument);
 
         if(m_instrument == "OMPS")
-            pack = dc.decodeOMPS(m_infile);
+            pack = std::move(dc.decodeOMPS(m_infile));
         else if (std::get<0>(headers).sequenceFlag == DataTypes::FIRST)
-            pack = dc.decodeDataSegmented(m_infile);
+            pack = std::move(dc.decodeDataSegmented(m_infile));
         else
-            pack = dc.decodeData(m_infile,0);
+            pack = std::move(dc.decodeData(m_infile,0));
 
         m_map[std::get<0>(headers).APID].emplace_back(pack);
+        if(writeCounter % 400000 == 0)
+        {
+			//return;
+            writeData();
+            while (m_map.size())
+                m_map.erase(m_map.begin());
+        }
+        writeCounter++;
     }
-    m_infile.close();
     writeData();
+    m_infile.close();
     formatInstruments();
 }
 
@@ -106,9 +115,6 @@ void Decom::getEntries(const uint32_t& APID)
  */
 void Decom::writeData()
 {
-    std::cout << std::endl;
-    uint64_t len = getLength();
-    ProgressBar writeProgress(len, "Write CSVs");
     if(checkForMissingOutput())
     {
         std::cerr << endl << "No APIDs matching selected APIDs" << endl;
@@ -120,10 +126,14 @@ void Decom::writeData()
     {
         if(apid.second.at(0).ignored)
             continue;
-
-        std::ofstream outfile("output/" + m_instrument + "_" + std::to_string(apid.first) + ".txt");
-
-        outfile << std::setw(15) << "Day" << "," << std::setw(15) <<  "Millis" << "," << std::setw(15) << "Micros" << "," << std::setw(15) << "SeqCount" << ",";
+        std::ofstream outfile;
+        if(m_firstRun)
+        {
+            outfile.open("output/" + m_instrument + "_" + std::to_string(apid.first) + ".txt", std::ios::ate);
+            outfile << std::setw(15) << "Day" << "," << std::setw(15) <<  "Millis" << "," << std::setw(15) << "Micros" << "," << std::setw(15) << "SeqCount" << ",";
+        }
+        else
+            outfile = std::move(m_outfiles.at(apid.first));
 
         for (const DataTypes::Numeric& num : apid.second.at(0).data)
         {
@@ -136,7 +146,6 @@ void Decom::writeData()
             outfile << std::setw(15) << pack.day << "," << std::setw(15) << pack.millis << "," << std::setw(15) << pack.micros << "," << std::setw(15) << pack.sequenceCount << ",";
             for (const DataTypes::Numeric& num : pack.data)
             {
-                writeProgress.Progressed(i++);
                 switch (num.tag)
                 {
                 case DataTypes::Numeric::I32: outfile << std::setw(15) << std::right << num.i32; break;
@@ -147,10 +156,9 @@ void Decom::writeData()
             }
             outfile << "\n";
         }
-        outfile.close();
+        m_outfiles[apid.first] = std::move(outfile);
+        m_firstRun = true;
     }
-    writeProgress.Progressed(len);
-    std::cout << std::endl;
 }
 
 /**

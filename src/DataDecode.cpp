@@ -134,25 +134,24 @@ DataTypes::Packet DataDecode::decodeData(std::ifstream& infile, const uint32_t& 
 
     uint32_t offset = getOffset();
     uint32_t entryIndex;
-    pack.data.reserve(m_entries.size() * sizeof(DataTypes::Numeric));
+    pack.data.reserve(m_entries.size() * sizeof(DataTypes::Numeric) * 2);
     for(entryIndex = index; entryIndex < m_entries.size(); entryIndex++)
     {
-        auto currEntry = m_entries.at(entryIndex);
         DataTypes::Numeric num;
         Bytes numBytes;
 
-        if (!loadData(buf, numBytes, currEntry, offset) || currEntry.byte - offset >= buf.size()) //Make sure we don't go past array bounds (entries not contained in packet)
+        if (!loadData(buf, numBytes, m_entries.at(entryIndex), offset) || m_entries.at(entryIndex).byte - offset >= buf.size()) //Make sure we don't go past array bounds (entries not contained in packet)
         {
             continue;
         }
 
-        uint8_t initialByte = buf.at(currEntry.byte - offset);
+        uint8_t initialByte = buf.at(m_entries.at(entryIndex).byte - offset);
 
-        DataTypes::DataType dtype = currEntry.type;
+        DataTypes::DataType dtype = m_entries.at(entryIndex).type;
 
         if (dtype == DataTypes::FLOAT)
         {
-            num.f64 = getFloat(buf,currEntry,offset,initialByte);
+            num.f64 = getFloat(buf,m_entries.at(entryIndex),offset,initialByte);
         }
         else
         {
@@ -160,7 +159,7 @@ DataTypes::Packet DataDecode::decodeData(std::ifstream& infile, const uint32_t& 
             {
             case ONE:
             {
-                if (currEntry.bitUpper == 0 && currEntry.bitLower == 0)
+                if (m_entries.at(entryIndex).bitUpper == 0 && m_entries.at(entryIndex).bitLower == 0)
                 {
                     if (dtype == DataTypes::SIGNED)
                         num.i32 = initialByte;
@@ -170,16 +169,16 @@ DataTypes::Packet DataDecode::decodeData(std::ifstream& infile, const uint32_t& 
                 else
                 {
                     if (dtype == DataTypes::SIGNED)
-                        num.i32 = ByteManipulation::extract8Signed(initialByte, currEntry.bitLower, (currEntry.bitUpper - currEntry.bitLower) + 1);
+                        num.i32 = ByteManipulation::extract8Signed(initialByte, m_entries.at(entryIndex).bitLower, (m_entries.at(entryIndex).bitUpper + 1));
                     else
-                        num.u32 = ByteManipulation::extract8(initialByte, currEntry.bitLower, (currEntry.bitUpper - currEntry.bitLower) + 1);
+                        num.u32 = ByteManipulation::extract8(initialByte, m_entries.at(entryIndex).bitLower, (m_entries.at(entryIndex).bitUpper - m_entries.at(entryIndex).bitLower) + 1);
                 }
                 break;
             }
             case TWO:
             {
                 uint16_t result = mergeBytes16(initialByte, m_byte1);
-                if (currEntry.bitUpper == 0 && currEntry.bitLower == 0)
+                if (m_entries.at(entryIndex).bitUpper == 0 && m_entries.at(entryIndex).bitLower == 0)
                 {
                     if (dtype == DataTypes::SIGNED)
                         num.i32 = static_cast<int16_t>(result);
@@ -189,16 +188,16 @@ DataTypes::Packet DataDecode::decodeData(std::ifstream& infile, const uint32_t& 
                 else
                 {
                     if (dtype == DataTypes::SIGNED)
-                        num.i32 = static_cast<int16_t>(ByteManipulation::extract16(result, currEntry.bitLower, (currEntry.bitUpper - currEntry.bitLower) + 1));
+                        num.i32 = static_cast<int16_t>(ByteManipulation::extract16(result, m_entries.at(entryIndex).bitLower, (m_entries.at(entryIndex).bitUpper - m_entries.at(entryIndex).bitLower) + 1));
                     else
-                        num.u32 = ByteManipulation::extract16(result, currEntry.bitLower, (currEntry.bitUpper - currEntry.bitLower) + 1);
+                        num.u32 = ByteManipulation::extract16(result, m_entries.at(entryIndex).bitLower, (m_entries.at(entryIndex).bitUpper - m_entries.at(entryIndex).bitLower) + 1);
                 }
                 break;
             }
             case THREE:
             {
                 uint32_t result = mergeBytes(initialByte, m_byte1, m_byte2, m_byte3, 3);
-                if (currEntry.bitUpper == 0 && currEntry.bitLower == 0)
+                if (m_entries.at(entryIndex).bitUpper == 0 && m_entries.at(entryIndex).bitLower == 0)
                 {
                     if (dtype == DataTypes::SIGNED)
                         num.i32 = static_cast<int32_t>(result);
@@ -208,16 +207,16 @@ DataTypes::Packet DataDecode::decodeData(std::ifstream& infile, const uint32_t& 
                 else
                 {
                     if (dtype == DataTypes::SIGNED)
-                        num.i32 = static_cast<int32_t>(ByteManipulation::extract32(result, currEntry.bitLower, (currEntry.bitUpper - currEntry.bitLower) + 1));
+                        num.i32 = static_cast<int32_t>(ByteManipulation::extract32(result, m_entries.at(entryIndex).bitLower, (m_entries.at(entryIndex).bitUpper - m_entries.at(entryIndex).bitLower) + 1));
                     else
-                        num.u32 = ByteManipulation::extract32(result, currEntry.bitLower, (currEntry.bitUpper - currEntry.bitLower) + 1);
+                        num.u32 = ByteManipulation::extract32(result, m_entries.at(entryIndex).bitLower, (m_entries.at(entryIndex).bitUpper - m_entries.at(entryIndex).bitLower) + 1);
                 }
                 break;
             }
             case FOUR:
             {
                 uint32_t result = mergeBytes(initialByte, m_byte1, m_byte2, m_byte3, 4);
-                if (currEntry.bitUpper == 0 && currEntry.bitLower == 0)
+                if (m_entries.at(entryIndex).bitUpper == 0 && m_entries.at(entryIndex).bitLower == 0)
                 {
                     if (dtype == DataTypes::SIGNED)
                         num.i32 = static_cast<int32_t>(result);
@@ -227,9 +226,9 @@ DataTypes::Packet DataDecode::decodeData(std::ifstream& infile, const uint32_t& 
                 else
                 {
                     if (dtype == DataTypes::SIGNED)
-                        num.i32 = static_cast<int32_t>(ByteManipulation::extract32(result, currEntry.bitLower, (currEntry.bitUpper - currEntry.bitLower) + 1));
+                        num.i32 = static_cast<int32_t>(ByteManipulation::extract32(result, m_entries.at(entryIndex).bitLower, (m_entries.at(entryIndex).bitUpper - m_entries.at(entryIndex).bitLower) + 1));
                     else
-                        num.u32 = ByteManipulation::extract32(result, currEntry.bitLower, (currEntry.bitUpper - currEntry.bitLower) + 1);
+                        num.u32 = ByteManipulation::extract32(result, m_entries.at(entryIndex).bitLower, (m_entries.at(entryIndex).bitUpper - m_entries.at(entryIndex).bitLower) + 1);
                 }
                 break;
             }
@@ -240,7 +239,7 @@ DataTypes::Packet DataDecode::decodeData(std::ifstream& infile, const uint32_t& 
             else
                 num.tag = DataTypes::Numeric::U32;
 
-            num.mnem = currEntry.mnemonic;
+            num.mnem = m_entries.at(entryIndex).mnemonic;
             pack.data.emplace_back(num);
         }
     }
