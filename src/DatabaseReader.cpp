@@ -195,8 +195,10 @@ void DatabaseReader::readDatabase(const std::string& filename)
             tmp.bitUpper = i_bitUpper;
             tmp.length = std::stoi(dataRow[1].substr(1, std::string::npos));
         }
-        if(bannedAPID(mnem)) //Skip entries containing header info, as we already decode it.
-            tmp.ignored = true;
+		if (bannedAPID(mnem)) //Skip entries containing header info, as we already decode it.
+		{
+			tmp.ignored = true;
+		}
         m_entries.emplace_back(tmp);
     }
     m_firstRun = true;

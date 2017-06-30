@@ -1,6 +1,6 @@
 #pragma once
 
-#include <list>
+#include <queue>
 #include <mutex>
 #include <condition_variable>
 
@@ -19,24 +19,24 @@ public:
 	int push(const T element)
 	{
 		std::lock_guard<std::mutex> lock(m);
-		q.push_back(element);
+		q.push(std::move(element));
 		c.notify_one();
 		return 0;
 	}
 
-	int listen(T& element)
+	T listen()
 	{
 		std::unique_lock<std::mutex> lock(m);
 		while (q.empty())
 		{
 			c.wait(lock);
 		}
-		element = q.front();
-		q.pop_front();
-		return 0;
+		T element = std::move(q.front());
+		q.pop();
+		return element;
 	}
 private:
-	std::list<T> q;
+	std::queue<T> q;
 	mutable std::mutex m;
 	std::condition_variable c;
 };

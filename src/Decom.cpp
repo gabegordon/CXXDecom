@@ -35,10 +35,10 @@ void Decom::init(const std::string& infile)
     uint64_t fileSize = m_infile.tellg();
     m_infile.seekg(0, std::ios::beg);
     ProgressBar readProgress(fileSize, "Read Packet");
-    ThreadPoolServer pool(1, m_instrument);
-    pool.start();
 
-	while (true)
+    ThreadPoolServer pool(4, m_instrument);
+    pool.start();
+    while (true)
     {
         m_progress = m_infile.tellg();
         readProgress.Progressed(m_progress);
@@ -51,18 +51,18 @@ void Decom::init(const std::string& infile)
             break;
 
         getEntries(std::get<0>(headers).APID);
-
+        DataTypes::Packet pack;
         DataDecode dc(std::get<0>(headers), std::get<1>(headers), m_mapEntries[std::get<0>(headers).APID], m_debug, m_instrument);
-		m_pack.apid = std::get<0>(headers).APID;
 
         if(m_instrument == "OMPS")
-            m_pack = std::move(dc.decodeOMPS(m_infile));
+            pack = std::move(dc.decodeOMPS(m_infile));
         else if (std::get<0>(headers).sequenceFlag == DataTypes::FIRST)
-            m_pack = std::move(dc.decodeDataSegmented(m_infile));
+            pack = std::move(dc.decodeDataSegmented(m_infile));
         else
-            m_pack = std::move(dc.decodeData(m_infile,0));
+            pack = std::move(dc.decodeData(m_infile,0));
 
-		pool.exec(m_pack);
+        pack.apid = std::get<0>(headers).APID;
+        pool.exec(std::move(pack));
     }
     m_infile.close();
     formatInstruments();

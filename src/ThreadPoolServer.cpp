@@ -2,45 +2,40 @@
 #include <iomanip>
 #include <unordered_map>
 #include "ThreadPoolServer.h"
+#include "ThreadSafeStreamMap.h"
 
 void ThreadPoolServer::ThreadMain(ThreadSafeListenerQueue<DataTypes::Packet>& queue, const std::string instrument)
 {
-	std::unordered_map<uint32_t, std::ofstream> m_outfiles;
+	ThreadSafeStreamMap m_outfiles;
 	while (true)
 	{
-		DataTypes::Packet pack;
-		if (queue.listen(pack) == 0) //If we get a packet from the queue
+		DataTypes::Packet pack = std::move(queue.listen());
+		if (pack.ignored)
+			continue;
+		std::ofstream& outfile = m_outfiles.lockStream(instrument, pack.apid);
+		if (static_cast<uint64_t>(outfile.tellp()) == 0)
 		{
-			if (pack.ignored)
-				return;
-			std::ofstream outfile;
-			if (m_outfiles.count(pack.apid) == 0)
-			{
-				outfile.open("output/" + m_instrument + "_" + std::to_string(pack.apid) + ".txt", std::ios::ate);
-				outfile << std::setw(15) << "Day" << "," << std::setw(15) << "Millis" << "," << std::setw(15) << "Micros" << "," << std::setw(15) << "SeqCount" << ",";
-				for (const DataTypes::Numeric& num : pack.data)
-				{
-					outfile << std::setw(15) << num.mnem << ",";
-				}
-			}
-			else
-				outfile = std::move(m_outfiles.at(pack.apid));
-
-			outfile << "\n";
-			outfile << std::setw(15) << pack.day << "," << std::setw(15) << pack.millis << "," << std::setw(15) << pack.micros << "," << std::setw(15) << pack.sequenceCount << ",";
+			outfile << std::setw(15) << "Day" << "," << std::setw(15) << "Millis" << "," << std::setw(15) << "Micros" << "," << std::setw(15) << "SeqCount" << ",";
 			for (const DataTypes::Numeric& num : pack.data)
 			{
-				switch (num.tag)
-				{
-				case DataTypes::Numeric::I32: outfile << std::setw(15) << std::right << num.i32; break;
-				case DataTypes::Numeric::U32: outfile << std::setw(15) << std::right << num.u32; break;
-				case DataTypes::Numeric::F64: outfile << std::setw(15) << std::right << num.f64; break;
-				}
-				outfile << ",";
+				outfile << std::setw(15) << num.mnem << ",";
 			}
-			outfile << "\n";
-			m_outfiles[pack.apid] = std::move(outfile);
 		}
+
+		outfile << "\n";
+		outfile << std::setw(15) << pack.day << "," << std::setw(15) << pack.millis << "," << std::setw(15) << pack.micros << "," << std::setw(15) << pack.sequenceCount << ",";
+		for (const DataTypes::Numeric& num : pack.data)
+		{
+			switch (num.tag)
+			{
+			case DataTypes::Numeric::I32: outfile << std::setw(15) << std::right << num.i32; break;
+			case DataTypes::Numeric::U32: outfile << std::setw(15) << std::right << num.u32; break;
+			case DataTypes::Numeric::F64: outfile << std::setw(15) << std::right << num.f64; break;
+			}
+			outfile << ",";
+		}
+		outfile << "\n";
+		m_outfiles.unlockStream(pack.apid);
 	}
 }
 void ThreadPoolServer::start()
@@ -54,6 +49,6 @@ void ThreadPoolServer::start()
 
 void ThreadPoolServer::exec(const DataTypes::Packet pack)
 {
-	m_queue.push(pack);
+	m_queue.push(std::move(pack));
 }
 

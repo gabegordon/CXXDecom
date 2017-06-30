@@ -120,17 +120,26 @@ uint32_t DataDecode::getOffset()
  */
 DataTypes::Packet DataDecode::decodeData(std::ifstream& infile, const uint32_t& index)
 {
-    std::vector<uint8_t> buf(m_pHeader.packetLength); //reserve space for bytes
-    infile.read(reinterpret_cast<char*>(buf.data()), buf.size()); //read bytes
-    DataTypes::Packet pack;
+	DataTypes::Packet pack;
 
     if(m_entries.size() < 1)
     {
-        pack.ignored = true;
-        return pack;
+		if (m_pHeader.packetLength != 0)
+		{
+			pack.ignored = true;
+			return pack;
+		}
+		else
+		{
+			getHeaderData(pack);
+			return pack;
+		}
     }
     else
         pack.ignored = false;
+
+	std::vector<uint8_t> buf(m_pHeader.packetLength); //reserve space for bytes
+	infile.read(reinterpret_cast<char*>(buf.data()), buf.size()); //read bytes
 
     uint32_t offset = getOffset();
     uint32_t entryIndex;
