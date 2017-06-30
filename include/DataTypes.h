@@ -50,6 +50,7 @@ namespace DataTypes {
         uint32_t millis;
         uint16_t micros;
         uint16_t sequenceCount;
+		uint16_t apid;
         bool ignored;
     };
 
