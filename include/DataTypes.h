@@ -22,7 +22,6 @@ namespace DataTypes {
     struct Entry {
         std::string mnemonic;
         DataTypes::DataType type;
-        std::string s_APID;
         uint32_t i_APID;
         uint32_t byte;
         uint32_t bitLower;
@@ -50,7 +49,7 @@ namespace DataTypes {
         uint32_t millis;
         uint16_t micros;
         uint16_t sequenceCount;
-		uint16_t apid;
+        uint16_t apid;
         bool ignored;
     };
 

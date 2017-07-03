@@ -127,7 +127,6 @@ DataTypes::Packet DataDecode::decodeData(std::ifstream& infile, const uint32_t& 
 		if (m_pHeader.packetLength != 0)
 		{
 			pack.ignored = true;
-			return pack;
 		}
 		else
 		{

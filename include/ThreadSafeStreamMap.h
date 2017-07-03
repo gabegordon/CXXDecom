@@ -1,51 +1,38 @@
 #pragma once
 #include <unordered_map>
-#include <mutex>
 #include <iostream>
 
 class ThreadSafeStreamMap
 {
 public:
 	ThreadSafeStreamMap() :
-		m(),
 		m_map()
 	{}
 	~ThreadSafeStreamMap() {}
 
-	std::ofstream& lockStream(const std::string& instrument, const uint32_t& apid)
+	std::ofstream& getStream(const std::string& instrument, const uint32_t& apid)
 	{
-		auto& mut = getMutex(apid);
-		mut.lock();
-		auto& stream = getStream(apid);
-		if (stream.is_open())
-		{
-			return stream;
-		}
-		else
-		{
-			stream.open("output/" + instrument + "_" + std::to_string(apid) + ".txt", std::ios::ate);
-			return stream;
-		}
+      auto& stream = m_map[apid];
+      if (stream.is_open())
+      {
+          return stream;
+      }
+      else
+      {
+          stream.open("output/" + instrument + "_" + std::to_string(apid) + ".txt", std::ios::ate);
+          return stream;
+      }
 	}
 
-	void unlockStream(const uint32_t& apid)
-	{
-		auto& mut = getMutex(apid);
-		mut.unlock();
-	}
+  typename std::unordered_map<uint32_t, std::ofstream>::iterator begin()
+  {
+      return m_map.begin();
+  }
 
-	std::mutex& getMutex(const uint32_t& apid)
-	{
-		return m_locks[apid]; 
-	}
-
-	std::ofstream& getStream(const uint32_t& apid)
-	{
-		return m_map[apid];
-	}
-
+  typename std::unordered_map<uint32_t, std::ofstream>::iterator end()
+  {
+      return m_map.end();
+  }
 private:
-	mutable std::mutex m;
 	std::unordered_map<uint32_t, std::ofstream> m_map;
-	std::unordered_map<uint32_t, std::mutex> m_locks;
 };

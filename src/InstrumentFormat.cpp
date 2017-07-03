@@ -26,7 +26,7 @@ struct out_pack
     std::string day;
     std::string millis;
     std::string micros;
-    std::vector<uint32_t> chans;
+    std::vector<uint32_t> chans = std::vector<uint32_t>(104);
 };
 
 namespace InstrumentFormat
@@ -59,13 +59,13 @@ void writeChans(const std::vector<atms_pack>& buf)
     ProgressBar writeProgress(bufSize, "Write ATMS");
 
     std::ofstream outfile;
-    out_pack blank = { "","","",{0}};
     std::vector<out_pack> outpacks(22);
     std::vector<float> scans(104);
+    std::vector<std::ofstream> outfiles(22);
+    out_pack tmp;
     for (uint8_t init = 0; init < 22; init++)
     {
-        outpacks.at(init) = blank;
-        outpacks.at(init).chans.resize(104);
+        outpacks.at(init) = tmp;
     }
 
     while(i < bufSize)
@@ -108,8 +108,12 @@ void writeChans(const std::vector<atms_pack>& buf)
 
         for (uint16_t channelNumber = 1; channelNumber < 23; channelNumber++)
         {
-            std::string filename = "output/ATMS_CHAN" + std::to_string(channelNumber) + ".txt";
-            outfile.open(filename, std::ios::app);
+            std::ofstream& outfile = outfiles.at(channelNumber - 1);
+            if (!outfile.is_open())
+            {
+                std::string filename = "output/ATMS_CHAN" + std::to_string(channelNumber) + ".txt";
+                outfile.open(filename, std::ios::app);
+            }
             auto out = outpacks.at(channelNumber - 1);
             outfile << out.day << "," << out.millis << "," << out.micros << ",";
             for (const float scan : scans)
@@ -117,7 +121,6 @@ void writeChans(const std::vector<atms_pack>& buf)
             for (const uint32_t chan : out.chans)
                 outfile << chan << ",";
             outfile << "\n";
-            outfile.close();
         }
     }
     writeProgress.Progressed(bufSize);
@@ -135,8 +138,6 @@ void InstrumentFormat::formatATMS()
     m_infile.open("output/ATMS_528.txt", std::ios::in | std::ios::ate);
     if (!m_infile || !m_infile.is_open())
     {
-        std::cerr << "Failed to find ATMS output" << std::endl;
-        system("pause");
         return;
     }
 
@@ -156,6 +157,7 @@ void InstrumentFormat::formatATMS()
             continue;
         }
         atms_pack pack;
+
         pack.day = atms_row[0];
         pack.millis = atms_row[1];
         pack.micros = atms_row[2];

@@ -34,9 +34,9 @@ void Decom::init(const std::string& infile)
     m_infile.seekg(0, std::ios::end);
     uint64_t fileSize = m_infile.tellg();
     m_infile.seekg(0, std::ios::beg);
-    ProgressBar readProgress(fileSize, "Read Packet");
+    ProgressBar readProgress(fileSize, "Parsing Packet");
 
-    ThreadPoolServer pool(4, m_instrument);
+    ThreadPoolServer pool(m_instrument);
     pool.start();
     while (true)
     {
@@ -55,16 +55,18 @@ void Decom::init(const std::string& infile)
         DataDecode dc(std::get<0>(headers), std::get<1>(headers), m_mapEntries[std::get<0>(headers).APID], m_debug, m_instrument);
 
         if(m_instrument == "OMPS")
-            pack = std::move(dc.decodeOMPS(m_infile));
+            pack = dc.decodeOMPS(m_infile);
         else if (std::get<0>(headers).sequenceFlag == DataTypes::FIRST)
-            pack = std::move(dc.decodeDataSegmented(m_infile));
+            pack = dc.decodeDataSegmented(m_infile);
         else
-            pack = std::move(dc.decodeData(m_infile,0));
+            pack = dc.decodeData(m_infile,0);
 
         pack.apid = std::get<0>(headers).APID;
-        pool.exec(std::move(pack));
+        pool.exec(pack);
     }
     m_infile.close();
+    pool.join();
+    cout << endl;
     formatInstruments();
 }
 
@@ -108,14 +110,5 @@ void Decom::getEntries(const uint32_t& APID)
  */
 void Decom::formatInstruments()
 {
-    if (m_map.count(528) > 0)
-    {
-        m_map.clear();
-        InstrumentFormat::formatATMS();
-    }
-    else if (m_map.count(536) > 0)
-    {
-        m_map.clear();
-        InstrumentFormat::formatATMS();
-    }
+    InstrumentFormat::formatATMS();
 }

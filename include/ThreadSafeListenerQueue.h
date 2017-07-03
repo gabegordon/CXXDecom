@@ -3,6 +3,8 @@
 #include <queue>
 #include <mutex>
 #include <condition_variable>
+#include <iostream>
+#include <chrono>
 
 template <class T>
 class ThreadSafeListenerQueue
@@ -16,25 +18,30 @@ public:
 
 	~ThreadSafeListenerQueue() {}
 
-	int push(const T element)
+	uint32_t push(const T element)
 	{
 		std::lock_guard<std::mutex> lock(m);
-		q.push(std::move(element));
+		q.push(element);
 		c.notify_one();
 		return 0;
 	}
 
-	T listen()
+	uint32_t listen(T& element)
 	{
 		std::unique_lock<std::mutex> lock(m);
 		while (q.empty())
 		{
-			c.wait(lock);
+			if(c.wait_for(lock,std::chrono::seconds(2)) == std::cv_status::timeout)
+			{
+				return 0;
+			}
 		}
-		T element = std::move(q.front());
+		element = q.front();
 		q.pop();
-		return element;
+		return 1;
 	}
+
+
 private:
 	std::queue<T> q;
 	mutable std::mutex m;

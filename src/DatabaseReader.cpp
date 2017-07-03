@@ -157,7 +157,6 @@ void DatabaseReader::readDatabase(const std::string& filename)
         {
             tmp.mnemonic = mnem;
             tmp.type = DataTypes::hashIt(dataRow[1].substr(0, 1));
-            tmp.s_APID = s_APID;
             tmp.i_APID = i_APID;
 
             std::string bytebit = dataRow[3];
@@ -174,14 +173,13 @@ void DatabaseReader::readDatabase(const std::string& filename)
         }
         else
         {
-            tmp.ignored = true;
-            if (std::find(m_APIDs.begin(), m_APIDs.end(), i_APID) != m_APIDs.end())
+            tmp.ignored = false;
+            if (std::find(m_APIDs.begin(), m_APIDs.end(), i_APID) == m_APIDs.end())
             {
-                tmp.ignored = false;
+                tmp.ignored = true;
             }
             tmp.mnemonic = mnem;
             tmp.type = DataTypes::hashIt(dataRow[1].substr(0, 1));
-            tmp.s_APID = s_APID;
             tmp.i_APID = i_APID;
 
             std::string bytebit = dataRow[3];
@@ -213,7 +211,7 @@ void DatabaseReader::printDataBase() const
 {
     for (const auto& entry : m_entries)
     {
-        std::cout << entry.mnemonic << "," << entry.type << "," << entry.s_APID << "," << entry.i_APID << "," << entry.byte << "," << entry.bitLower << "," << entry.bitUpper << "\n";
+        std::cout << entry.mnemonic << "," << entry.type << "," << entry.i_APID << "," << entry.byte << "," << entry.bitLower << "," << entry.bitUpper << "\n";
     }
 }
 
