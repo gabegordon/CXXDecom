@@ -290,15 +290,13 @@ DataTypes::Packet DataDecode::decodeDataSegmented(std::ifstream& infile, const b
 DataTypes::Packet DataDecode::decodeOMPS(std::ifstream& infile)
 {
     DataTypes::Packet segPack;
-    uint32_t versionNum;
-    uint16_t contCount;
-    uint16_t contFlag;
+    uint16_t versionNum;
+    uint8_t contCount;
+    uint8_t contFlag;
     ReadFile::read(versionNum, infile);
     ReadFile::read(contCount, infile);
     ReadFile::read(contFlag, infile);
-    versionNum = ByteManipulation::swapEndian32(versionNum);
-    contCount = ByteManipulation::swapEndian16(contCount);
-    contFlag = ByteManipulation::swapEndian16(contFlag);
+    versionNum = ByteManipulation::swapEndian16(versionNum);
     m_pHeader.packetLength -= 8;
     if(m_pHeader.sequenceFlag == DataTypes::STANDALONE)
     {
