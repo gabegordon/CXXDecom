@@ -101,7 +101,7 @@ void DataDecode::getHeaderData(DataTypes::Packet& pack)
  *
  * @return Unsigned 32-bit integer offset
  */
-uint32_t DataDecode::getOffset()
+uint8_t DataDecode::getOffset()
 {
     if(m_pHeader.secondaryHeader)
         if(m_Instrument == "OMPS")
@@ -120,30 +120,31 @@ uint32_t DataDecode::getOffset()
  */
 DataTypes::Packet DataDecode::decodeData(std::ifstream& infile, const uint32_t& index)
 {
-	DataTypes::Packet pack;
+    DataTypes::Packet pack;
 
     if(m_entries.size() < 1)
     {
-		if (m_pHeader.packetLength != 0)
-		{
-			pack.ignored = true;
-		}
-		else
-		{
-			getHeaderData(pack);
-			return pack;
-		}
+        if (m_pHeader.packetLength != 0)
+        {
+            pack.ignored = true;
+        }
+        else
+        {
+            getHeaderData(pack);
+            return pack;
+        }
     }
     else
         pack.ignored = false;
 
-	std::vector<uint8_t> buf(m_pHeader.packetLength); //reserve space for bytes
-	infile.read(reinterpret_cast<char*>(buf.data()), buf.size()); //read bytes
+    std::vector<uint8_t> buf(m_pHeader.packetLength); //reserve space for bytes
+    infile.read(reinterpret_cast<char*>(buf.data()), buf.size()); //read bytes
 
-    uint32_t offset = getOffset();
+    uint8_t offset = getOffset();
     uint32_t entryIndex;
     pack.data.reserve(m_entries.size() * sizeof(DataTypes::Numeric) * 2);
-    for(entryIndex = index; entryIndex < m_entries.size(); entryIndex++)
+    uint64_t size = m_entries.size();
+    for(entryIndex = index; entryIndex < size; entryIndex++)
     {
         DataTypes::Numeric num;
         Bytes numBytes;
@@ -262,16 +263,20 @@ DataTypes::Packet DataDecode::decodeData(std::ifstream& infile, const uint32_t& 
  * @param infile File to read from
  * @return Single packet containing all segmented packets
  */
-DataTypes::Packet DataDecode::decodeDataSegmented(std::ifstream& infile)
+DataTypes::Packet DataDecode::decodeDataSegmented(std::ifstream& infile, const bool omps)
 {
     DataTypes::Packet segPack;
+    if(!omps)
+        segmentLastByte = 0;
     getHeaderData(segPack);
+    auto pack = decodeData(infile,segmentLastByte);
+    segPack.data.insert(std::end(segPack.data), std::begin(pack.data), std::end(pack.data));
     do
     {
-        auto pack = decodeData(infile,segmentLastByte);
-        segPack.data.insert(std::end(segPack.data), std::begin(pack.data), std::end(pack.data));
         std::tuple<DataTypes::PrimaryHeader, DataTypes::SecondaryHeader, bool> headers = HeaderDecode::decodeHeaders(infile, m_debug);
         m_pHeader = std::get<0>(headers);
+        auto pack = decodeData(infile,segmentLastByte);
+        segPack.data.insert(std::end(segPack.data), std::begin(pack.data), std::end(pack.data));
     } while (m_pHeader.sequenceFlag != DataTypes::LAST);
     return segPack;
 }
@@ -291,6 +296,10 @@ DataTypes::Packet DataDecode::decodeOMPS(std::ifstream& infile)
     ReadFile::read(versionNum, infile);
     ReadFile::read(contCount, infile);
     ReadFile::read(contFlag, infile);
+    versionNum = ByteManipulation::swapEndian32(versionNum);
+    contCount = ByteManipulation::swapEndian16(contCount);
+    contFlag = ByteManipulation::swapEndian16(contFlag);
+    m_pHeader.packetLength -= 8;
     if(m_pHeader.sequenceFlag == DataTypes::STANDALONE)
     {
         segPack = decodeData(infile,0);
@@ -299,18 +308,29 @@ DataTypes::Packet DataDecode::decodeOMPS(std::ifstream& infile)
     {
         if(!contCount)
         {
-            segPack = decodeDataSegmented(infile);
+            segPack = decodeDataSegmented(infile, true);
+            segmentLastByte = 0;
         }
         else
         {
             uint16_t segPacketCount = 0;
             while(segPacketCount != contCount)
             {
-                DataTypes::Packet tmpPack = decodeDataSegmented(infile);
+                if(segPacketCount != 0)
+                {
+                    std::tuple<DataTypes::PrimaryHeader, DataTypes::SecondaryHeader, bool> headers = HeaderDecode::decodeHeaders(infile, m_debug);
+                    m_pHeader = std::get<0>(headers);
+                    m_pHeader.packetLength -= 8;
+                    uint64_t ompsHeader;
+                    ReadFile::read(ompsHeader, infile);
+                }
+                DataTypes::Packet tmpPack = decodeDataSegmented(infile, true);
                 segPack.data.insert(std::end(segPack.data), std::begin(tmpPack.data), std::end(tmpPack.data));
                 segPacketCount++;
             }
+            segmentLastByte = 0;
         }
     }
+    m_segmented = false;
     return segPack;
 }

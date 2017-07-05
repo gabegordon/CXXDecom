@@ -57,7 +57,7 @@ void Decom::init(const std::string& infile)
         if(m_instrument == "OMPS")
             pack = dc.decodeOMPS(m_infile);
         else if (std::get<0>(headers).sequenceFlag == DataTypes::FIRST)
-            pack = dc.decodeDataSegmented(m_infile);
+            pack = dc.decodeDataSegmented(m_infile, false);
         else
             pack = dc.decodeData(m_infile,0);
 

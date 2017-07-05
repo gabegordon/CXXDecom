@@ -22,13 +22,14 @@ class DataDecode
     m_pHeader(ph),
     m_sHeader(sh),
     m_debug(debug),
+    m_segmented(false),
     m_Instrument(instrument)
     {};
 
     virtual ~DataDecode() {};
 
     DataTypes::Packet decodeData(std::ifstream& infile, const uint32_t& index);
-    DataTypes::Packet decodeDataSegmented(std::ifstream& infile);
+    DataTypes::Packet decodeDataSegmented(std::ifstream& infile, const bool omps);
     DataTypes::Packet decodeOMPS(std::ifstream& infile);
   private:
     uint8_t m_byte1;
@@ -40,8 +41,9 @@ class DataDecode
     DataTypes::PrimaryHeader m_pHeader;
     DataTypes::SecondaryHeader m_sHeader;
     bool m_debug;
+    bool m_segmented;
     bool loadData(const std::vector<uint8_t>& buf, Bytes& bytes, const DataTypes::Entry& currEntry, const uint32_t& offset);
     void getHeaderData(DataTypes::Packet& pack);
     float getFloat(const std::vector<uint8_t>& buf, const DataTypes::Entry& currEntry, const uint32_t& offset, uint8_t initialByte);
-    uint32_t getOffset();
+    uint8_t getOffset();
 };

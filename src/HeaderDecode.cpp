@@ -77,6 +77,9 @@ DataTypes::PrimaryHeader decodePrimary(std::ifstream& infile, const bool debug)
     //Set packetLength from entire byte
     ph.packetLength = fifthSixByte + 1;
 
+    if (debug)
+        debugPrinter(ph);
+
     //Account for secondary header length
     if (sh_flag)
     {
@@ -85,8 +88,6 @@ DataTypes::PrimaryHeader decodePrimary(std::ifstream& infile, const bool debug)
         else
             ph.packetLength -= 8;
     }
-    if (debug)
-        debugPrinter(ph);
 
     checkValidHeader(ph);
     return ph;
