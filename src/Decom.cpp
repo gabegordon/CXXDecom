@@ -35,7 +35,7 @@ void Decom::init(const std::string& infile)
     m_infile.seekg(0, std::ios::end);
     uint64_t fileSize = m_infile.tellg();
     m_infile.seekg(0, std::ios::beg);
-    ProgressBar readProgress(fileSize, "Parsing Packet");
+    ProgressBar readProgress(fileSize, "Parsing");
 
     ThreadPoolServer pool(m_instrument);
     pool.start();

@@ -53,6 +53,7 @@ void ThreadPoolServer::exec(const DataTypes::Packet pack)
 
 void ThreadPoolServer::join()
 {
+    std::cout << std::endl << "Waiting for writer threads to finish...";
     m_thread.join();
     for(auto& stream: m_outfiles)
         stream.second.close();

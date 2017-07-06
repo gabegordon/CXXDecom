@@ -18,10 +18,10 @@ public:
 
 	~ThreadSafeListenerQueue() {}
 
-	uint32_t push(const T element)
+	uint32_t push(const T& element)
 	{
 		std::lock_guard<std::mutex> lock(m);
-		q.push(element);
+		q.push(std::move(element));
 		c.notify_one();
 		return 0;
 	}

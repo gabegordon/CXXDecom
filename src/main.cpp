@@ -17,7 +17,7 @@ int main(int argc, char* argv[])
         std::string instrument = argv[1];
         std::string packetFile = argv[2];
         std::string paramsFile = argv[3];
-        bool debug = true;
+        bool debug = false;
         bool allAPIDs = !!std::stoi(argv[4]);
         std::cout << packetFile << std::endl;
         system("cd output && del /Q *.txt 2>NUL 1>NUL");
@@ -25,6 +25,7 @@ int main(int argc, char* argv[])
         Decom decomEngine(instrument, debug, dr.getEntries());
         decomEngine.init(packetFile);
     }
+    std::cout << std::endl;
     system("pause");
     return 0;
 }
