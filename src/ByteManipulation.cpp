@@ -43,7 +43,11 @@ std::ostream &operator<<(std::ostream &os, unsigned char c) {
  */
 uint16_t swapEndian16(const uint16_t& val)
 {
-    return _byteswap_ushort(val);
+#ifdef __linux__
+  return __builtin_bswap16(val);
+#else
+  return _byteswap_ushort(val);
+#endif
 }
 
 /**
@@ -54,7 +58,11 @@ uint16_t swapEndian16(const uint16_t& val)
  */
 uint32_t swapEndian32(const uint32_t& val)
 {
-    return _byteswap_ulong(val);
+#ifdef __linux__
+  return __builtin_bswap32(val);
+#else
+  return _byteswap_ulong(val);
+#endif
 }
 
 /**
@@ -65,7 +73,11 @@ uint32_t swapEndian32(const uint32_t& val)
  */
 uint64_t swapEndian64(const uint64_t& val)
 {
-    return _byteswap_uint64(val);
+#ifdef __linux__
+  return __builtin_bswap64(val);
+#else
+  return _byteswap_uint64(val);
+#endif
 }
 
 /**
@@ -234,8 +246,9 @@ uint64_t mergeBytes64(uint8_t& b0, uint8_t& b1, uint8_t& b2, uint8_t& b3, uint8_
  * @param extraByte1 Unsigned 8-bit integer
  * @return Unsigned 16-bit integer containing thw merged bytes
  */
-uint32_t ByteManipulation::mergeBytes16(uint8_t& initialByte, uint8_t& extraByte1)
+uint32_t mergeBytes16(uint8_t& initialByte, uint8_t& extraByte1)
 {
     return (initialByte << 8) | extraByte1;
 }
+
 }

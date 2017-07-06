@@ -1,5 +1,6 @@
 #include <iostream>
 #include <bitset>
+#include <algorithm>
 #include <iterator>
 #include <tuple>
 #include <stdlib.h>

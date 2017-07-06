@@ -18,7 +18,7 @@ public:
 	void start();
 	void exec(const DataTypes::Packet pack);
   void join();
-  void ThreadPoolServer::ThreadMain(ThreadSafeListenerQueue<DataTypes::Packet>& queue, const std::string instrument, ThreadSafeStreamMap& outfiles);
+  void ThreadMain(ThreadSafeListenerQueue<DataTypes::Packet>& queue, const std::string instrument, ThreadSafeStreamMap& outfiles);
 private:
 	ThreadSafeListenerQueue<DataTypes::Packet> m_queue;
 	std::thread m_thread;

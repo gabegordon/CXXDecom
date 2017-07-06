@@ -131,7 +131,7 @@ void writeChans(const std::vector<atms_pack>& buf)
  *
  * @return N/A
  */
-void InstrumentFormat::formatATMS()
+void formatATMS()
 {
     CSVRow atms_row;
     std::ifstream m_infile;
@@ -173,7 +173,7 @@ void InstrumentFormat::formatATMS()
     writeChans(buf);
 }
 
-void InstrumentFormat::formatOMPS()
+void formatOMPS()
 {
     CSVRow omps_row;
     std::ifstream m_infile;
