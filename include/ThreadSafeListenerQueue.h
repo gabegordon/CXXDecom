@@ -21,7 +21,7 @@ public:
 	uint32_t push(const T& element)
 	{
 		std::lock_guard<std::mutex> lock(m);
-		q.push(std::move(element));
+		q.push(element);
 		c.notify_one();
 		return 0;
 	}
