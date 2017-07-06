@@ -22,5 +22,5 @@ script:
   # Check versions of gcc, g++ and cmake
   - gcc -v && g++ -v && cmake --version
   # Run your build commands next
-  mkdir -p build && cd build
-  cmake ..
+  - mkdir -p build && cd build
+  - cmake ..
