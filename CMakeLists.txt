@@ -1,11 +1,11 @@
 cmake_minimum_required(VERSION 2.8.9)
 
 project(Decom)
-
+set(CMAKE_BUILD_TYPE release)
 if (UNIX)
     set(CMAKE_CXX_FLAGS "-std=c++11 -lpthread -Wall")
 else ()
-    set(CMAKE_CXX_FLAGS_RELEASE "/c /Zi /GS- /GL /W3 /Gy /Gm- /Ox /EHsc /W3 /O2 /GL /MD /favor:INTEL64")
+    set(CMAKE_CXX_FLAGS "/c /Zi /GS- /GL /W3 /Gy /Gm- /Ox /EHsc /W3 /O2 /MD")
     set(CMAKE_EXE_LINKER_FLAGS "/LTCG /DEBUG")
 endif ()
 

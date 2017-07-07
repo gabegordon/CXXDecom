@@ -12,17 +12,19 @@ class ThreadPoolServer
 public:
 	ThreadPoolServer(const std::string& instrument) :
 		m_queue(),
-		m_instrument(instrument)
+		m_instrument(instrument),
+    m_num_threads(4)
 	{}
 	~ThreadPoolServer() {}
 	void start();
-	void exec(const DataTypes::Packet pack);
+	void exec(DataTypes::Packet& pack);
   void join();
-  void ThreadMain(ThreadSafeListenerQueue<DataTypes::Packet>& queue, const std::string instrument, ThreadSafeStreamMap& outfiles);
+  void ThreadMain(ThreadSafeListenerQueue& queue, const std::string instrument, ThreadSafeStreamMap& outfiles);
 private:
-	ThreadSafeListenerQueue<DataTypes::Packet> m_queue;
-	std::thread m_thread;
+	ThreadSafeListenerQueue m_queue;
+	std::vector<std::thread> m_threads;
 	std::string m_instrument;
   ThreadSafeStreamMap m_outfiles;
+  uint32_t m_num_threads;
 };
 
