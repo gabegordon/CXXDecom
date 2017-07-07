@@ -1,5 +1,6 @@
 #include <iostream>
 #include <cstdint>
+#include <string>
 #include "Decom.h"
 #include "DatabaseReader.h"
 

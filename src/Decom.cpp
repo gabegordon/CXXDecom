@@ -3,7 +3,8 @@
 #include <algorithm>
 #include <iterator>
 #include <tuple>
-#include <stdlib.h>
+#include <cstdlib>
+#include <string>
 #include "Decom.h"
 #include "ByteManipulation.h"
 #include "HeaderDecode.h"
@@ -48,19 +49,19 @@ void Decom::init(const std::string& infile)
 
         std::tuple<DataTypes::PrimaryHeader, DataTypes::SecondaryHeader, bool> headers = HeaderDecode::decodeHeaders(m_infile, m_debug);
 
-        if(!std::get<2>(headers))
+        if (!std::get<2>(headers))
             break;
 
         getEntries(std::get<0>(headers).APID);
         DataTypes::Packet pack;
         DataDecode dc(std::get<0>(headers), std::get<1>(headers), m_mapEntries[std::get<0>(headers).APID], m_debug, m_instrument);
 
-        if(m_instrument == "OMPS")
+        if (m_instrument == "OMPS")
             pack = dc.decodeOMPS(m_infile);
         else if (std::get<0>(headers).sequenceFlag == DataTypes::FIRST)
             pack = dc.decodeDataSegmented(m_infile, false);
         else
-            pack = dc.decodeData(m_infile,0);
+            pack = dc.decodeData(m_infile, 0);
 
         pack.apid = std::get<0>(headers).APID;
         pool.exec(pack);
@@ -79,7 +80,7 @@ void Decom::init(const std::string& infile)
  */
 void Decom::getEntries(const uint32_t& APID)
 {
-    if(std::find(std::begin(m_missingAPIDs), std::end(m_missingAPIDs), APID) != std::end(m_missingAPIDs)){
+    if (std::find(std::begin(m_missingAPIDs), std::end(m_missingAPIDs), APID) != std::end(m_missingAPIDs)){
         return;
     }
     if (m_mapEntries[APID].empty())
@@ -89,7 +90,7 @@ void Decom::getEntries(const uint32_t& APID)
         {
             if (entry.i_APID == APID)
             {
-                if(!entry.ignored)
+                if (!entry.ignored)
                 {
                     m_mapEntries[APID].emplace_back(entry);
                 }
@@ -109,7 +110,7 @@ void Decom::getEntries(const uint32_t& APID)
  *
  * @return N/A
  */
-void Decom::formatInstruments()
+void Decom::formatInstruments() const
 {
     InstrumentFormat::formatATMS();
 }

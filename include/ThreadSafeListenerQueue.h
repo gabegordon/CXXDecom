@@ -1,6 +1,7 @@
 #pragma once
 
 #include <queue>
+#include <tuple>
 #include <mutex>
 #include <condition_variable>
 #include <iostream>
@@ -34,7 +35,7 @@ class ThreadSafeListenerQueue
         std::unique_lock<std::mutex> lock(queueLock);
         while (q.empty())
         {
-            if(c.wait_for(lock,std::chrono::seconds(2)) == std::cv_status::timeout)
+            if (c.wait_for(lock, std::chrono::seconds(2)) == std::cv_status::timeout)
             {
                 retVal = 0;
                 return std::make_tuple(DataTypes::Packet(), nullptr);

@@ -2,7 +2,6 @@
 #include <iostream>
 #include <vector>
 #include <string>
-#include <iostream>
 #include <memory>
 #include <unordered_map>
 #include "ProgressBar.h"
@@ -68,7 +67,7 @@ void writeChans(const std::vector<atms_pack>& buf)
         outpacks.at(init) = tmp;
     }
 
-    while(i < bufSize)
+    while (i < bufSize)
     {
         writeProgress.Progressed(i);
         uint8_t packCounter = 0;
@@ -83,11 +82,11 @@ void writeChans(const std::vector<atms_pack>& buf)
         scans.at(0) = buf.at(i).scanangle;
         i++;
         uint16_t scanCounter = 1;
-        for(uint64_t k = i; k < bufSize; k++)
+        for (uint64_t k = i; k < bufSize; k++)
         {
             if (scanCounter > 103)
                 break;
-            if(buf.at(k).errflags == 0)
+            if (buf.at(k).errflags == 0)
             {
                 for (uint16_t l = 0; l < 22; l++)
                 {
@@ -148,10 +147,10 @@ void formatATMS()
     bool firstRow = true;
     std::vector<atms_pack> buf;
 
-    while(m_infile >> atms_row)
+    while (m_infile >> atms_row)
     {
         readProgress.Progressed(m_infile.tellg());
-        if(firstRow)
+        if (firstRow)
         {
             firstRow = false;
             continue;
@@ -163,7 +162,7 @@ void formatATMS()
         pack.micros = atms_row[2];
         pack.scanangle = static_cast<float>(0.005493) * static_cast<float>(std::stoul(atms_row[4]));
         pack.errflags = std::stoul(atms_row[5]);
-        for(uint8_t i = 6; i < 28; ++i)
+        for (uint8_t i = 6; i < 28; ++i)
         {
             pack.chans.emplace_back(std::stoul(atms_row[i]));
         }

@@ -13,10 +13,9 @@
 #define CHARACTER_WIDTH_PERCENTAGE 4
 
 class ProgressBar {
-
   public:
 
-  ProgressBar(uint64_t n_, const char* description_ = "", std::ostream& out_ = std::cerr) :
+  ProgressBar(const uint64_t& n_, const char* description_ = "", std::ostream& out_ = std::cerr) :
     n(n_),
     desc_width(0),
     frequency_update(n_/100),
@@ -33,7 +32,7 @@ class ProgressBar {
 
     void SetStyle(const char* unit_bar_, const char* unit_space_);
 
-    void Progressed(uint64_t idx_);
+    void Progressed(const uint64_t& idx_);
 
   private:
 
@@ -49,7 +48,7 @@ class ProgressBar {
     const char *unit_space;
     bool firstRun;
     void ClearBarField();
-    int GetConsoleWidth();
-    int GetBarLength();
+    int GetConsoleWidth() const;
+    int GetBarLength() const;
 
 };

@@ -13,10 +13,10 @@ class DatabaseReader
     m_allAPIDs(allAPIDs),
     m_paramsFile(paramsfile)
     {
-      init();
+        init();
     };
 
-    virtual ~DatabaseReader() {};
+    virtual ~DatabaseReader() {}
 
     std::vector<DataTypes::Entry> getEntries();
   private:
@@ -29,10 +29,10 @@ class DatabaseReader
 
     void init();
     void readDatabase(const std::string& filename);
-    void getByteBit(std::string& bytebit, uint32_t& i_byte, uint32_t& i_bitLower, uint32_t& i_bitUpper);
+    void getByteBit(std::string& bytebit, uint32_t& i_byte, uint32_t& i_bitLower, uint32_t& i_bitUpper) const;
     void readAPIDList();
     void printDataBase() const;
-    bool bannedAPID(std::string& mnem);
+    bool bannedAPID(const std::string& mnem) const;
     const struct DataTypes::Entry defaults = {
         "",DataTypes::NILL,0,0,0,0,true
     };

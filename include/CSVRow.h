@@ -9,7 +9,7 @@ class CSVRow
   CSVRow() :
     m_data()
     {};
-    virtual ~CSVRow() {};
+    virtual ~CSVRow() {}
 
     std::string const& operator[](const std::size_t index) const;
 

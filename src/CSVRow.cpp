@@ -1,4 +1,5 @@
 #include <sstream>
+#include <string>
 #include "CSVRow.h"
 
 /**
@@ -40,13 +41,16 @@ void CSVRow::readNextRow(std::istream& str)
 
     m_data.clear();
 
-    while (std::getline(lineStream, line)) {
+    while (std::getline(lineStream, line))
+    {
         const char *mystart = line.c_str();
         bool instring{ false };
-        for (const char* p = mystart; *p; p++) {
+        for (const char* p = mystart; *p; p++)
+        {
             if (*p == '"')
                 instring = !instring;
-            else if (*p == ',' && !instring) {
+            else if (*p == ',' && !instring)
+            {
                 m_data.emplace_back(std::string(mystart, p - mystart));
                 mystart = p + 1;
             }

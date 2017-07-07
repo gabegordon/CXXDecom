@@ -2,6 +2,7 @@
 #include <vector>
 #include <fstream>
 #include <unordered_map>
+#include <string>
 #include "DataTypes.h"
 
 typedef uint8_t BYTE;
@@ -20,13 +21,13 @@ class Decom
     m_progress(0),
     m_pack()
     {};
-    virtual ~Decom() {};
+    virtual ~Decom() {}
 
     void init(const std::string& infile);
 
   private:
     void getEntries(const uint32_t& APID);
-    void formatInstruments();
+    void formatInstruments() const;
 
     std::unordered_map<uint32_t, std::vector<DataTypes::Entry>> m_mapEntries;
     std::vector<DataTypes::Entry> m_entries;
@@ -38,5 +39,4 @@ class Decom
     bool m_firstRun;
     std::vector<uint32_t> m_missingAPIDs;
     DataTypes::Packet m_pack;
-
 };

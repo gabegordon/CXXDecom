@@ -1,4 +1,6 @@
 #include <fstream>
+#include <tuple>
+#include <vector>
 #include "HeaderDecode.h"
 #include "DataDecode.h"
 #include "ByteManipulation.h"
@@ -60,8 +62,8 @@ bool DataDecode::loadData(const std::vector<uint8_t>& buf, Bytes& bytes, const D
  */
 float DataDecode::getFloat(const std::vector<uint8_t>& buf, const DataTypes::Entry& currEntry, const uint32_t& offset, uint8_t initialByte)
 {
-    uint8_t b1,b2,b3,b4,b5,b6,b7;
-    if(currEntry.length == 64)
+    uint8_t b1, b2, b3, b4, b5, b6, b7;
+    if (currEntry.length == 64)
     {
         b1 = buf.at(currEntry.byte - offset + 1);
         b2 = buf.at(currEntry.byte - offset + 2);
@@ -70,10 +72,10 @@ float DataDecode::getFloat(const std::vector<uint8_t>& buf, const DataTypes::Ent
         b5 = buf.at(currEntry.byte - offset + 5);
         b6 = buf.at(currEntry.byte - offset + 6);
         b7 = buf.at(currEntry.byte - offset + 7);
-        uint64_t result = mergeBytes64(initialByte,b1,b2,b3,b4,b5,b6,b7);
+        uint64_t result = mergeBytes64(initialByte, b1, b2, b3, b4, b5, b6, b7);
         return static_cast<float>(result);
     }
-    else
+    else //Length is 32
     {
         b1 = buf.at(currEntry.byte - offset + 1);
         b2 = buf.at(currEntry.byte - offset + 2);
@@ -103,8 +105,8 @@ void DataDecode::getHeaderData(DataTypes::Packet& pack)
  */
 uint8_t DataDecode::getOffset()
 {
-    if(m_pHeader.secondaryHeader)
-        if(m_Instrument == "OMPS")
+    if (m_pHeader.secondaryHeader)
+        if (m_Instrument == "OMPS")
             return 20;
         else
             return 14;
@@ -122,7 +124,7 @@ DataTypes::Packet DataDecode::decodeData(std::ifstream& infile, const uint32_t& 
 {
     DataTypes::Packet pack;
 
-    if(m_entries.size() < 1)
+    if (m_entries.size() < 1)
     {
         if (m_pHeader.packetLength != 0)
         {
@@ -137,19 +139,19 @@ DataTypes::Packet DataDecode::decodeData(std::ifstream& infile, const uint32_t& 
     else
         pack.ignored = false;
 
-    std::vector<uint8_t> buf(m_pHeader.packetLength); //reserve space for bytes
-    infile.read(reinterpret_cast<char*>(buf.data()), buf.size()); //read bytes
+    std::vector<uint8_t> buf(m_pHeader.packetLength);  // reserve space for bytes
+    infile.read(reinterpret_cast<char*>(buf.data()), buf.size());  // read bytes
 
     uint8_t offset = getOffset();
     uint32_t entryIndex;
     pack.data.reserve(m_entries.size() * sizeof(DataTypes::Numeric) * 2);
     uint64_t size = m_entries.size();
-    for(entryIndex = index; entryIndex < size; entryIndex++)
+    for (entryIndex = index; entryIndex < size; entryIndex++)
     {
         DataTypes::Numeric num;
         Bytes numBytes;
 
-        if (!loadData(buf, numBytes, m_entries.at(entryIndex), offset) || m_entries.at(entryIndex).byte - offset >= buf.size()) //Make sure we don't go past array bounds (entries not contained in packet)
+        if (!loadData(buf, numBytes, m_entries.at(entryIndex), offset) || m_entries.at(entryIndex).byte - offset >= buf.size())  // Make sure we don't go past array bounds (entries not contained in packet)
         {
             continue;
         }
@@ -160,7 +162,7 @@ DataTypes::Packet DataDecode::decodeData(std::ifstream& infile, const uint32_t& 
 
         if (dtype == DataTypes::FLOAT)
         {
-            num.f64 = getFloat(buf,m_entries.at(entryIndex),offset,initialByte);
+            num.f64 = getFloat(buf, m_entries.at(entryIndex), offset, initialByte);
         }
         else
         {
@@ -266,16 +268,16 @@ DataTypes::Packet DataDecode::decodeData(std::ifstream& infile, const uint32_t& 
 DataTypes::Packet DataDecode::decodeDataSegmented(std::ifstream& infile, const bool omps)
 {
     DataTypes::Packet segPack;
-    if(!omps)
+    if (!omps)
         segmentLastByte = 0;
     getHeaderData(segPack);
-    auto pack = decodeData(infile,segmentLastByte);
+    auto pack = decodeData(infile, segmentLastByte);
     segPack.data.insert(std::end(segPack.data), std::begin(pack.data), std::end(pack.data));
     do
     {
         std::tuple<DataTypes::PrimaryHeader, DataTypes::SecondaryHeader, bool> headers = HeaderDecode::decodeHeaders(infile, m_debug);
         m_pHeader = std::get<0>(headers);
-        auto pack = decodeData(infile,segmentLastByte);
+        auto pack = decodeData(infile, segmentLastByte);
         segPack.data.insert(std::end(segPack.data), std::begin(pack.data), std::end(pack.data));
     } while (m_pHeader.sequenceFlag != DataTypes::LAST);
     return segPack;
@@ -298,13 +300,13 @@ DataTypes::Packet DataDecode::decodeOMPS(std::ifstream& infile)
     ReadFile::read(contFlag, infile);
     versionNum = ByteManipulation::swapEndian16(versionNum);
     m_pHeader.packetLength -= 4;
-    if(m_pHeader.sequenceFlag == DataTypes::STANDALONE)
+    if (m_pHeader.sequenceFlag == DataTypes::STANDALONE)
     {
-        segPack = decodeData(infile,0);
+        segPack = decodeData(infile, 0);
     }
     else
     {
-        if(!contCount)
+        if (!contCount)
         {
             segPack = decodeDataSegmented(infile, true);
             segmentLastByte = 0;
@@ -312,9 +314,9 @@ DataTypes::Packet DataDecode::decodeOMPS(std::ifstream& infile)
         else
         {
             uint16_t segPacketCount = 0;
-            while(segPacketCount != contCount)
+            while (segPacketCount != contCount)
             {
-                if(segPacketCount != 0)
+                if (segPacketCount != 0)
                 {
                     std::tuple<DataTypes::PrimaryHeader, DataTypes::SecondaryHeader, bool> headers = HeaderDecode::decodeHeaders(infile, m_debug);
                     m_pHeader = std::get<0>(headers);

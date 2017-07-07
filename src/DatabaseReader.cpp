@@ -1,5 +1,7 @@
 #include <iostream>
 #include <algorithm>
+#include <string>
+#include <vector>
 #include "DatabaseReader.h"
 #include "DataTypes.h"
 #include "CSVRow.h"
@@ -41,7 +43,7 @@ void DatabaseReader::init()
  * @param i_bitUpper Unsigned 32-bit integer to be set by function
  * @return None. Parameters serve as the return value
  */
-void DatabaseReader::getByteBit(std::string& bytebit, uint32_t& i_byte, uint32_t& i_bitLower, uint32_t& i_bitUpper)
+void DatabaseReader::getByteBit(std::string& bytebit, uint32_t& i_byte, uint32_t& i_bitLower, uint32_t& i_bitUpper) const
 {
     bytebit.erase(0, 1);
     std::string s_byte = bytebit.substr(0, 4);
@@ -68,7 +70,7 @@ void DatabaseReader::getByteBit(std::string& bytebit, uint32_t& i_byte, uint32_t
                 }
                 catch(...)
                 {
-                    std::cerr << "stoi failed for i_bitLower or i_bitUpper: " << s_bit.substr(0,found) << "," << s_bit.substr(found + 1) << std::endl;
+                    std::cerr << "stoi failed for i_bitLower or i_bitUpper: " << s_bit.substr(0, found) << "," << s_bit.substr(found + 1) << std::endl;
                 }
             }
         }
@@ -194,10 +196,10 @@ void DatabaseReader::readDatabase(const std::string& filename)
             tmp.bitUpper = i_bitUpper;
             tmp.length = std::stoi(dataRow[1].substr(1, std::string::npos));
         }
-		if (bannedAPID(mnem)) //Skip entries containing header info, as we already decode it.
-		{
-			tmp.ignored = true;
-		}
+        if (bannedAPID(mnem))  // Skip entries containing header info, as we already decode it.
+        {
+            tmp.ignored = true;
+        }
         m_entries.emplace_back(tmp);
     }
     m_firstRun = true;
@@ -225,11 +227,11 @@ void DatabaseReader::printDataBase() const
  */
 bool compareByAPID(const DataTypes::Entry& a, const DataTypes::Entry& b)
 {
-    if(a.i_APID != b.i_APID)
+    if (a.i_APID != b.i_APID)
         return a.i_APID < b.i_APID;
     else
     {
-        if(a.byte != b.byte)
+        if (a.byte != b.byte)
             return a.byte < b.byte;
         else
             return a.bitLower < b.bitLower;
@@ -255,7 +257,7 @@ std::vector<DataTypes::Entry> DatabaseReader::getEntries()
  * @param mnem Mnemonic to check
  * @return True if we should skip this mnemonic
  */
-bool DatabaseReader::bannedAPID(std::string& mnem)
+bool DatabaseReader::bannedAPID(const std::string& mnem) const
 {
     std::string strippedmnem;
     if (mnem.length() > 6)

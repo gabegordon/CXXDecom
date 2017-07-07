@@ -5,10 +5,10 @@
 
 void ThreadPoolServer::ThreadMain(ThreadSafeListenerQueue& queue, const std::string instrument, ThreadSafeStreamMap& outfiles)
 {
-    while(true)
+    while (true)
     {
         uint32_t retVal = 0;
-        auto queueVal= queue.listen(retVal);
+        auto queueVal = queue.listen(retVal);
         if (retVal)
         {
             if (std::get<0>(queueVal).ignored)
@@ -44,7 +44,7 @@ void ThreadPoolServer::ThreadMain(ThreadSafeListenerQueue& queue, const std::str
 }
 void ThreadPoolServer::start()
 {
-    for(uint32_t i = 0; i < m_num_threads; ++i)
+    for (uint32_t i = 0; i < m_num_threads; ++i)
     {
         m_threads.emplace_back(std::thread(&ThreadPoolServer::ThreadMain, this, std::ref(m_queue), std::ref(m_instrument), std::ref(m_outfiles)));
     }
@@ -58,8 +58,8 @@ void ThreadPoolServer::exec(DataTypes::Packet& pack)
 void ThreadPoolServer::join()
 {
     std::cout << std::endl << "Waiting for writer threads to finish...";
-    for(auto& thread: m_threads)
+    for (auto& thread : m_threads)
         thread.join();
-    for(auto& stream: m_outfiles)
+    for (auto& stream : m_outfiles)
         stream.second.close();
 }

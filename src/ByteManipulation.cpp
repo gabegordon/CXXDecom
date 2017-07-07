@@ -1,3 +1,5 @@
+#include <string>
+#include <bitset>
 #include "ByteManipulation.h"
 
 namespace ByteManipulation {
@@ -44,9 +46,9 @@ std::ostream &operator<<(std::ostream &os, unsigned char c) {
 uint16_t swapEndian16(const uint16_t& val)
 {
 #ifdef __linux__
-  return __builtin_bswap16(val);
+    return __builtin_bswap16(val);
 #else
-  return _byteswap_ushort(val);
+    return _byteswap_ushort(val);
 #endif
 }
 
@@ -59,9 +61,9 @@ uint16_t swapEndian16(const uint16_t& val)
 uint32_t swapEndian32(const uint32_t& val)
 {
 #ifdef __linux__
-  return __builtin_bswap32(val);
+    return __builtin_bswap32(val);
 #else
-  return _byteswap_ulong(val);
+    return _byteswap_ulong(val);
 #endif
 }
 
@@ -74,9 +76,9 @@ uint32_t swapEndian32(const uint32_t& val)
 uint64_t swapEndian64(const uint64_t& val)
 {
 #ifdef __linux__
-  return __builtin_bswap64(val);
+    return __builtin_bswap64(val);
 #else
-  return _byteswap_uint64(val);
+    return _byteswap_uint64(val);
 #endif
 }
 
@@ -88,9 +90,9 @@ uint64_t swapEndian64(const uint64_t& val)
  * @param len Number of bits to extract
  * @return Extracted bits
  */
-uint32_t extract8(const uint8_t& val, uint32_t start, uint32_t len)
+uint32_t extract8(const uint8_t& val, const uint32_t& start, const uint32_t& len)
 {
-		return (val >> start) & ((1 << (len - start)) - 1);
+    return (val >> start) & ((1 << (len - start)) - 1);
 }
 
 /**
@@ -101,7 +103,7 @@ uint32_t extract8(const uint8_t& val, uint32_t start, uint32_t len)
  * @param len Number of bits to extract
  * @return Extracted bits
  */
-uint32_t extract16(const uint16_t& val, uint32_t start, uint32_t len)
+uint32_t extract16(const uint16_t& val, const uint32_t& start, const uint32_t& len)
 {
     return std::stoul((std::bitset<16>(val).to_string().substr(start, len)), nullptr, 2);
 }
@@ -114,7 +116,7 @@ uint32_t extract16(const uint16_t& val, uint32_t start, uint32_t len)
  * @param len Number of bits to extract
  * @return Extracted bits
  */
-uint32_t extract32(const uint32_t& val, uint32_t start, uint32_t len)
+uint32_t extract32(const uint32_t& val, const uint32_t& start, const uint32_t& len)
 {
     return std::stoul((std::bitset<32>(val).to_string().substr(start, len)), nullptr, 2);
 }
@@ -127,7 +129,7 @@ uint32_t extract32(const uint32_t& val, uint32_t start, uint32_t len)
  * @param len Number of bits to extract
  * @return Extracted bits
  */
-uint64_t extract64(const uint64_t& val, uint32_t start, uint32_t len)
+uint64_t extract64(const uint64_t& val, const uint32_t& start, const uint32_t& len)
 {
     return std::stoul((std::bitset<64>(val).to_string().substr(start, len)), nullptr, 2);
 }
@@ -140,7 +142,7 @@ uint64_t extract64(const uint64_t& val, uint32_t start, uint32_t len)
  * @param len Number of bits to extract
  * @return Extracted bits (signed)
  */
-int32_t extract8Signed(const uint8_t& val, uint32_t start, uint32_t len)
+int32_t extract8Signed(const uint8_t& val, const uint32_t& start, const uint32_t& len)
 {
     return std::stol((std::bitset<8>(val).to_string().substr(start, len)), nullptr, 2);
 }
@@ -153,20 +155,20 @@ int32_t extract8Signed(const uint8_t& val, uint32_t start, uint32_t len)
  * @param len Number of bits to extract
  * @return Extracted bits (signed)
  */
-int32_t extract16Signed(const uint16_t& val, uint32_t start, uint32_t len)
+int32_t extract16Signed(const uint16_t& val, const uint32_t& start, const uint32_t& len)
 {
     return std::stol((std::bitset<16>(val).to_string().substr(start, len)), nullptr, 2);
 }
 
 /**
-  * Extract a range of bits from four bytes.
-  *
-  * @param val 32-bit integer to extract from
-  * @param start Starting bit (inclusive)
-  * @param len Number of bits to extract
-  * @return Extracted bits (signed)
-  */
-int32_t extract32Signed(const uint32_t& val, uint32_t start, uint32_t len)
+ * Extract a range of bits from four bytes.
+ *
+ * @param val 32-bit integer to extract from
+ * @param start Starting bit (inclusive)
+ * @param len Number of bits to extract
+ * @return Extracted bits (signed)
+ */
+int32_t extract32Signed(const uint32_t& val, const uint32_t& start, const uint32_t& len)
 {
     return std::stol((std::bitset<32>(val).to_string().substr(start, len)), nullptr, 2);
 }
@@ -179,7 +181,7 @@ int32_t extract32Signed(const uint32_t& val, uint32_t start, uint32_t len)
  * @param len Number of bits to extract
  * @return Extracted bits (signed)
  */
-int64_t extract64Signed(const uint64_t& val, uint32_t start, uint32_t len)
+int64_t extract64Signed(const uint64_t& val, const uint32_t& start, const uint32_t& len)
 {
     return std::stoll((std::bitset<64>(val).to_string().substr(start, len)), nullptr, 2);
 }
@@ -194,7 +196,7 @@ int64_t extract64Signed(const uint64_t& val, uint32_t start, uint32_t len)
  * @param num Either 3 or 4, denotes whether merging 3 bytes or 4 bytes
  * @return Unsigned 32-bit integer containing the merged bytes
  */
-uint32_t mergeBytes(uint8_t& initialByte, uint8_t& extraByte1, uint8_t& extraByte2, uint8_t& extraByte3, const uint32_t& num)
+uint32_t mergeBytes(const uint8_t& initialByte, const uint8_t& extraByte1, const uint8_t& extraByte2, const uint8_t& extraByte3, const uint32_t& num)
 {
     std::string b1 = std::bitset<8>(initialByte).to_string();
     std::string b2 = std::bitset<8>(extraByte1).to_string();
@@ -225,7 +227,7 @@ uint32_t mergeBytes(uint8_t& initialByte, uint8_t& extraByte1, uint8_t& extraByt
  * @param b7 Unsigned 8-bit integer
  * @return Unsigned 64-bit integer containing the merged bytes
  */
-uint64_t mergeBytes64(uint8_t& b0, uint8_t& b1, uint8_t& b2, uint8_t& b3, uint8_t& b4, uint8_t& b5, uint8_t& b6, uint8_t& b7)
+uint64_t mergeBytes64(const uint8_t& b0, const uint8_t& b1, const uint8_t& b2, const uint8_t& b3, const uint8_t& b4, const uint8_t& b5, const uint8_t& b6, const uint8_t& b7)
 {
     std::string b0s = std::bitset<8>(b0).to_string();
     std::string b1s = std::bitset<8>(b1).to_string();
@@ -246,7 +248,7 @@ uint64_t mergeBytes64(uint8_t& b0, uint8_t& b1, uint8_t& b2, uint8_t& b3, uint8_
  * @param extraByte1 Unsigned 8-bit integer
  * @return Unsigned 16-bit integer containing thw merged bytes
  */
-uint32_t mergeBytes16(uint8_t& initialByte, uint8_t& extraByte1)
+uint32_t mergeBytes16(const uint8_t& initialByte, const uint8_t& extraByte1)
 {
     return (initialByte << 8) | extraByte1;
 }
