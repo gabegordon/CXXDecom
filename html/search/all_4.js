@@ -2,7 +2,6 @@ var searchData=
 [
   ['end',['end',['../class_thread_safe_stream_map.html#ae28e8205270bf9f5023bedbb66f3957a',1,'ThreadSafeStreamMap']]],
   ['entry',['Entry',['../namespace_data_types.html#struct_data_types_1_1_entry',1,'DataTypes']]],
-  ['errflags',['errflags',['../_instrument_format_8cpp.html#a156b1811b023856d3c307b5d3786406f',1,'atms_pack']]],
   ['exec',['exec',['../class_thread_pool_server.html#ad20cdc001a4aa75e5c5cf82e397b2815',1,'ThreadPoolServer']]],
   ['extract16',['extract16',['../namespace_byte_manipulation.html#ab8c3d1d731a1819a95e2dddd05351f42',1,'ByteManipulation']]],
   ['extract16signed',['extract16Signed',['../namespace_byte_manipulation.html#ac9ba09cc39dad39528f02e1ce6f7848e',1,'ByteManipulation']]],

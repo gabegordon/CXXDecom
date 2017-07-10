@@ -13,6 +13,7 @@ var searchData=
   ['sh_5fflag',['sh_flag',['../namespace_header_decode.html#a888492b55727e2657cacc7faffeca53f',1,'HeaderDecode']]],
   ['signed',['SIGNED',['../namespace_data_types.html#a2b6a16988e8ecbed83d193ad09ae2601ae98e6333f62b4841d6905a45d32cd554',1,'DataTypes']]],
   ['size',['size',['../class_c_s_v_row.html#a3a1aae96182818cd3e32ce60f92d4d26',1,'CSVRow']]],
+  ['sos_5fsync',['sos_sync',['../_instrument_format_8cpp.html#af5b77a17f26d067c2c49f499c17bda44',1,'atms_pack']]],
   ['standalone',['STANDALONE',['../namespace_data_types.html#aff8a980d2c0f7ad1b7ed03da51a72b76a4fe5c8b66c5a142f59748927553e68d6',1,'DataTypes']]],
   ['start',['start',['../class_thread_pool_server.html#aebc5c6fd376dc13596c65881e94819ea',1,'ThreadPoolServer']]],
   ['swapendian16',['swapEndian16',['../namespace_byte_manipulation.html#a51dbb37e49ca132d404b54d5e3395b5f',1,'ByteManipulation']]],

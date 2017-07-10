@@ -128,11 +128,20 @@ template&lt;typename T &gt; </div>
   </tr>
 </table>
 </div><div class="memdoc">
+<p>Templated read function. Reads Type T from stream.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">buffer</td><td>Data type to read into </td></tr>
+    <tr><td class="paramname">in</td><td>Stream to read from </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>N/A </dd></dl>
 
-<p>Definition at line <a class="el" href="_read_file_8h_source.html#l00007">7</a> of file <a class="el" href="_read_file_8h_source.html">ReadFile.h</a>.</p>
-<div class="fragment"><div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160;    {</div>
-<div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160;        in.read(reinterpret_cast&lt;char *&gt;(&amp;buffer), <span class="keyword">sizeof</span>(buffer));</div>
-<div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160;    }</div>
+<p>Definition at line <a class="el" href="_read_file_8h_source.html#l00014">14</a> of file <a class="el" href="_read_file_8h_source.html">ReadFile.h</a>.</p>
+<div class="fragment"><div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;    {</div>
+<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;        in.read(reinterpret_cast&lt;char *&gt;(&amp;buffer), <span class="keyword">sizeof</span>(buffer));</div>
+<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;    }</div>
 </div><!-- fragment -->
 </div>
 </div>

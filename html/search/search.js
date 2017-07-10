@@ -12,7 +12,7 @@ var indexSectionsWithContent =
   2: "bdhir",
   3: "bcdhimprt",
   4: "bcdefghijlmoprstw~",
-  5: "abcdefilmnopqstu",
+  5: "abcdfilmnopqstu",
   6: "b",
   7: "bds",
   8: "filmnostu",
