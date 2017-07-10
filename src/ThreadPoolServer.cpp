@@ -1,5 +1,6 @@
 #include <fstream>
 #include <iomanip>
+#include <memory>
 #include "ThreadPoolServer.h"
 #include "ThreadSafeStreamMap.h"
 
@@ -11,21 +12,21 @@ void ThreadPoolServer::ThreadMain(ThreadSafeListenerQueue& queue, const std::str
         auto queueVal = queue.listen(retVal);
         if (retVal)
         {
-            if (std::get<0>(queueVal).ignored)
+            if (std::get<0>(queueVal)->ignored)
                 continue;
-            std::ofstream& outfile = outfiles.getStream(instrument, std::get<0>(queueVal).apid);
+            std::ofstream& outfile = outfiles.getStream(instrument, std::get<0>(queueVal)->apid);
             if (static_cast<uint64_t>(outfile.tellp()) == 0)
             {
                 outfile << std::setw(15) << "Day" << "," << std::setw(15) << "Millis" << "," << std::setw(15) << "Micros" << "," << std::setw(15) << "SeqCount" << ",";
-                for (const DataTypes::Numeric& num : std::get<0>(queueVal).data)
+                for (const DataTypes::Numeric& num : std::get<0>(queueVal)->data)
                 {
                     outfile << std::setw(15) << num.mnem << ",";
                 }
                 outfile << "\n";
             }
 
-            outfile << std::setw(15) << std::get<0>(queueVal).day << "," << std::setw(15) << std::get<0>(queueVal).millis << "," << std::setw(15) << std::get<0>(queueVal).micros << "," << std::setw(15) << std::get<0>(queueVal).sequenceCount << ",";
-            for (const DataTypes::Numeric& num : std::get<0>(queueVal).data)
+            outfile << std::setw(15) << std::get<0>(queueVal)->day << "," << std::setw(15) << std::get<0>(queueVal)->millis << "," << std::setw(15) << std::get<0>(queueVal)->micros << "," << std::setw(15) << std::get<0>(queueVal)->sequenceCount << ",";
+            for (const DataTypes::Numeric& num : std::get<0>(queueVal)->data)
             {
                 switch (num.tag)
                 {
@@ -50,9 +51,9 @@ void ThreadPoolServer::start()
     }
 }
 
-void ThreadPoolServer::exec(DataTypes::Packet& pack)
+void ThreadPoolServer::exec(std::unique_ptr<DataTypes::Packet> pack)
 {
-    m_queue.push(pack);
+    m_queue.push(std::move(pack));
 }
 
 void ThreadPoolServer::join()

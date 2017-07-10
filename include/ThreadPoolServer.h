@@ -17,7 +17,7 @@ class ThreadPoolServer
     {}
     ~ThreadPoolServer() {}
     void start();
-    void exec(DataTypes::Packet& pack);
+    void exec(std::unique_ptr<DataTypes::Packet> pack);
     void join();
     void ThreadMain(ThreadSafeListenerQueue& queue, const std::string instrument, ThreadSafeStreamMap& outfiles);
   private:

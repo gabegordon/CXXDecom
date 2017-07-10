@@ -1,11 +1,14 @@
 #include <iostream>
 #include <cstdint>
 #include <string>
+#include <chrono>
 #include "Decom.h"
 #include "DatabaseReader.h"
 
 int main(int argc, char* argv[])
 {
+    std::chrono::time_point<std::chrono::system_clock> start, end;
+    start = std::chrono::system_clock::now();
     if (argc < 5)
     {
         std::cout << "Specify: database and instrument\n";
@@ -25,6 +28,9 @@ int main(int argc, char* argv[])
         decomEngine.init(packetFile);
     }
     std::cout << std::endl;
+    end = std::chrono::system_clock::now();
+    std::chrono::duration<double> elapsed_seconds = end-start;
+    std::cout  << "elapsed time: " << elapsed_seconds.count() << "s\n";
     system("pause");
     return 0;
 }

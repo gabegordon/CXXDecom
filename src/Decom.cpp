@@ -5,6 +5,7 @@
 #include <tuple>
 #include <cstdlib>
 #include <string>
+#include <memory>
 #include "Decom.h"
 #include "ByteManipulation.h"
 #include "HeaderDecode.h"
@@ -64,7 +65,7 @@ void Decom::init(const std::string& infile)
             pack = dc.decodeData(m_infile, 0);
 
         pack.apid = std::get<0>(headers).APID;
-        pool.exec(pack);
+        pool.exec(std::move(std::make_unique<DataTypes::Packet>(pack)));
     }
     m_infile.close();
     pool.join();
