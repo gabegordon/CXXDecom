@@ -23,7 +23,7 @@ int main(int argc, char* argv[])
         bool allAPIDs = !!std::stoi(argv[4]);
         std::cout << packetFile << std::endl;
 #ifdef __linux__
-        system("cd output && rm -f *.txt")
+        system("cd output && rm -f *.txt");
 #else
         system("cd output && del /Q *.txt 2>NUL 1>NUL");
 #endif
