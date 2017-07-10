@@ -108,10 +108,10 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:aa34887d3d7a13e958365d8b4a5db2529"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a55add79cea44eb63889911ab92de2dfe"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_thread_safe_listener_queue.html#a55add79cea44eb63889911ab92de2dfe">push</a> (std::unique_ptr&lt; <a class="el" href="namespace_data_types.html#struct_data_types_1_1_packet">DataTypes::Packet</a> &gt; element)</td></tr>
 <tr class="separator:a55add79cea44eb63889911ab92de2dfe"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a21d579715c67ccae9c95e31395540527"><td class="memItemLeft" align="right" valign="top">std::tuple&lt; std::unique_ptr<br class="typebreak"/>
+<tr class="memitem:a39537d7c38a30223b0d5f88a95521fab"><td class="memItemLeft" align="right" valign="top">std::tuple&lt; std::unique_ptr<br class="typebreak"/>
 &lt; <a class="el" href="namespace_data_types.html#struct_data_types_1_1_packet">DataTypes::Packet</a> &gt;<br class="typebreak"/>
-, std::mutex * &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_thread_safe_listener_queue.html#a21d579715c67ccae9c95e31395540527">listen</a> (uint32_t &amp;retVal)</td></tr>
-<tr class="separator:a21d579715c67ccae9c95e31395540527"><td class="memSeparator" colspan="2">&#160;</td></tr>
+, std::mutex * &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_thread_safe_listener_queue.html#a39537d7c38a30223b0d5f88a95521fab">listen</a> (uint32_t &amp;retVal)</td></tr>
+<tr class="separator:a39537d7c38a30223b0d5f88a95521fab"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pri-attribs"></a>
 Private Attributes</h2></td></tr>
@@ -127,7 +127,7 @@ Private Attributes</h2></td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock">
-<p>Definition at line <a class="el" href="_thread_safe_listener_queue_8h_source.html#l00013">13</a> of file <a class="el" href="_thread_safe_listener_queue_8h_source.html">ThreadSafeListenerQueue.h</a>.</p>
+<p>Definition at line <a class="el" href="_thread_safe_listener_queue_8h_source.html#l00011">11</a> of file <a class="el" href="_thread_safe_listener_queue_8h_source.html">ThreadSafeListenerQueue.h</a>.</p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a class="anchor" id="a810efaeea35c0ed832b3d9ec59ab43bb"></a>
 <div class="memitem">
@@ -150,17 +150,17 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="_thread_safe_listener_queue_8h_source.html#l00016">16</a> of file <a class="el" href="_thread_safe_listener_queue_8h_source.html">ThreadSafeListenerQueue.h</a>.</p>
-<div class="fragment"><div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;                            :</div>
-<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;    <a class="code" href="class_thread_safe_listener_queue.html#ae4f9bfcab5746766433788e29b27267a">q</a>(),</div>
-<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;    <a class="code" href="class_thread_safe_listener_queue.html#a7a184d0d237106f87219976e3076d49e">queueLock</a>(),</div>
-<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;    <a class="code" href="class_thread_safe_listener_queue.html#a9bfe4d4cf3b623755a44196d40fc5444">c</a>(),</div>
-<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;    <a class="code" href="class_thread_safe_listener_queue.html#a7c25a74fc34d24adc92e701de3a0fdae">m_map</a>()</div>
-<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;    {}</div>
-<div class="ttc" id="class_thread_safe_listener_queue_html_a7a184d0d237106f87219976e3076d49e"><div class="ttname"><a href="class_thread_safe_listener_queue.html#a7a184d0d237106f87219976e3076d49e">ThreadSafeListenerQueue::queueLock</a></div><div class="ttdeci">std::mutex queueLock</div><div class="ttdef"><b>Definition:</b> <a href="_thread_safe_listener_queue_8h_source.html#l00070">ThreadSafeListenerQueue.h:70</a></div></div>
-<div class="ttc" id="class_thread_safe_listener_queue_html_a7c25a74fc34d24adc92e701de3a0fdae"><div class="ttname"><a href="class_thread_safe_listener_queue.html#a7c25a74fc34d24adc92e701de3a0fdae">ThreadSafeListenerQueue::m_map</a></div><div class="ttdeci">ThreadSafeStreamMap m_map</div><div class="ttdef"><b>Definition:</b> <a href="_thread_safe_listener_queue_8h_source.html#l00072">ThreadSafeListenerQueue.h:72</a></div></div>
-<div class="ttc" id="class_thread_safe_listener_queue_html_ae4f9bfcab5746766433788e29b27267a"><div class="ttname"><a href="class_thread_safe_listener_queue.html#ae4f9bfcab5746766433788e29b27267a">ThreadSafeListenerQueue::q</a></div><div class="ttdeci">std::queue&lt; std::unique_ptr&lt; DataTypes::Packet &gt; &gt; q</div><div class="ttdef"><b>Definition:</b> <a href="_thread_safe_listener_queue_8h_source.html#l00069">ThreadSafeListenerQueue.h:69</a></div></div>
-<div class="ttc" id="class_thread_safe_listener_queue_html_a9bfe4d4cf3b623755a44196d40fc5444"><div class="ttname"><a href="class_thread_safe_listener_queue.html#a9bfe4d4cf3b623755a44196d40fc5444">ThreadSafeListenerQueue::c</a></div><div class="ttdeci">std::condition_variable c</div><div class="ttdef"><b>Definition:</b> <a href="_thread_safe_listener_queue_8h_source.html#l00071">ThreadSafeListenerQueue.h:71</a></div></div>
+<p>Definition at line <a class="el" href="_thread_safe_listener_queue_8h_source.html#l00014">14</a> of file <a class="el" href="_thread_safe_listener_queue_8h_source.html">ThreadSafeListenerQueue.h</a>.</p>
+<div class="fragment"><div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;                            :</div>
+<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;    <a class="code" href="class_thread_safe_listener_queue.html#ae4f9bfcab5746766433788e29b27267a">q</a>(),</div>
+<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;    <a class="code" href="class_thread_safe_listener_queue.html#a7a184d0d237106f87219976e3076d49e">queueLock</a>(),</div>
+<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;    <a class="code" href="class_thread_safe_listener_queue.html#a9bfe4d4cf3b623755a44196d40fc5444">c</a>(),</div>
+<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;    <a class="code" href="class_thread_safe_listener_queue.html#a7c25a74fc34d24adc92e701de3a0fdae">m_map</a>()</div>
+<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;    {}</div>
+<div class="ttc" id="class_thread_safe_listener_queue_html_a7a184d0d237106f87219976e3076d49e"><div class="ttname"><a href="class_thread_safe_listener_queue.html#a7a184d0d237106f87219976e3076d49e">ThreadSafeListenerQueue::queueLock</a></div><div class="ttdeci">std::mutex queueLock</div><div class="ttdef"><b>Definition:</b> <a href="_thread_safe_listener_queue_8h_source.html#l00029">ThreadSafeListenerQueue.h:29</a></div></div>
+<div class="ttc" id="class_thread_safe_listener_queue_html_a7c25a74fc34d24adc92e701de3a0fdae"><div class="ttname"><a href="class_thread_safe_listener_queue.html#a7c25a74fc34d24adc92e701de3a0fdae">ThreadSafeListenerQueue::m_map</a></div><div class="ttdeci">ThreadSafeStreamMap m_map</div><div class="ttdef"><b>Definition:</b> <a href="_thread_safe_listener_queue_8h_source.html#l00031">ThreadSafeListenerQueue.h:31</a></div></div>
+<div class="ttc" id="class_thread_safe_listener_queue_html_ae4f9bfcab5746766433788e29b27267a"><div class="ttname"><a href="class_thread_safe_listener_queue.html#ae4f9bfcab5746766433788e29b27267a">ThreadSafeListenerQueue::q</a></div><div class="ttdeci">std::queue&lt; std::unique_ptr&lt; DataTypes::Packet &gt; &gt; q</div><div class="ttdef"><b>Definition:</b> <a href="_thread_safe_listener_queue_8h_source.html#l00028">ThreadSafeListenerQueue.h:28</a></div></div>
+<div class="ttc" id="class_thread_safe_listener_queue_html_a9bfe4d4cf3b623755a44196d40fc5444"><div class="ttname"><a href="class_thread_safe_listener_queue.html#a9bfe4d4cf3b623755a44196d40fc5444">ThreadSafeListenerQueue::c</a></div><div class="ttdeci">std::condition_variable c</div><div class="ttdef"><b>Definition:</b> <a href="_thread_safe_listener_queue_8h_source.html#l00030">ThreadSafeListenerQueue.h:30</a></div></div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -185,32 +185,24 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="_thread_safe_listener_queue_8h_source.html#l00023">23</a> of file <a class="el" href="_thread_safe_listener_queue_8h_source.html">ThreadSafeListenerQueue.h</a>.</p>
-<div class="fragment"><div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;{}</div>
+<p>Definition at line <a class="el" href="_thread_safe_listener_queue_8h_source.html#l00021">21</a> of file <a class="el" href="_thread_safe_listener_queue_8h_source.html">ThreadSafeListenerQueue.h</a>.</p>
+<div class="fragment"><div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;{}</div>
 </div><!-- fragment -->
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
-<a class="anchor" id="a21d579715c67ccae9c95e31395540527"></a>
+<a class="anchor" id="a39537d7c38a30223b0d5f88a95521fab"></a>
 <div class="memitem">
 <div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">std::tuple&lt;std::unique_ptr&lt;<a class="el" href="namespace_data_types.html#struct_data_types_1_1_packet">DataTypes::Packet</a>&gt;, std::mutex*&gt; ThreadSafeListenerQueue::listen </td>
+          <td class="memname">std::tuple&lt; std::unique_ptr&lt; <a class="el" href="namespace_data_types.html#struct_data_types_1_1_packet">DataTypes::Packet</a> &gt;, std::mutex * &gt; ThreadSafeListenerQueue::listen </td>
           <td>(</td>
           <td class="paramtype">uint32_t &amp;&#160;</td>
           <td class="paramname"><em>retVal</em></td><td>)</td>
           <td></td>
         </tr>
       </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
-  </tr>
-</table>
 </div><div class="memdoc">
 <p>Function that blocks while queue is empty on condition_variable c. Once notified pops pointer from queue and acquires lock.</p>
 <dl class="params"><dt>Parameters</dt><dd>
@@ -221,43 +213,40 @@ Private Attributes</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>tuple containing pointer to Packet and pointer to locked mutex </dd></dl>
 
-<p>Definition at line <a class="el" href="_thread_safe_listener_queue_8h_source.html#l00044">44</a> of file <a class="el" href="_thread_safe_listener_queue_8h_source.html">ThreadSafeListenerQueue.h</a>.</p>
-<div class="fragment"><div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;    {</div>
-<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;        std::unique_lock&lt;std::mutex&gt; lock(<a class="code" href="class_thread_safe_listener_queue.html#a7a184d0d237106f87219976e3076d49e">queueLock</a>);  <span class="comment">// Get mutex lock</span></div>
-<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;        <span class="keywordflow">while</span> (<a class="code" href="class_thread_safe_listener_queue.html#ae4f9bfcab5746766433788e29b27267a">q</a>.empty()) <span class="comment">// While loop checking empty to account for spurious wakeups</span></div>
-<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;        {</div>
-<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;            <span class="keywordflow">if</span> (<a class="code" href="class_thread_safe_listener_queue.html#a9bfe4d4cf3b623755a44196d40fc5444">c</a>.wait_for(lock, std::chrono::seconds(2)) == std::cv_status::timeout)  <span class="comment">// Wait on condition var until notified, or 2 second timeout is reached</span></div>
-<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;            {</div>
-<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;                retVal = 0;  <span class="comment">// Reached timeout return 0 to let thread know to terminate</span></div>
-<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;                <span class="keywordflow">return</span> std::make_tuple(<span class="keyword">nullptr</span>, <span class="keyword">nullptr</span>);  <span class="comment">// Return empty tuple</span></div>
-<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;            }</div>
-<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;        }</div>
-<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;</div>
-<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;        <span class="keyword">auto</span> frontPtr = std::move(<a class="code" href="class_thread_safe_listener_queue.html#ae4f9bfcab5746766433788e29b27267a">q</a>.front());  <span class="comment">// Once woken up save front queue Packet</span></div>
-<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;        <a class="code" href="class_thread_safe_listener_queue.html#ae4f9bfcab5746766433788e29b27267a">q</a>.pop();  <span class="comment">// Then pop it</span></div>
-<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;</div>
-<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;        std::mutex* mut = <a class="code" href="class_thread_safe_listener_queue.html#a7c25a74fc34d24adc92e701de3a0fdae">m_map</a>.<a class="code" href="class_thread_safe_stream_map.html#abd3b67a550fe6ce7306ea64d22647b96">getLock</a>(frontPtr-&gt;apid);  <span class="comment">// Get mutex ptr from map</span></div>
-<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;        mut-&gt;lock();  <span class="comment">// Then lock the mutex ptr</span></div>
-<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;        lock.unlock();  <span class="comment">// Unlock queue lock so other threads can pop front (saves a bit of time)</span></div>
-<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;</div>
-<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;        <span class="keyword">auto</span> tmpTuple = std::make_tuple(std::move(frontPtr), mut);  <span class="comment">// Create tuple to return</span></div>
-<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;        retVal = 1;</div>
-<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;        <span class="keywordflow">return</span> tmpTuple;</div>
-<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;    }</div>
-<div class="ttc" id="class_thread_safe_listener_queue_html_a7a184d0d237106f87219976e3076d49e"><div class="ttname"><a href="class_thread_safe_listener_queue.html#a7a184d0d237106f87219976e3076d49e">ThreadSafeListenerQueue::queueLock</a></div><div class="ttdeci">std::mutex queueLock</div><div class="ttdef"><b>Definition:</b> <a href="_thread_safe_listener_queue_8h_source.html#l00070">ThreadSafeListenerQueue.h:70</a></div></div>
-<div class="ttc" id="class_thread_safe_listener_queue_html_a7c25a74fc34d24adc92e701de3a0fdae"><div class="ttname"><a href="class_thread_safe_listener_queue.html#a7c25a74fc34d24adc92e701de3a0fdae">ThreadSafeListenerQueue::m_map</a></div><div class="ttdeci">ThreadSafeStreamMap m_map</div><div class="ttdef"><b>Definition:</b> <a href="_thread_safe_listener_queue_8h_source.html#l00072">ThreadSafeListenerQueue.h:72</a></div></div>
-<div class="ttc" id="class_thread_safe_listener_queue_html_ae4f9bfcab5746766433788e29b27267a"><div class="ttname"><a href="class_thread_safe_listener_queue.html#ae4f9bfcab5746766433788e29b27267a">ThreadSafeListenerQueue::q</a></div><div class="ttdeci">std::queue&lt; std::unique_ptr&lt; DataTypes::Packet &gt; &gt; q</div><div class="ttdef"><b>Definition:</b> <a href="_thread_safe_listener_queue_8h_source.html#l00069">ThreadSafeListenerQueue.h:69</a></div></div>
-<div class="ttc" id="class_thread_safe_stream_map_html_abd3b67a550fe6ce7306ea64d22647b96"><div class="ttname"><a href="class_thread_safe_stream_map.html#abd3b67a550fe6ce7306ea64d22647b96">ThreadSafeStreamMap::getLock</a></div><div class="ttdeci">std::mutex * getLock(const uint32_t &amp;apid)</div><div class="ttdef"><b>Definition:</b> <a href="_thread_safe_stream_map_8h_source.html#l00041">ThreadSafeStreamMap.h:41</a></div></div>
-<div class="ttc" id="class_thread_safe_listener_queue_html_a9bfe4d4cf3b623755a44196d40fc5444"><div class="ttname"><a href="class_thread_safe_listener_queue.html#a9bfe4d4cf3b623755a44196d40fc5444">ThreadSafeListenerQueue::c</a></div><div class="ttdeci">std::condition_variable c</div><div class="ttdef"><b>Definition:</b> <a href="_thread_safe_listener_queue_8h_source.html#l00071">ThreadSafeListenerQueue.h:71</a></div></div>
+<p>Definition at line <a class="el" href="_thread_safe_listener_queue_8cpp_source.html#l00024">24</a> of file <a class="el" href="_thread_safe_listener_queue_8cpp_source.html">ThreadSafeListenerQueue.cpp</a>.</p>
+<div class="fragment"><div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;{</div>
+<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;    std::unique_lock&lt;std::mutex&gt; lock(<a class="code" href="class_thread_safe_listener_queue.html#a7a184d0d237106f87219976e3076d49e">queueLock</a>);  <span class="comment">// Get mutex lock</span></div>
+<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;    <span class="keywordflow">while</span> (<a class="code" href="class_thread_safe_listener_queue.html#ae4f9bfcab5746766433788e29b27267a">q</a>.empty()) <span class="comment">// While loop checking empty to account for spurious wakeups</span></div>
+<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;    {</div>
+<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;        <span class="keywordflow">if</span> (<a class="code" href="class_thread_safe_listener_queue.html#a9bfe4d4cf3b623755a44196d40fc5444">c</a>.wait_for(lock, std::chrono::seconds(2)) == std::cv_status::timeout)  <span class="comment">// Wait on condition var until notified, or 2 second timeout is reached</span></div>
+<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;        {</div>
+<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;            retVal = 0;  <span class="comment">// Reached timeout return 0 to let thread know to terminate</span></div>
+<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;            <span class="keywordflow">return</span> std::make_tuple(<span class="keyword">nullptr</span>, <span class="keyword">nullptr</span>);  <span class="comment">// Return empty tuple</span></div>
+<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;        }</div>
+<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;    }</div>
+<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;</div>
+<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;    <span class="keyword">auto</span> frontPtr = std::move(<a class="code" href="class_thread_safe_listener_queue.html#ae4f9bfcab5746766433788e29b27267a">q</a>.front());  <span class="comment">// Once woken up save front queue Packet</span></div>
+<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;    <a class="code" href="class_thread_safe_listener_queue.html#ae4f9bfcab5746766433788e29b27267a">q</a>.pop();  <span class="comment">// Then pop it</span></div>
+<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;</div>
+<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;    std::mutex* mut = <a class="code" href="class_thread_safe_listener_queue.html#a7c25a74fc34d24adc92e701de3a0fdae">m_map</a>.<a class="code" href="class_thread_safe_stream_map.html#ab385bf70b1c8ae3021d60cf06a9671c8">getLock</a>(frontPtr-&gt;apid);  <span class="comment">// Get mutex ptr from map</span></div>
+<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;    mut-&gt;lock();  <span class="comment">// Then lock the mutex ptr</span></div>
+<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;    lock.unlock();  <span class="comment">// Unlock queue lock so other threads can pop front (saves a bit of time)</span></div>
+<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;</div>
+<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;    <span class="keyword">auto</span> tmpTuple = std::make_tuple(std::move(frontPtr), mut);  <span class="comment">// Create tuple to return</span></div>
+<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;    retVal = 1;</div>
+<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;    <span class="keywordflow">return</span> tmpTuple;</div>
+<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;}</div>
+<div class="ttc" id="class_thread_safe_listener_queue_html_a7a184d0d237106f87219976e3076d49e"><div class="ttname"><a href="class_thread_safe_listener_queue.html#a7a184d0d237106f87219976e3076d49e">ThreadSafeListenerQueue::queueLock</a></div><div class="ttdeci">std::mutex queueLock</div><div class="ttdef"><b>Definition:</b> <a href="_thread_safe_listener_queue_8h_source.html#l00029">ThreadSafeListenerQueue.h:29</a></div></div>
+<div class="ttc" id="class_thread_safe_listener_queue_html_a7c25a74fc34d24adc92e701de3a0fdae"><div class="ttname"><a href="class_thread_safe_listener_queue.html#a7c25a74fc34d24adc92e701de3a0fdae">ThreadSafeListenerQueue::m_map</a></div><div class="ttdeci">ThreadSafeStreamMap m_map</div><div class="ttdef"><b>Definition:</b> <a href="_thread_safe_listener_queue_8h_source.html#l00031">ThreadSafeListenerQueue.h:31</a></div></div>
+<div class="ttc" id="class_thread_safe_listener_queue_html_ae4f9bfcab5746766433788e29b27267a"><div class="ttname"><a href="class_thread_safe_listener_queue.html#ae4f9bfcab5746766433788e29b27267a">ThreadSafeListenerQueue::q</a></div><div class="ttdeci">std::queue&lt; std::unique_ptr&lt; DataTypes::Packet &gt; &gt; q</div><div class="ttdef"><b>Definition:</b> <a href="_thread_safe_listener_queue_8h_source.html#l00028">ThreadSafeListenerQueue.h:28</a></div></div>
+<div class="ttc" id="class_thread_safe_stream_map_html_ab385bf70b1c8ae3021d60cf06a9671c8"><div class="ttname"><a href="class_thread_safe_stream_map.html#ab385bf70b1c8ae3021d60cf06a9671c8">ThreadSafeStreamMap::getLock</a></div><div class="ttdeci">std::mutex * getLock(const uint32_t &amp;apid)</div><div class="ttdef"><b>Definition:</b> <a href="_thread_safe_stream_map_8cpp_source.html#l00027">ThreadSafeStreamMap.cpp:27</a></div></div>
+<div class="ttc" id="class_thread_safe_listener_queue_html_a9bfe4d4cf3b623755a44196d40fc5444"><div class="ttname"><a href="class_thread_safe_listener_queue.html#a9bfe4d4cf3b623755a44196d40fc5444">ThreadSafeListenerQueue::c</a></div><div class="ttdeci">std::condition_variable c</div><div class="ttdef"><b>Definition:</b> <a href="_thread_safe_listener_queue_8h_source.html#l00030">ThreadSafeListenerQueue.h:30</a></div></div>
 </div><!-- fragment -->
 </div>
 </div>
 <a class="anchor" id="a55add79cea44eb63889911ab92de2dfe"></a>
 <div class="memitem">
 <div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
       <table class="memname">
         <tr>
           <td class="memname">void ThreadSafeListenerQueue::push </td>
@@ -267,11 +256,6 @@ Private Attributes</h2></td></tr>
           <td></td>
         </tr>
       </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
-  </tr>
-</table>
 </div><div class="memdoc">
 <p>Pushes a Packet pointer into the queue. Notifies one waiting listener.</p>
 <dl class="params"><dt>Parameters</dt><dd>
@@ -282,15 +266,15 @@ Private Attributes</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>N/A </dd></dl>
 
-<p>Definition at line <a class="el" href="_thread_safe_listener_queue_8h_source.html#l00031">31</a> of file <a class="el" href="_thread_safe_listener_queue_8h_source.html">ThreadSafeListenerQueue.h</a>.</p>
-<div class="fragment"><div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;    {</div>
-<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;        std::lock_guard&lt;std::mutex&gt; lock(<a class="code" href="class_thread_safe_listener_queue.html#a7a184d0d237106f87219976e3076d49e">queueLock</a>);  <span class="comment">// Lock mutex to prevent simultaneous push and pops</span></div>
-<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;        <a class="code" href="class_thread_safe_listener_queue.html#ae4f9bfcab5746766433788e29b27267a">q</a>.push(std::move(element));  <span class="comment">// Move pointer into queue</span></div>
-<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;        <a class="code" href="class_thread_safe_listener_queue.html#a9bfe4d4cf3b623755a44196d40fc5444">c</a>.notify_one();  <span class="comment">// Notify one waiting thread</span></div>
-<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;    }</div>
-<div class="ttc" id="class_thread_safe_listener_queue_html_a7a184d0d237106f87219976e3076d49e"><div class="ttname"><a href="class_thread_safe_listener_queue.html#a7a184d0d237106f87219976e3076d49e">ThreadSafeListenerQueue::queueLock</a></div><div class="ttdeci">std::mutex queueLock</div><div class="ttdef"><b>Definition:</b> <a href="_thread_safe_listener_queue_8h_source.html#l00070">ThreadSafeListenerQueue.h:70</a></div></div>
-<div class="ttc" id="class_thread_safe_listener_queue_html_ae4f9bfcab5746766433788e29b27267a"><div class="ttname"><a href="class_thread_safe_listener_queue.html#ae4f9bfcab5746766433788e29b27267a">ThreadSafeListenerQueue::q</a></div><div class="ttdeci">std::queue&lt; std::unique_ptr&lt; DataTypes::Packet &gt; &gt; q</div><div class="ttdef"><b>Definition:</b> <a href="_thread_safe_listener_queue_8h_source.html#l00069">ThreadSafeListenerQueue.h:69</a></div></div>
-<div class="ttc" id="class_thread_safe_listener_queue_html_a9bfe4d4cf3b623755a44196d40fc5444"><div class="ttname"><a href="class_thread_safe_listener_queue.html#a9bfe4d4cf3b623755a44196d40fc5444">ThreadSafeListenerQueue::c</a></div><div class="ttdeci">std::condition_variable c</div><div class="ttdef"><b>Definition:</b> <a href="_thread_safe_listener_queue_8h_source.html#l00071">ThreadSafeListenerQueue.h:71</a></div></div>
+<p>Definition at line <a class="el" href="_thread_safe_listener_queue_8cpp_source.html#l00011">11</a> of file <a class="el" href="_thread_safe_listener_queue_8cpp_source.html">ThreadSafeListenerQueue.cpp</a>.</p>
+<div class="fragment"><div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;{</div>
+<div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;    std::lock_guard&lt;std::mutex&gt; lock(<a class="code" href="class_thread_safe_listener_queue.html#a7a184d0d237106f87219976e3076d49e">queueLock</a>);  <span class="comment">// Lock mutex to prevent simultaneous push and pops</span></div>
+<div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;    <a class="code" href="class_thread_safe_listener_queue.html#ae4f9bfcab5746766433788e29b27267a">q</a>.push(std::move(element));  <span class="comment">// Move pointer into queue</span></div>
+<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;    <a class="code" href="class_thread_safe_listener_queue.html#a9bfe4d4cf3b623755a44196d40fc5444">c</a>.notify_one();  <span class="comment">// Notify one waiting thread</span></div>
+<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;}</div>
+<div class="ttc" id="class_thread_safe_listener_queue_html_a7a184d0d237106f87219976e3076d49e"><div class="ttname"><a href="class_thread_safe_listener_queue.html#a7a184d0d237106f87219976e3076d49e">ThreadSafeListenerQueue::queueLock</a></div><div class="ttdeci">std::mutex queueLock</div><div class="ttdef"><b>Definition:</b> <a href="_thread_safe_listener_queue_8h_source.html#l00029">ThreadSafeListenerQueue.h:29</a></div></div>
+<div class="ttc" id="class_thread_safe_listener_queue_html_ae4f9bfcab5746766433788e29b27267a"><div class="ttname"><a href="class_thread_safe_listener_queue.html#ae4f9bfcab5746766433788e29b27267a">ThreadSafeListenerQueue::q</a></div><div class="ttdeci">std::queue&lt; std::unique_ptr&lt; DataTypes::Packet &gt; &gt; q</div><div class="ttdef"><b>Definition:</b> <a href="_thread_safe_listener_queue_8h_source.html#l00028">ThreadSafeListenerQueue.h:28</a></div></div>
+<div class="ttc" id="class_thread_safe_listener_queue_html_a9bfe4d4cf3b623755a44196d40fc5444"><div class="ttname"><a href="class_thread_safe_listener_queue.html#a9bfe4d4cf3b623755a44196d40fc5444">ThreadSafeListenerQueue::c</a></div><div class="ttdeci">std::condition_variable c</div><div class="ttdef"><b>Definition:</b> <a href="_thread_safe_listener_queue_8h_source.html#l00030">ThreadSafeListenerQueue.h:30</a></div></div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -313,7 +297,7 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="_thread_safe_listener_queue_8h_source.html#l00071">71</a> of file <a class="el" href="_thread_safe_listener_queue_8h_source.html">ThreadSafeListenerQueue.h</a>.</p>
+<p>Definition at line <a class="el" href="_thread_safe_listener_queue_8h_source.html#l00030">30</a> of file <a class="el" href="_thread_safe_listener_queue_8h_source.html">ThreadSafeListenerQueue.h</a>.</p>
 
 </div>
 </div>
@@ -335,7 +319,7 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="_thread_safe_listener_queue_8h_source.html#l00072">72</a> of file <a class="el" href="_thread_safe_listener_queue_8h_source.html">ThreadSafeListenerQueue.h</a>.</p>
+<p>Definition at line <a class="el" href="_thread_safe_listener_queue_8h_source.html#l00031">31</a> of file <a class="el" href="_thread_safe_listener_queue_8h_source.html">ThreadSafeListenerQueue.h</a>.</p>
 
 </div>
 </div>
@@ -357,7 +341,7 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="_thread_safe_listener_queue_8h_source.html#l00069">69</a> of file <a class="el" href="_thread_safe_listener_queue_8h_source.html">ThreadSafeListenerQueue.h</a>.</p>
+<p>Definition at line <a class="el" href="_thread_safe_listener_queue_8h_source.html#l00028">28</a> of file <a class="el" href="_thread_safe_listener_queue_8h_source.html">ThreadSafeListenerQueue.h</a>.</p>
 
 </div>
 </div>
@@ -379,12 +363,13 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="_thread_safe_listener_queue_8h_source.html#l00070">70</a> of file <a class="el" href="_thread_safe_listener_queue_8h_source.html">ThreadSafeListenerQueue.h</a>.</p>
+<p>Definition at line <a class="el" href="_thread_safe_listener_queue_8h_source.html#l00029">29</a> of file <a class="el" href="_thread_safe_listener_queue_8h_source.html">ThreadSafeListenerQueue.h</a>.</p>
 
 </div>
 </div>
-<hr/>The documentation for this class was generated from the following file:<ul>
+<hr/>The documentation for this class was generated from the following files:<ul>
 <li>/home/travis/build/gabegordon/CXXDecom/include/<a class="el" href="_thread_safe_listener_queue_8h_source.html">ThreadSafeListenerQueue.h</a></li>
+<li>/home/travis/build/gabegordon/CXXDecom/src/<a class="el" href="_thread_safe_listener_queue_8cpp_source.html">ThreadSafeListenerQueue.cpp</a></li>
 </ul>
 </div><!-- contents -->
 <!-- start footer part -->
