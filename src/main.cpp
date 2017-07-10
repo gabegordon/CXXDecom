@@ -22,7 +22,11 @@ int main(int argc, char* argv[])
         bool debug = false;
         bool allAPIDs = !!std::stoi(argv[4]);
         std::cout << packetFile << std::endl;
+#ifdef __linux__
+        system("cd output && rm -f *.txt")
+#else
         system("cd output && del /Q *.txt 2>NUL 1>NUL");
+#endif
         DatabaseReader dr(paramsFile, allAPIDs);
         Decom decomEngine(instrument, debug, dr.getEntries());
         decomEngine.init(packetFile);

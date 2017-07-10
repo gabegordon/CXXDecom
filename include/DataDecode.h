@@ -18,12 +18,12 @@ class DataDecode
     m_byte2(),
     m_byte3(),
     segmentLastByte(0),
+    m_Instrument(instrument),
     m_entries(entries),
     m_pHeader(ph),
     m_sHeader(sh),
     m_debug(debug),
-    m_segmented(false),
-    m_Instrument(instrument)
+    m_segmented(false)
     {};
 
     virtual ~DataDecode() {};

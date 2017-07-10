@@ -15,10 +15,10 @@ class Decom
     m_entries(entries),
     m_infile(),
     m_instrument(instrument),
-    m_debug(debug),
-    m_missingAPIDs(),
-    m_firstRun(true),
     m_progress(0),
+    m_debug(debug),
+    m_firstRun(true),
+    m_missingAPIDs(),
     m_pack()
     {};
     virtual ~Decom() {}

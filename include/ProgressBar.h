@@ -20,8 +20,8 @@ class ProgressBar {
     desc_width(0),
     frequency_update(n_/100),
     tenth(n_/100),
-    description(description_),
     counter(0),
+    description(description_),
     firstRun(true)
     {
         unit_bar = "=";

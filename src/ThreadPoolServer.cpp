@@ -33,6 +33,7 @@ void ThreadPoolServer::ThreadMain(ThreadSafeListenerQueue& queue, const std::str
                 case DataTypes::Numeric::I32: outfile << std::setw(15) << std::right << num.i32; break;
                 case DataTypes::Numeric::U32: outfile << std::setw(15) << std::right << num.u32; break;
                 case DataTypes::Numeric::F64: outfile << std::setw(15) << std::right << num.f64; break;
+                default: break;
                 }
                 outfile << ",";
             }
