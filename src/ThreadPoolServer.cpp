@@ -21,7 +21,10 @@ void ThreadPoolServer::ThreadMain(ThreadSafeListenerQueue& queue, const std::str
         if (retVal)  // retVal is 1 on success
         {
             if (std::get<0>(queueVal)->ignored)  // If packet is ignored, skip
+            {
+                std::get<1>(queueVal)->unlock();  // Unlock the mutex before skipping
                 continue;
+            }
 
             std::ofstream& outfile = outfiles.getStream(instrument, std::get<0>(queueVal)->apid);  // Get file stream from map
 
