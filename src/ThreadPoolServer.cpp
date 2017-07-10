@@ -1,6 +1,7 @@
 #include <fstream>
 #include <iomanip>
 #include <memory>
+#include <iostream>
 #include "ThreadPoolServer.h"
 #include "ThreadSafeStreamMap.h"
 
