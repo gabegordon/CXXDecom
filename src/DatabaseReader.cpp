@@ -45,6 +45,7 @@ void DatabaseReader::init()
 void DatabaseReader::getByteBit(std::string& bytebit, uint32_t& i_byte, uint32_t& i_bitLower, uint32_t& i_bitUpper) const
 {
     bytebit.erase(0, 1); // Remove leading /
+    bytebit.erase(std::remove_if(bytebit.begin(), bytebit.end(), isspace), bytebit.end());  // Remove any whitespace from the string
     std::string s_byte = bytebit.substr(0, 4);
     try
     {
