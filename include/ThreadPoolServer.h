@@ -12,9 +12,11 @@ class ThreadPoolServer
   public:
   ThreadPoolServer(const std::string& instrument) :
     m_queue(),
-    m_instrument(instrument),
-    m_num_threads(4)
-    {}
+    m_instrument(instrument)
+    {
+        m_num_threads = std::thread::hardware_concurrency();  // Set number of threads based on hardware
+        m_num_threads = m_num_threads ? m_num_threads : 4;  // If unable to detect num. threads, then set to 4
+    }
 
     ~ThreadPoolServer() {}
 

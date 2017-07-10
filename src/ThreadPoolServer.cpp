@@ -67,6 +67,7 @@ void ThreadPoolServer::ThreadMain(ThreadSafeListenerQueue& queue, const std::str
  */
 void ThreadPoolServer::start()
 {
+    std::cout << "Using " << m_num_threads << " threads.\n";
     for (uint32_t i = 0; i < m_num_threads; ++i)
     {
         m_threads.emplace_back(std::thread(&ThreadPoolServer::ThreadMain, this, std::ref(m_queue), std::ref(m_instrument), std::ref(m_outfiles)));

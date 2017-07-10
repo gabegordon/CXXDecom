@@ -20,12 +20,12 @@ class ThreadSafeStreamMap
 
     std::mutex* getLock(const uint32_t& apid);
 
-    typename std::unordered_map<uint32_t, std::ofstream>::iterator begin()
+    std::unordered_map<uint32_t, std::ofstream>::iterator begin()
     {
         return m_map.begin();
     }
 
-    typename std::unordered_map<uint32_t, std::ofstream>::iterator end()
+    std::unordered_map<uint32_t, std::ofstream>::iterator end()
     {
         return m_map.end();
     }
