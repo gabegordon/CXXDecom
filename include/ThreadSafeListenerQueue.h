@@ -16,7 +16,6 @@ class ThreadSafeListenerQueue
   ThreadSafeListenerQueue() :
     q(),
     queueLock(),
-    mapLock(),
     c(),
     m_map()
     {}
@@ -57,10 +56,9 @@ class ThreadSafeListenerQueue
         auto frontPtr = std::move(q.front());  // Once woken up save front queue Packet
         q.pop();  // Then pop it
 
-        std::lock_guard<std::mutex> orderingLock(mapLock);  // Lock to ensure strict thread ordering
-        lock.unlock();  // Unlock queue lock so other threads can pop front (saves a bit of time)
         std::mutex* mut = m_map.getLock(frontPtr->apid);  // Get mutex ptr from map
         mut->lock();  // Then lock the mutex ptr
+        lock.unlock();  // Unlock queue lock so other threads can pop front (saves a bit of time)
 
         auto tmpTuple = std::make_tuple(std::move(frontPtr), mut);  // Create tuple to return
         retVal = 1;
@@ -70,7 +68,6 @@ class ThreadSafeListenerQueue
   private:
     std::queue<std::unique_ptr<DataTypes::Packet>> q;
     mutable std::mutex queueLock;
-    mutable std::mutex mapLock;
     std::condition_variable c;
     ThreadSafeStreamMap m_map;
 };
