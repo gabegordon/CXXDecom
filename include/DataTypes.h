@@ -73,9 +73,9 @@ namespace DataTypes {
 
     static inline DataType hashIt(const std::string&  inString) {
         if (inString == "D") return UNSIGNED;
-        if (inString == "S") return SIGNED;
-        if (inString == "U") return UNSIGNED;
-        if (inString == "F") return FLOAT;
-        return NILL;
+        else if (inString == "S") return SIGNED;
+        else if (inString == "U") return UNSIGNED;
+        else if (inString == "F") return FLOAT;
+        else return NILL;
     }
 }

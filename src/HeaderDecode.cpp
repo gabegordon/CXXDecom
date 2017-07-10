@@ -104,7 +104,7 @@ DataTypes::PrimaryHeader decodePrimary(std::ifstream& infile, const bool& debug)
 DataTypes::SecondaryHeader decodeSecondary(std::ifstream& infile)
 {
     DataTypes::SecondaryHeader sh = s_defaults;
-    if (sh_flag)
+    if (sh_flag)  // If secondary header flag is set
     {
         uint16_t day;
         uint32_t millis;
@@ -119,7 +119,7 @@ DataTypes::SecondaryHeader decodeSecondary(std::ifstream& infile)
         sh.micros = ByteManipulation::swapEndian16(micros);
         if (seq_flag == DataTypes::FIRST)
         {
-            // If first segmented packet, then bits 0-8 are segment count
+            // If first segmented packet, then bits 0-7 are segment count
             uint16_t packetSegments;
             ReadFile::read(packetSegments, infile);
             packetSegments = ByteManipulation::swapEndian16(packetSegments);
@@ -144,14 +144,6 @@ void checkValidHeader(const DataTypes::PrimaryHeader& pheader)
     else if (pheader.packetSequence > 16383)
         isValid = false;
     else if (pheader.packetLength > 65535)
-        isValid = false;
-    else if (pheader.sequenceFlag == DataTypes::FIRST && pheader.secondaryHeader == 0)
-        isValid = false;
-    else if (pheader.sequenceFlag == DataTypes::STANDALONE && pheader.secondaryHeader == 0)
-        isValid = false;
-    else if (pheader.sequenceFlag == DataTypes::MIDDLE && pheader.secondaryHeader == 1)
-        isValid = false;
-    else if (pheader.sequenceFlag == DataTypes::LAST && pheader.secondaryHeader == 1)
         isValid = false;
     else
         isValid = true;

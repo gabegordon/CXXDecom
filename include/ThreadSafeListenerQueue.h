@@ -23,36 +23,49 @@ class ThreadSafeListenerQueue
 
     ~ThreadSafeListenerQueue() {}
 
-    uint32_t push(std::unique_ptr<DataTypes::Packet> element)
+    /**
+     * Pushes a Packet pointer into the queue. Notifies one waiting listener.
+     *
+     * @param element unique_ptr to be pushed
+     * @return N/A
+     */
+    void push(std::unique_ptr<DataTypes::Packet> element)
     {
-        std::lock_guard<std::mutex> lock(queueLock);
-        q.push(std::move(element));
-        c.notify_one();
-        return 0;
+        std::lock_guard<std::mutex> lock(queueLock);  // Lock mutex to prevent simultaneous push and pops
+        q.push(std::move(element));  // Move pointer into queue
+        c.notify_one();  // Notify one waiting thread
     }
 
+    /**
+     * Function that blocks while queue is empty on condition_variable c. Once notified pops pointer from queue and acquires lock.
+     *
+     * @param retVal Integer passed by referenec to get return value. 1 on success. 0 on timeout.
+     * @return tuple containing pointer to Packet and pointer to locked mutex
+     */
     std::tuple<std::unique_ptr<DataTypes::Packet>, std::mutex*> listen(uint32_t& retVal)
     {
-        std::unique_lock<std::mutex> lock(queueLock);
-        while (q.empty())
+        std::unique_lock<std::mutex> lock(queueLock);  // Get mutex lock
+        while (q.empty()) // While loop checking empty to account for spurious wakeups
         {
-            if (c.wait_for(lock, std::chrono::seconds(2)) == std::cv_status::timeout)
+            if (c.wait_for(lock, std::chrono::seconds(2)) == std::cv_status::timeout)  // Wait on condition var until notified, or 2 second timeout is reached
             {
-                retVal = 0;
-                return std::make_tuple(nullptr, nullptr);
+                retVal = 0;  // Reached timeout return 0 to let thread know to terminate
+                return std::make_tuple(nullptr, nullptr);  // Return empty tuple
             }
         }
-        auto frontPtr = std::move(q.front());
-        q.pop();
-        std::lock_guard<std::mutex> orderingLock(mapLock);
-        lock.unlock();
-        std::mutex* mut = m_map.getLock(frontPtr->apid);
-        mut->lock();
-        auto tmpTuple = std::make_tuple(std::move(frontPtr), mut);
+
+        auto frontPtr = std::move(q.front());  // Once woken up save front queue Packet
+        q.pop();  // Then pop it
+
+        std::lock_guard<std::mutex> orderingLock(mapLock);  // Lock to ensure strict thread ordering
+        lock.unlock();  // Unlock queue lock so other threads can pop front (saves a bit of time)
+        std::mutex* mut = m_map.getLock(frontPtr->apid);  // Get mutex ptr from map
+        mut->lock();  // Then lock the mutex ptr
+
+        auto tmpTuple = std::make_tuple(std::move(frontPtr), mut);  // Create tuple to return
         retVal = 1;
         return tmpTuple;
     }
-
 
   private:
     std::queue<std::unique_ptr<DataTypes::Packet>> q;
