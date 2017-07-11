@@ -98,12 +98,13 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <code>#include &quot;<a class="el" href="_database_reader_8h_source.html">DatabaseReader.h</a>&quot;</code><br/>
 <code>#include &quot;<a class="el" href="_data_types_8h_source.html">DataTypes.h</a>&quot;</code><br/>
 <code>#include &quot;<a class="el" href="_c_s_v_row_8h_source.html">CSVRow.h</a>&quot;</code><br/>
+<code>#include &quot;<a class="el" href="_read_file_8h_source.html">ReadFile.h</a>&quot;</code><br/>
 </div><div class="textblock"><div class="dynheader">
 Include dependency graph for DatabaseReader.cpp:</div>
 <div class="dyncontent">
 <div class="center"><img src="_database_reader_8cpp__incl.png" border="0" usemap="#_2home_2travis_2build_2gabegordon_2_c_x_x_decom_2src_2_database_reader_8cpp" alt=""/></div>
 <map name="_2home_2travis_2build_2gabegordon_2_c_x_x_decom_2src_2_database_reader_8cpp" id="_2home_2travis_2build_2gabegordon_2_c_x_x_decom_2src_2_database_reader_8cpp">
-<area shape="rect" id="node6" href="_database_reader_8h.html" title="DatabaseReader.h" alt="" coords="251,109,380,136"/><area shape="rect" id="node7" href="_data_types_8h.html" title="DataTypes.h" alt="" coords="353,184,449,211"/><area shape="rect" id="node8" href="_c_s_v_row_8h.html" title="CSVRow.h" alt="" coords="475,184,563,211"/></map>
+<area shape="rect" id="node6" href="_database_reader_8h.html" title="DatabaseReader.h" alt="" coords="251,109,380,136"/><area shape="rect" id="node7" href="_data_types_8h.html" title="DataTypes.h" alt="" coords="353,184,449,211"/><area shape="rect" id="node8" href="_c_s_v_row_8h.html" title="CSVRow.h" alt="" coords="475,184,563,211"/><area shape="rect" id="node10" href="_read_file_8h.html" title="ReadFile.h" alt="" coords="637,184,723,211"/></map>
 </div>
 </div>
 <p><a href="_database_reader_8cpp_source.html">Go to the source code of this file.</a></p>
@@ -149,18 +150,18 @@ Functions</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>True if Entry a is "smaller" </dd></dl>
 
-<p>Definition at line <a class="el" href="_database_reader_8cpp_source.html#l00228">228</a> of file <a class="el" href="_database_reader_8cpp_source.html">DatabaseReader.cpp</a>.</p>
-<div class="fragment"><div class="line"><a name="l00229"></a><span class="lineno">  229</span>&#160;{</div>
-<div class="line"><a name="l00230"></a><span class="lineno">  230</span>&#160;    <span class="keywordflow">if</span> (a.<a class="code" href="namespace_data_types.html#a10f25e65e9643f405117a1886eacbea9">i_APID</a> != b.<a class="code" href="namespace_data_types.html#a10f25e65e9643f405117a1886eacbea9">i_APID</a>)</div>
-<div class="line"><a name="l00231"></a><span class="lineno">  231</span>&#160;        <span class="keywordflow">return</span> a.<a class="code" href="namespace_data_types.html#a10f25e65e9643f405117a1886eacbea9">i_APID</a> &lt; b.<a class="code" href="namespace_data_types.html#a10f25e65e9643f405117a1886eacbea9">i_APID</a>;</div>
-<div class="line"><a name="l00232"></a><span class="lineno">  232</span>&#160;    <span class="keywordflow">else</span></div>
-<div class="line"><a name="l00233"></a><span class="lineno">  233</span>&#160;    {</div>
-<div class="line"><a name="l00234"></a><span class="lineno">  234</span>&#160;        <span class="keywordflow">if</span> (a.<a class="code" href="namespace_data_types.html#a63b70cfbc213d6a962ff02e81b8a5e68">byte</a> != b.<a class="code" href="namespace_data_types.html#a63b70cfbc213d6a962ff02e81b8a5e68">byte</a>)</div>
-<div class="line"><a name="l00235"></a><span class="lineno">  235</span>&#160;            <span class="keywordflow">return</span> a.<a class="code" href="namespace_data_types.html#a63b70cfbc213d6a962ff02e81b8a5e68">byte</a> &lt; b.<a class="code" href="namespace_data_types.html#a63b70cfbc213d6a962ff02e81b8a5e68">byte</a>;</div>
-<div class="line"><a name="l00236"></a><span class="lineno">  236</span>&#160;        <span class="keywordflow">else</span></div>
-<div class="line"><a name="l00237"></a><span class="lineno">  237</span>&#160;            <span class="keywordflow">return</span> a.<a class="code" href="namespace_data_types.html#a8879d535712dc7a2f27376ba5a2b72d1">bitLower</a> &lt; b.<a class="code" href="namespace_data_types.html#a8879d535712dc7a2f27376ba5a2b72d1">bitLower</a>;</div>
-<div class="line"><a name="l00238"></a><span class="lineno">  238</span>&#160;    }</div>
-<div class="line"><a name="l00239"></a><span class="lineno">  239</span>&#160;}</div>
+<p>Definition at line <a class="el" href="_database_reader_8cpp_source.html#l00203">203</a> of file <a class="el" href="_database_reader_8cpp_source.html">DatabaseReader.cpp</a>.</p>
+<div class="fragment"><div class="line"><a name="l00204"></a><span class="lineno">  204</span>&#160;{</div>
+<div class="line"><a name="l00205"></a><span class="lineno">  205</span>&#160;    <span class="keywordflow">if</span> (a.<a class="code" href="namespace_data_types.html#a10f25e65e9643f405117a1886eacbea9">i_APID</a> != b.<a class="code" href="namespace_data_types.html#a10f25e65e9643f405117a1886eacbea9">i_APID</a>)</div>
+<div class="line"><a name="l00206"></a><span class="lineno">  206</span>&#160;        <span class="keywordflow">return</span> a.<a class="code" href="namespace_data_types.html#a10f25e65e9643f405117a1886eacbea9">i_APID</a> &lt; b.<a class="code" href="namespace_data_types.html#a10f25e65e9643f405117a1886eacbea9">i_APID</a>;</div>
+<div class="line"><a name="l00207"></a><span class="lineno">  207</span>&#160;    <span class="keywordflow">else</span></div>
+<div class="line"><a name="l00208"></a><span class="lineno">  208</span>&#160;    {</div>
+<div class="line"><a name="l00209"></a><span class="lineno">  209</span>&#160;        <span class="keywordflow">if</span> (a.<a class="code" href="namespace_data_types.html#a63b70cfbc213d6a962ff02e81b8a5e68">byte</a> != b.<a class="code" href="namespace_data_types.html#a63b70cfbc213d6a962ff02e81b8a5e68">byte</a>)</div>
+<div class="line"><a name="l00210"></a><span class="lineno">  210</span>&#160;            <span class="keywordflow">return</span> a.<a class="code" href="namespace_data_types.html#a63b70cfbc213d6a962ff02e81b8a5e68">byte</a> &lt; b.<a class="code" href="namespace_data_types.html#a63b70cfbc213d6a962ff02e81b8a5e68">byte</a>;</div>
+<div class="line"><a name="l00211"></a><span class="lineno">  211</span>&#160;        <span class="keywordflow">else</span></div>
+<div class="line"><a name="l00212"></a><span class="lineno">  212</span>&#160;            <span class="keywordflow">return</span> a.<a class="code" href="namespace_data_types.html#a8879d535712dc7a2f27376ba5a2b72d1">bitLower</a> &lt; b.<a class="code" href="namespace_data_types.html#a8879d535712dc7a2f27376ba5a2b72d1">bitLower</a>;</div>
+<div class="line"><a name="l00213"></a><span class="lineno">  213</span>&#160;    }</div>
+<div class="line"><a name="l00214"></a><span class="lineno">  214</span>&#160;}</div>
 <div class="ttc" id="namespace_data_types_html_a63b70cfbc213d6a962ff02e81b8a5e68"><div class="ttname"><a href="namespace_data_types.html#a63b70cfbc213d6a962ff02e81b8a5e68">DataTypes::Entry::byte</a></div><div class="ttdeci">uint32_t byte</div><div class="ttdef"><b>Definition:</b> <a href="_data_types_8h_source.html#l00026">DataTypes.h:26</a></div></div>
 <div class="ttc" id="namespace_data_types_html_a10f25e65e9643f405117a1886eacbea9"><div class="ttname"><a href="namespace_data_types.html#a10f25e65e9643f405117a1886eacbea9">DataTypes::Entry::i_APID</a></div><div class="ttdeci">uint32_t i_APID</div><div class="ttdef"><b>Definition:</b> <a href="_data_types_8h_source.html#l00025">DataTypes.h:25</a></div></div>
 <div class="ttc" id="namespace_data_types_html_a8879d535712dc7a2f27376ba5a2b72d1"><div class="ttname"><a href="namespace_data_types.html#a8879d535712dc7a2f27376ba5a2b72d1">DataTypes::Entry::bitLower</a></div><div class="ttdeci">uint32_t bitLower</div><div class="ttdef"><b>Definition:</b> <a href="_data_types_8h_source.html#l00027">DataTypes.h:27</a></div></div>
@@ -200,11 +201,11 @@ Functions</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>Stream containing row </dd></dl>
 
-<p>Definition at line <a class="el" href="_database_reader_8cpp_source.html#l00017">17</a> of file <a class="el" href="_database_reader_8cpp_source.html">DatabaseReader.cpp</a>.</p>
-<div class="fragment"><div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;{</div>
-<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;    data.<a class="code" href="class_c_s_v_row.html#a14b9ac6d9ffb01a7b05ea903cfd04eeb">readNextRow</a>(str);</div>
-<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;    <span class="keywordflow">return</span> str;</div>
-<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;}</div>
+<p>Definition at line <a class="el" href="_database_reader_8cpp_source.html#l00018">18</a> of file <a class="el" href="_database_reader_8cpp_source.html">DatabaseReader.cpp</a>.</p>
+<div class="fragment"><div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;{</div>
+<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;    data.<a class="code" href="class_c_s_v_row.html#a14b9ac6d9ffb01a7b05ea903cfd04eeb">readNextRow</a>(str);</div>
+<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;    <span class="keywordflow">return</span> str;</div>
+<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;}</div>
 <div class="ttc" id="class_c_s_v_row_html_a14b9ac6d9ffb01a7b05ea903cfd04eeb"><div class="ttname"><a href="class_c_s_v_row.html#a14b9ac6d9ffb01a7b05ea903cfd04eeb">CSVRow::readNextRow</a></div><div class="ttdeci">void readNextRow(std::istream &amp;str)</div><div class="ttdef"><b>Definition:</b> <a href="_c_s_v_row_8cpp_source.html#l00034">CSVRow.cpp:34</a></div></div>
 </div><!-- fragment -->
 </div>

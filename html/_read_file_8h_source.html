@@ -91,16 +91,28 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="contents">
 <a href="_read_file_8h.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="preprocessor">#pragma once</span></div>
 <div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160;<span class="preprocessor"></span><span class="preprocessor">#include &lt;fstream&gt;</span></div>
-<div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160;</div>
-<div class="line"><a name="l00004"></a><span class="lineno"><a class="line" href="namespace_read_file.html">    4</a></span>&#160;<span class="keyword">namespace </span>ReadFile</div>
-<div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;{</div>
-<div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160;    <span class="keyword">template</span> &lt;<span class="keyword">typename</span> T&gt;</div>
-<div class="line"><a name="l00014"></a><span class="lineno"><a class="line" href="namespace_read_file.html#a6c2cdc2ecbe24dfd902c64bc726642ee">   14</a></span>&#160;    <span class="keyword">static</span> <span class="keyword">inline</span> <span class="keywordtype">void</span> <a class="code" href="namespace_read_file.html#a6c2cdc2ecbe24dfd902c64bc726642ee">read</a>(T&amp; buffer, std::ifstream&amp; in)</div>
-<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;    {</div>
-<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;        in.read(reinterpret_cast&lt;char *&gt;(&amp;buffer), <span class="keyword">sizeof</span>(buffer));</div>
-<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;    }</div>
-<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;}</div>
-<div class="ttc" id="namespace_read_file_html_a6c2cdc2ecbe24dfd902c64bc726642ee"><div class="ttname"><a href="namespace_read_file.html#a6c2cdc2ecbe24dfd902c64bc726642ee">ReadFile::read</a></div><div class="ttdeci">static void read(T &amp;buffer, std::ifstream &amp;in)</div><div class="ttdef"><b>Definition:</b> <a href="_read_file_8h_source.html#l00014">ReadFile.h:14</a></div></div>
+<div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160;<span class="preprocessor">#include &lt;string&gt;</span></div>
+<div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;</div>
+<div class="line"><a name="l00005"></a><span class="lineno"><a class="line" href="namespace_read_file.html">    5</a></span>&#160;<span class="keyword">namespace </span>ReadFile</div>
+<div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160;{</div>
+<div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160;    <span class="keyword">template</span> &lt;<span class="keyword">typename</span> T&gt;</div>
+<div class="line"><a name="l00015"></a><span class="lineno"><a class="line" href="namespace_read_file.html#a6c2cdc2ecbe24dfd902c64bc726642ee">   15</a></span>&#160;    <span class="keyword">static</span> <span class="keyword">inline</span> <span class="keywordtype">void</span> <a class="code" href="namespace_read_file.html#a6c2cdc2ecbe24dfd902c64bc726642ee">read</a>(T&amp; buffer, std::ifstream&amp; in)</div>
+<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;    {</div>
+<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;        in.read(reinterpret_cast&lt;char *&gt;(&amp;buffer), <span class="keyword">sizeof</span>(buffer));</div>
+<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;    }</div>
+<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;</div>
+<div class="line"><a name="l00028"></a><span class="lineno"><a class="line" href="namespace_read_file.html#a9423ed74e8e0de70c1afbc6c94cd885e">   28</a></span>&#160;    <span class="keyword">static</span> <span class="keyword">inline</span> <span class="keywordtype">void</span> <a class="code" href="namespace_read_file.html#a9423ed74e8e0de70c1afbc6c94cd885e">checkFile</a>(std::ifstream&amp; stream, <span class="keyword">const</span> std::string&amp; name)</div>
+<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;    {</div>
+<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;        <span class="keywordflow">if</span> (!stream || !stream.is_open())</div>
+<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;        {</div>
+<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;            std::cerr &lt;&lt; <span class="stringliteral">&quot;Failed to open &quot;</span> &lt;&lt; name &lt;&lt; <span class="stringliteral">&quot; file.&quot;</span> &lt;&lt; std::endl;</div>
+<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;            system(<span class="stringliteral">&quot;pause&quot;</span>);</div>
+<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;            exit(0);</div>
+<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;        }</div>
+<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;    }</div>
+<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;}</div>
+<div class="ttc" id="namespace_read_file_html_a6c2cdc2ecbe24dfd902c64bc726642ee"><div class="ttname"><a href="namespace_read_file.html#a6c2cdc2ecbe24dfd902c64bc726642ee">ReadFile::read</a></div><div class="ttdeci">static void read(T &amp;buffer, std::ifstream &amp;in)</div><div class="ttdef"><b>Definition:</b> <a href="_read_file_8h_source.html#l00015">ReadFile.h:15</a></div></div>
+<div class="ttc" id="namespace_read_file_html_a9423ed74e8e0de70c1afbc6c94cd885e"><div class="ttname"><a href="namespace_read_file.html#a9423ed74e8e0de70c1afbc6c94cd885e">ReadFile::checkFile</a></div><div class="ttdeci">static void checkFile(std::ifstream &amp;stream, const std::string &amp;name)</div><div class="ttdef"><b>Definition:</b> <a href="_read_file_8h_source.html#l00028">ReadFile.h:28</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>

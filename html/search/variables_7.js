@@ -10,6 +10,7 @@ var searchData=
   ['m_5fdebug',['m_debug',['../class_data_decode.html#a1cd0f2f20d41ca50bce000c8b2622f62',1,'DataDecode::m_debug()'],['../class_decom.html#a96766728bb1397ee1e4a5dff24de624a',1,'Decom::m_debug()']]],
   ['m_5fentries',['m_entries',['../class_database_reader.html#ac7ef1211c150b66b7b87b2f59e53b637',1,'DatabaseReader::m_entries()'],['../class_data_decode.html#aafce682a472de855b6b9823df3e88a40',1,'DataDecode::m_entries()'],['../class_decom.html#a5ebe992c9feb463fb68f03c853cf65b7',1,'Decom::m_entries()']]],
   ['m_5ffirstrun',['m_firstRun',['../class_database_reader.html#aba85851e0df489f969304b1d822053db',1,'DatabaseReader']]],
+  ['m_5fheaders',['m_headers',['../class_decom.html#afd3dc03db9b3cfea696a5af98cca8e63',1,'Decom']]],
   ['m_5finfile',['m_infile',['../class_decom.html#aa7b2640c09481e9b57d24b796ce191fe',1,'Decom']]],
   ['m_5finstrument',['m_Instrument',['../class_data_decode.html#a1c52e50a84cc754e437241be51a67fd3',1,'DataDecode::m_Instrument()'],['../class_decom.html#a66fba3498fdefd22f4eef2375aa5f068',1,'Decom::m_instrument()'],['../class_thread_pool_server.html#a576b36786ad00bca3b430bd932a5c145',1,'ThreadPoolServer::m_instrument()']]],
   ['m_5fmapentries',['m_mapEntries',['../class_decom.html#a97978bd1b591e7b85d6568338d40991c',1,'Decom']]],

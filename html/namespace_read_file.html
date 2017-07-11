@@ -93,8 +93,63 @@ Functions</h2></td></tr>
 <tr class="memitem:a6c2cdc2ecbe24dfd902c64bc726642ee"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
 <tr class="memitem:a6c2cdc2ecbe24dfd902c64bc726642ee"><td class="memTemplItemLeft" align="right" valign="top">static void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespace_read_file.html#a6c2cdc2ecbe24dfd902c64bc726642ee">read</a> (T &amp;buffer, std::ifstream &amp;in)</td></tr>
 <tr class="separator:a6c2cdc2ecbe24dfd902c64bc726642ee"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9423ed74e8e0de70c1afbc6c94cd885e"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespace_read_file.html#a9423ed74e8e0de70c1afbc6c94cd885e">checkFile</a> (std::ifstream &amp;stream, const std::string &amp;name)</td></tr>
+<tr class="separator:a9423ed74e8e0de70c1afbc6c94cd885e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Function Documentation</h2>
+<a class="anchor" id="a9423ed74e8e0de70c1afbc6c94cd885e"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static void ReadFile::checkFile </td>
+          <td>(</td>
+          <td class="paramtype">std::ifstream &amp;&#160;</td>
+          <td class="paramname"><em>stream</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const std::string &amp;&#160;</td>
+          <td class="paramname"><em>name</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Checks if a filestream is valid and open. Prints error message and exits if invalid.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">stream</td><td>Stream to check </td></tr>
+    <tr><td class="paramname">name</td><td>Name to print out for debugging purposes </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>N/A </dd></dl>
+
+<p>Definition at line <a class="el" href="_read_file_8h_source.html#l00028">28</a> of file <a class="el" href="_read_file_8h_source.html">ReadFile.h</a>.</p>
+<div class="fragment"><div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;    {</div>
+<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;        <span class="keywordflow">if</span> (!stream || !stream.is_open())</div>
+<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;        {</div>
+<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;            std::cerr &lt;&lt; <span class="stringliteral">&quot;Failed to open &quot;</span> &lt;&lt; name &lt;&lt; <span class="stringliteral">&quot; file.&quot;</span> &lt;&lt; std::endl;</div>
+<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;            system(<span class="stringliteral">&quot;pause&quot;</span>);</div>
+<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;            exit(0);</div>
+<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;        }</div>
+<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;    }</div>
+</div><!-- fragment -->
+</div>
+</div>
 <a class="anchor" id="a6c2cdc2ecbe24dfd902c64bc726642ee"></a>
 <div class="memitem">
 <div class="memproto">
@@ -138,10 +193,10 @@ template&lt;typename T &gt; </div>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>N/A </dd></dl>
 
-<p>Definition at line <a class="el" href="_read_file_8h_source.html#l00014">14</a> of file <a class="el" href="_read_file_8h_source.html">ReadFile.h</a>.</p>
-<div class="fragment"><div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;    {</div>
-<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;        in.read(reinterpret_cast&lt;char *&gt;(&amp;buffer), <span class="keyword">sizeof</span>(buffer));</div>
-<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;    }</div>
+<p>Definition at line <a class="el" href="_read_file_8h_source.html#l00015">15</a> of file <a class="el" href="_read_file_8h_source.html">ReadFile.h</a>.</p>
+<div class="fragment"><div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;    {</div>
+<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;        in.read(reinterpret_cast&lt;char *&gt;(&amp;buffer), <span class="keyword">sizeof</span>(buffer));</div>
+<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;    }</div>
 </div><!-- fragment -->
 </div>
 </div>

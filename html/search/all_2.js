@@ -4,6 +4,7 @@ var searchData=
   ['ccsds',['CCSDS',['../namespace_data_types.html#aebabfe6158de48322dedfc75bacc9061',1,'DataTypes::PrimaryHeader']]],
   ['chans',['chans',['../_instrument_format_8cpp.html#a32d368d0b7fc2ee75b45e57078cd0f5d',1,'atms_pack::chans()'],['../_instrument_format_8cpp.html#a80c68ae9a22e1dc3f54687c72f96a236',1,'out_pack::chans()']]],
   ['character_5fwidth_5fpercentage',['CHARACTER_WIDTH_PERCENTAGE',['../_progress_bar_8h.html#a6fb5d754f9d3dbb760a3df730f184649',1,'ProgressBar.h']]],
+  ['checkfile',['checkFile',['../namespace_read_file.html#a9423ed74e8e0de70c1afbc6c94cd885e',1,'ReadFile']]],
   ['checkvalidheader',['checkValidHeader',['../namespace_header_decode.html#ad5d2f691de2e3d775a26c52ac3f346f9',1,'HeaderDecode']]],
   ['clearbarfield',['ClearBarField',['../class_progress_bar.html#a2f4ce86f697a3f473639e67972a61c57',1,'ProgressBar']]],
   ['comparebyapid',['compareByAPID',['../_database_reader_8cpp.html#a0795acb9c367760d5dd0dc4f32178e7b',1,'DatabaseReader.cpp']]],

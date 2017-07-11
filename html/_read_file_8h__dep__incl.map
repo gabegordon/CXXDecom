@@ -1,4 +1,7 @@
 <map id="/home/travis/build/gabegordon/CXXDecom/include/ReadFile.h" name="/home/travis/build/gabegordon/CXXDecom/include/ReadFile.h">
-<area shape="rect" id="node2" href="$_data_decode_8cpp.html" title="/home/travis/build\l/gabegordon/CXXDecom\l/src/DataDecode.cpp" alt="" coords="5,109,171,165"/>
-<area shape="rect" id="node3" href="$_header_decode_8cpp.html" title="/home/travis/build\l/gabegordon/CXXDecom\l/src/HeaderDecode.cpp" alt="" coords="195,109,361,165"/>
+<area shape="rect" id="node2" href="$_database_reader_8cpp.html" title="/home/travis/build\l/gabegordon/CXXDecom\l/src/DatabaseReader.cpp" alt="" coords="5,109,176,165"/>
+<area shape="rect" id="node3" href="$_data_decode_8cpp.html" title="/home/travis/build\l/gabegordon/CXXDecom\l/src/DataDecode.cpp" alt="" coords="201,109,367,165"/>
+<area shape="rect" id="node4" href="$_decom_8cpp.html" title="/home/travis/build\l/gabegordon/CXXDecom\l/src/Decom.cpp" alt="" coords="391,109,557,165"/>
+<area shape="rect" id="node5" href="$_header_decode_8cpp.html" title="/home/travis/build\l/gabegordon/CXXDecom\l/src/HeaderDecode.cpp" alt="" coords="582,109,748,165"/>
+<area shape="rect" id="node6" href="$_instrument_format_8cpp.html" title="/home/travis/build\l/gabegordon/CXXDecom\l/src/InstrumentFormat.cpp" alt="" coords="773,109,949,165"/>
 </map>
