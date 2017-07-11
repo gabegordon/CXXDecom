@@ -40,6 +40,7 @@ void Decom::init(const std::string& infile)
     ProgressBar readProgress(fileSize, "Parsing");  // Create progress bar
 
     ThreadPoolServer pool(m_instrument);  // Create thread pool that we will be passing our packets to
+
     while (true)  // Loop until error or we reach end of file
     {
         m_progress = m_infile.tellg();  // Get current progress
@@ -65,8 +66,10 @@ void Decom::init(const std::string& infile)
             pack = dc.decodeData(m_infile, 0);
 
         pack.apid = std::get<0>(headers).APID;
+        storeAPID(pack.apid);
         pool.exec(std::move(std::make_unique<DataTypes::Packet>(pack)));  // Push packet into our writer thread's queue
     }
+
     m_infile.close(); // Close input file
     pool.join();  // Wait for writer threads to join
     cout << endl;
@@ -113,5 +116,18 @@ void Decom::getEntries(const uint32_t& APID)
  */
 void Decom::formatInstruments() const
 {
-    InstrumentFormat::formatATMS();
+    if(m_APIDs.count(528))
+        InstrumentFormat::formatATMS();
+}
+
+
+/**
+ * Stores set of all APIDs that we have processed.
+ *
+ * @param APID APID to store
+ * @return N/A
+ */
+void Decom::storeAPID(const uint32_t& APID)
+{
+    m_APIDs.insert(APID);
 }

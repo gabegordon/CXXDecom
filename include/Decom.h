@@ -1,5 +1,6 @@
 #pragma once
 #include <vector>
+#include <set>
 #include <fstream>
 #include <unordered_map>
 #include <string>
@@ -13,13 +14,9 @@ class Decom
   Decom(const std::string& instrument, const bool& debug, const std::vector<DataTypes::Entry>& entries) :
     m_mapEntries(),
     m_entries(entries),
-    m_infile(),
     m_instrument(instrument),
     m_progress(0),
-    m_debug(debug),
-    m_firstRun(true),
-    m_missingAPIDs(),
-    m_pack()
+    m_debug(debug)
     {};
     virtual ~Decom() {}
 
@@ -28,6 +25,7 @@ class Decom
   private:
     void getEntries(const uint32_t& APID);
     void formatInstruments() const;
+    void storeAPID(const uint32_t& APID);
 
     std::unordered_map<uint32_t, std::vector<DataTypes::Entry>> m_mapEntries;
     std::vector<DataTypes::Entry> m_entries;
@@ -36,7 +34,6 @@ class Decom
 
     uint64_t m_progress;
     bool m_debug;
-    bool m_firstRun;
     std::vector<uint32_t> m_missingAPIDs;
-    DataTypes::Packet m_pack;
+    std::set<uint32_t> m_APIDs;
 };

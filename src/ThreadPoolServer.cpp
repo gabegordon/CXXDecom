@@ -23,11 +23,6 @@ void ThreadPoolServer::ThreadMain(ThreadSafeListenerQueue& queue, const std::str
         auto queueVal = queue.listen(retVal);  // Listen on queue until queueVal is returned (tuple with lock and stream)
         if (retVal)  // retVal is 1 on success
         {
-            if (queueVal->ignored)  // If packet is ignored, skip
-            {
-                continue;
-            }
-
             if (firstRun)
             {
                 outfile << std::setw(15) << "Day" << "," << std::setw(15) << "Millis" << "," << std::setw(15) << "Micros" << "," << std::setw(15) << "SeqCount" << ",";
@@ -70,7 +65,11 @@ void ThreadPoolServer::ThreadMain(ThreadSafeListenerQueue& queue, const std::str
  */
 void ThreadPoolServer::exec(std::unique_ptr<DataTypes::Packet> pack)
 {
-    if (m_queues.count(pack->apid) > 0)
+    if(pack->ignored)
+    {
+        return;
+    }
+    else if (m_queues.count(pack->apid))
     {
         m_queues[pack->apid].push(std::move(pack));
     }
