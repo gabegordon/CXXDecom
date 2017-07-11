@@ -1,33 +1,32 @@
 #pragma once
 
 #include <queue>
-#include <tuple>
 #include <mutex>
 #include <memory>
 #include <condition_variable>
-#include "ThreadSafeStreamMap.h"
 #include "DataTypes.h"
 
 class ThreadSafeListenerQueue
 {
   public:
   ThreadSafeListenerQueue() :
+    m_active(true),
     q(),
     queueLock(),
-    c(),
-    m_map()
+    c()
     {}
 
     ~ThreadSafeListenerQueue() {}
 
     void push(std::unique_ptr<DataTypes::Packet> element);
 
-    std::tuple<std::unique_ptr<DataTypes::Packet>, std::mutex*> listen(uint32_t& retVal);
+    std::unique_ptr<DataTypes::Packet> listen(uint32_t& retVal);
+
+    void setInactive();
 
   private:
+    bool m_active;
     std::queue<std::unique_ptr<DataTypes::Packet>> q;
     mutable std::mutex queueLock;
-    mutable std::mutex orderLock;
     std::condition_variable c;
-    ThreadSafeStreamMap m_map;
 };

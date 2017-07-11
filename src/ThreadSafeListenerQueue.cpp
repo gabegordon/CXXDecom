@@ -19,27 +19,36 @@ void ThreadSafeListenerQueue::push(std::unique_ptr<DataTypes::Packet> element)
  * Function that blocks while queue is empty on condition_variable c. Once notified pops pointer from queue and acquires lock.
  *
  * @param retVal Integer passed by referenec to get return value. 1 on success. 0 on timeout.
- * @return tuple containing pointer to Packet and pointer to locked mutex
+ * @return pointer to Packet
  */
-std::tuple<std::unique_ptr<DataTypes::Packet>, std::mutex*> ThreadSafeListenerQueue::listen(uint32_t& retVal)
+std::unique_ptr<DataTypes::Packet> ThreadSafeListenerQueue::listen(uint32_t& retVal)
 {
     std::unique_lock<std::mutex> lock(queueLock);  // Get mutex lock
     while (q.empty()) // While loop checking empty to account for spurious wakeups
     {
-        if (c.wait_for(lock, std::chrono::seconds(2)) == std::cv_status::timeout)  // Wait on condition var until notified, or 2 second timeout is reached
+        if (c.wait_for(lock, std::chrono::seconds(1)) == std::cv_status::timeout)  // Wait on condition var until notified, or 1 second timeout is reached
         {
-            retVal = 0;  // Reached timeout return 0 to let thread know to terminate
-            return std::make_tuple(nullptr, nullptr);  // Return empty tuple
+            if(!m_active && q.empty())
+            {
+                retVal = 0;  // Reached timeout and inactive, return 0 to let thread know to terminate
+                return nullptr;
+            }
         }
     }
 
     auto frontPtr = std::move(q.front());  // Once notified save front queue Packet
     q.pop();  // Then pop it
-    std::lock_guard<std::mutex> olock(orderLock);
-    lock.unlock();
-    std::mutex* mut = m_map.getLock(frontPtr->apid);  // Get mutex ptr from map
-    mut->lock();
-    auto tmpTuple = std::make_tuple(std::move(frontPtr), mut);  // Create tuple to return
     retVal = 1;
-    return tmpTuple;
+    return frontPtr;
+}
+
+/**
+ * Sets member variable m_active to false. This causes threads to terminate once queue becomes empty.
+ *
+ * @return N/A
+ */
+void ThreadSafeListenerQueue::setInactive()
+{
+    std::lock_guard<std::mutex> lock(queueLock);
+    m_active = false;
 }

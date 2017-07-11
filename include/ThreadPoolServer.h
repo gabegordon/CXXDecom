@@ -3,32 +3,26 @@
 #include <thread>
 #include <string>
 #include <vector>
+#include <unordered_map>
 #include "ThreadSafeListenerQueue.h"
 #include "DataTypes.h"
-#include "ThreadSafeStreamMap.h"
 
 class ThreadPoolServer
 {
   public:
   ThreadPoolServer(const std::string& instrument) :
-    m_queue(),
+    m_queues(),
     m_instrument(instrument)
-    {
-        m_num_threads = std::thread::hardware_concurrency();  // Set number of threads based on hardware
-        m_num_threads = m_num_threads ? m_num_threads : 4;  // If unable to detect num. threads, then set to 4
-    }
+    {}
 
     ~ThreadPoolServer() {}
 
-    void start();
     void exec(std::unique_ptr<DataTypes::Packet> pack);
     void join();
-    void ThreadMain(ThreadSafeListenerQueue& queue, const std::string instrument, ThreadSafeStreamMap& outfiles);
+    void ThreadMain(ThreadSafeListenerQueue& queue, const std::string& instrument, const uint32_t apid);
 
   private:
-    ThreadSafeListenerQueue m_queue;
+    std::unordered_map<uint32_t, ThreadSafeListenerQueue> m_queues;
     std::vector<std::thread> m_threads;
     std::string m_instrument;
-    ThreadSafeStreamMap m_outfiles;
-    uint32_t m_num_threads;
 };

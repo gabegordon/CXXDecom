@@ -40,7 +40,6 @@ void Decom::init(const std::string& infile)
     ProgressBar readProgress(fileSize, "Parsing");  // Create progress bar
 
     ThreadPoolServer pool(m_instrument);  // Create thread pool that we will be passing our packets to
-    pool.start();
     while (true)  // Loop until error or we reach end of file
     {
         m_progress = m_infile.tellg();  // Get current progress
