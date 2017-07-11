@@ -125,6 +125,9 @@ std::ofstream &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="
 <tr class="memitem:a0a7b3b097b69c5c321fbe177b46d4124"><td class="memItemLeft" align="right" valign="top">std::unordered_map&lt; uint32_t, <br class="typebreak"/>
 std::mutex &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_thread_safe_stream_map.html#a0a7b3b097b69c5c321fbe177b46d4124">m_mutices</a></td></tr>
 <tr class="separator:a0a7b3b097b69c5c321fbe177b46d4124"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a58ed3814f91e935cff57a841e1d2f8ce"><td class="memItemLeft" align="right" valign="top">std::unordered_map&lt; uint32_t, <br class="typebreak"/>
+std::mutex &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_thread_safe_stream_map.html#a58ed3814f91e935cff57a841e1d2f8ce">m_tempLocks</a></td></tr>
+<tr class="separator:a58ed3814f91e935cff57a841e1d2f8ce"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8860131afc0d18d1a707b78bba13db53"><td class="memItemLeft" align="right" valign="top">std::mutex&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_thread_safe_stream_map.html#a8860131afc0d18d1a707b78bba13db53">m_ofstreamLock</a></td></tr>
 <tr class="separator:a8860131afc0d18d1a707b78bba13db53"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa10718812e4dedd8bf5456219a2e4cf8"><td class="memItemLeft" align="right" valign="top">std::mutex&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_thread_safe_stream_map.html#aa10718812e4dedd8bf5456219a2e4cf8">m_mutexLock</a></td></tr>
@@ -159,13 +162,15 @@ std::mutex &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el"
 <div class="fragment"><div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160;                        :</div>
 <div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;    <a class="code" href="class_thread_safe_stream_map.html#a5c6e8007f1662da26ee71e36ab5272bb">m_map</a>(),</div>
 <div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;    <a class="code" href="class_thread_safe_stream_map.html#a0a7b3b097b69c5c321fbe177b46d4124">m_mutices</a>(),</div>
-<div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;    <a class="code" href="class_thread_safe_stream_map.html#a8860131afc0d18d1a707b78bba13db53">m_ofstreamLock</a>(),</div>
-<div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;    <a class="code" href="class_thread_safe_stream_map.html#aa10718812e4dedd8bf5456219a2e4cf8">m_mutexLock</a>()</div>
-<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;    {}</div>
-<div class="ttc" id="class_thread_safe_stream_map_html_a0a7b3b097b69c5c321fbe177b46d4124"><div class="ttname"><a href="class_thread_safe_stream_map.html#a0a7b3b097b69c5c321fbe177b46d4124">ThreadSafeStreamMap::m_mutices</a></div><div class="ttdeci">std::unordered_map&lt; uint32_t, std::mutex &gt; m_mutices</div><div class="ttdef"><b>Definition:</b> <a href="_thread_safe_stream_map_8h_source.html#l00035">ThreadSafeStreamMap.h:35</a></div></div>
-<div class="ttc" id="class_thread_safe_stream_map_html_aa10718812e4dedd8bf5456219a2e4cf8"><div class="ttname"><a href="class_thread_safe_stream_map.html#aa10718812e4dedd8bf5456219a2e4cf8">ThreadSafeStreamMap::m_mutexLock</a></div><div class="ttdeci">std::mutex m_mutexLock</div><div class="ttdef"><b>Definition:</b> <a href="_thread_safe_stream_map_8h_source.html#l00037">ThreadSafeStreamMap.h:37</a></div></div>
-<div class="ttc" id="class_thread_safe_stream_map_html_a5c6e8007f1662da26ee71e36ab5272bb"><div class="ttname"><a href="class_thread_safe_stream_map.html#a5c6e8007f1662da26ee71e36ab5272bb">ThreadSafeStreamMap::m_map</a></div><div class="ttdeci">std::unordered_map&lt; uint32_t, std::ofstream &gt; m_map</div><div class="ttdef"><b>Definition:</b> <a href="_thread_safe_stream_map_8h_source.html#l00034">ThreadSafeStreamMap.h:34</a></div></div>
-<div class="ttc" id="class_thread_safe_stream_map_html_a8860131afc0d18d1a707b78bba13db53"><div class="ttname"><a href="class_thread_safe_stream_map.html#a8860131afc0d18d1a707b78bba13db53">ThreadSafeStreamMap::m_ofstreamLock</a></div><div class="ttdeci">std::mutex m_ofstreamLock</div><div class="ttdef"><b>Definition:</b> <a href="_thread_safe_stream_map_8h_source.html#l00036">ThreadSafeStreamMap.h:36</a></div></div>
+<div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;    <a class="code" href="class_thread_safe_stream_map.html#a58ed3814f91e935cff57a841e1d2f8ce">m_tempLocks</a>(),</div>
+<div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;    <a class="code" href="class_thread_safe_stream_map.html#a8860131afc0d18d1a707b78bba13db53">m_ofstreamLock</a>(),</div>
+<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;    <a class="code" href="class_thread_safe_stream_map.html#aa10718812e4dedd8bf5456219a2e4cf8">m_mutexLock</a>()</div>
+<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;    {}</div>
+<div class="ttc" id="class_thread_safe_stream_map_html_a0a7b3b097b69c5c321fbe177b46d4124"><div class="ttname"><a href="class_thread_safe_stream_map.html#a0a7b3b097b69c5c321fbe177b46d4124">ThreadSafeStreamMap::m_mutices</a></div><div class="ttdeci">std::unordered_map&lt; uint32_t, std::mutex &gt; m_mutices</div><div class="ttdef"><b>Definition:</b> <a href="_thread_safe_stream_map_8h_source.html#l00036">ThreadSafeStreamMap.h:36</a></div></div>
+<div class="ttc" id="class_thread_safe_stream_map_html_aa10718812e4dedd8bf5456219a2e4cf8"><div class="ttname"><a href="class_thread_safe_stream_map.html#aa10718812e4dedd8bf5456219a2e4cf8">ThreadSafeStreamMap::m_mutexLock</a></div><div class="ttdeci">std::mutex m_mutexLock</div><div class="ttdef"><b>Definition:</b> <a href="_thread_safe_stream_map_8h_source.html#l00039">ThreadSafeStreamMap.h:39</a></div></div>
+<div class="ttc" id="class_thread_safe_stream_map_html_a58ed3814f91e935cff57a841e1d2f8ce"><div class="ttname"><a href="class_thread_safe_stream_map.html#a58ed3814f91e935cff57a841e1d2f8ce">ThreadSafeStreamMap::m_tempLocks</a></div><div class="ttdeci">std::unordered_map&lt; uint32_t, std::mutex &gt; m_tempLocks</div><div class="ttdef"><b>Definition:</b> <a href="_thread_safe_stream_map_8h_source.html#l00037">ThreadSafeStreamMap.h:37</a></div></div>
+<div class="ttc" id="class_thread_safe_stream_map_html_a5c6e8007f1662da26ee71e36ab5272bb"><div class="ttname"><a href="class_thread_safe_stream_map.html#a5c6e8007f1662da26ee71e36ab5272bb">ThreadSafeStreamMap::m_map</a></div><div class="ttdeci">std::unordered_map&lt; uint32_t, std::ofstream &gt; m_map</div><div class="ttdef"><b>Definition:</b> <a href="_thread_safe_stream_map_8h_source.html#l00035">ThreadSafeStreamMap.h:35</a></div></div>
+<div class="ttc" id="class_thread_safe_stream_map_html_a8860131afc0d18d1a707b78bba13db53"><div class="ttname"><a href="class_thread_safe_stream_map.html#a8860131afc0d18d1a707b78bba13db53">ThreadSafeStreamMap::m_ofstreamLock</a></div><div class="ttdeci">std::mutex m_ofstreamLock</div><div class="ttdef"><b>Definition:</b> <a href="_thread_safe_stream_map_8h_source.html#l00038">ThreadSafeStreamMap.h:38</a></div></div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -190,8 +195,8 @@ std::mutex &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el"
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="_thread_safe_stream_map_8h_source.html#l00016">16</a> of file <a class="el" href="_thread_safe_stream_map_8h_source.html">ThreadSafeStreamMap.h</a>.</p>
-<div class="fragment"><div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;{}</div>
+<p>Definition at line <a class="el" href="_thread_safe_stream_map_8h_source.html#l00017">17</a> of file <a class="el" href="_thread_safe_stream_map_8h_source.html">ThreadSafeStreamMap.h</a>.</p>
+<div class="fragment"><div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;{}</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -217,11 +222,11 @@ std::mutex &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el"
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="_thread_safe_stream_map_8h_source.html#l00023">23</a> of file <a class="el" href="_thread_safe_stream_map_8h_source.html">ThreadSafeStreamMap.h</a>.</p>
-<div class="fragment"><div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;    {</div>
-<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;        <span class="keywordflow">return</span> <a class="code" href="class_thread_safe_stream_map.html#a5c6e8007f1662da26ee71e36ab5272bb">m_map</a>.begin();</div>
-<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;    }</div>
-<div class="ttc" id="class_thread_safe_stream_map_html_a5c6e8007f1662da26ee71e36ab5272bb"><div class="ttname"><a href="class_thread_safe_stream_map.html#a5c6e8007f1662da26ee71e36ab5272bb">ThreadSafeStreamMap::m_map</a></div><div class="ttdeci">std::unordered_map&lt; uint32_t, std::ofstream &gt; m_map</div><div class="ttdef"><b>Definition:</b> <a href="_thread_safe_stream_map_8h_source.html#l00034">ThreadSafeStreamMap.h:34</a></div></div>
+<p>Definition at line <a class="el" href="_thread_safe_stream_map_8h_source.html#l00024">24</a> of file <a class="el" href="_thread_safe_stream_map_8h_source.html">ThreadSafeStreamMap.h</a>.</p>
+<div class="fragment"><div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;    {</div>
+<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;        <span class="keywordflow">return</span> <a class="code" href="class_thread_safe_stream_map.html#a5c6e8007f1662da26ee71e36ab5272bb">m_map</a>.begin();</div>
+<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;    }</div>
+<div class="ttc" id="class_thread_safe_stream_map_html_a5c6e8007f1662da26ee71e36ab5272bb"><div class="ttname"><a href="class_thread_safe_stream_map.html#a5c6e8007f1662da26ee71e36ab5272bb">ThreadSafeStreamMap::m_map</a></div><div class="ttdeci">std::unordered_map&lt; uint32_t, std::ofstream &gt; m_map</div><div class="ttdef"><b>Definition:</b> <a href="_thread_safe_stream_map_8h_source.html#l00035">ThreadSafeStreamMap.h:35</a></div></div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -246,11 +251,11 @@ std::mutex &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el"
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="_thread_safe_stream_map_8h_source.html#l00028">28</a> of file <a class="el" href="_thread_safe_stream_map_8h_source.html">ThreadSafeStreamMap.h</a>.</p>
-<div class="fragment"><div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;    {</div>
-<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;        <span class="keywordflow">return</span> <a class="code" href="class_thread_safe_stream_map.html#a5c6e8007f1662da26ee71e36ab5272bb">m_map</a>.end();</div>
-<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;    }</div>
-<div class="ttc" id="class_thread_safe_stream_map_html_a5c6e8007f1662da26ee71e36ab5272bb"><div class="ttname"><a href="class_thread_safe_stream_map.html#a5c6e8007f1662da26ee71e36ab5272bb">ThreadSafeStreamMap::m_map</a></div><div class="ttdeci">std::unordered_map&lt; uint32_t, std::ofstream &gt; m_map</div><div class="ttdef"><b>Definition:</b> <a href="_thread_safe_stream_map_8h_source.html#l00034">ThreadSafeStreamMap.h:34</a></div></div>
+<p>Definition at line <a class="el" href="_thread_safe_stream_map_8h_source.html#l00029">29</a> of file <a class="el" href="_thread_safe_stream_map_8h_source.html">ThreadSafeStreamMap.h</a>.</p>
+<div class="fragment"><div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;    {</div>
+<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;        <span class="keywordflow">return</span> <a class="code" href="class_thread_safe_stream_map.html#a5c6e8007f1662da26ee71e36ab5272bb">m_map</a>.end();</div>
+<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;    }</div>
+<div class="ttc" id="class_thread_safe_stream_map_html_a5c6e8007f1662da26ee71e36ab5272bb"><div class="ttname"><a href="class_thread_safe_stream_map.html#a5c6e8007f1662da26ee71e36ab5272bb">ThreadSafeStreamMap::m_map</a></div><div class="ttdeci">std::unordered_map&lt; uint32_t, std::ofstream &gt; m_map</div><div class="ttdef"><b>Definition:</b> <a href="_thread_safe_stream_map_8h_source.html#l00035">ThreadSafeStreamMap.h:35</a></div></div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -276,13 +281,13 @@ std::mutex &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el"
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>pointer to corresponding mutex </dd></dl>
 
-<p>Definition at line <a class="el" href="_thread_safe_stream_map_8cpp_source.html#l00027">27</a> of file <a class="el" href="_thread_safe_stream_map_8cpp_source.html">ThreadSafeStreamMap.cpp</a>.</p>
-<div class="fragment"><div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;{</div>
-<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;    std::lock_guard&lt;std::mutex&gt; lock(<a class="code" href="class_thread_safe_stream_map.html#aa10718812e4dedd8bf5456219a2e4cf8">m_mutexLock</a>);</div>
-<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;    <span class="keywordflow">return</span> &amp;<a class="code" href="class_thread_safe_stream_map.html#a0a7b3b097b69c5c321fbe177b46d4124">m_mutices</a>[apid];</div>
-<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;}</div>
-<div class="ttc" id="class_thread_safe_stream_map_html_a0a7b3b097b69c5c321fbe177b46d4124"><div class="ttname"><a href="class_thread_safe_stream_map.html#a0a7b3b097b69c5c321fbe177b46d4124">ThreadSafeStreamMap::m_mutices</a></div><div class="ttdeci">std::unordered_map&lt; uint32_t, std::mutex &gt; m_mutices</div><div class="ttdef"><b>Definition:</b> <a href="_thread_safe_stream_map_8h_source.html#l00035">ThreadSafeStreamMap.h:35</a></div></div>
-<div class="ttc" id="class_thread_safe_stream_map_html_aa10718812e4dedd8bf5456219a2e4cf8"><div class="ttname"><a href="class_thread_safe_stream_map.html#aa10718812e4dedd8bf5456219a2e4cf8">ThreadSafeStreamMap::m_mutexLock</a></div><div class="ttdeci">std::mutex m_mutexLock</div><div class="ttdef"><b>Definition:</b> <a href="_thread_safe_stream_map_8h_source.html#l00037">ThreadSafeStreamMap.h:37</a></div></div>
+<p>Definition at line <a class="el" href="_thread_safe_stream_map_8cpp_source.html#l00028">28</a> of file <a class="el" href="_thread_safe_stream_map_8cpp_source.html">ThreadSafeStreamMap.cpp</a>.</p>
+<div class="fragment"><div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;{</div>
+<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;    std::lock_guard&lt;std::mutex&gt; lock(<a class="code" href="class_thread_safe_stream_map.html#aa10718812e4dedd8bf5456219a2e4cf8">m_mutexLock</a>);</div>
+<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;    <span class="keywordflow">return</span> &amp;<a class="code" href="class_thread_safe_stream_map.html#a0a7b3b097b69c5c321fbe177b46d4124">m_mutices</a>[apid];</div>
+<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;}</div>
+<div class="ttc" id="class_thread_safe_stream_map_html_a0a7b3b097b69c5c321fbe177b46d4124"><div class="ttname"><a href="class_thread_safe_stream_map.html#a0a7b3b097b69c5c321fbe177b46d4124">ThreadSafeStreamMap::m_mutices</a></div><div class="ttdeci">std::unordered_map&lt; uint32_t, std::mutex &gt; m_mutices</div><div class="ttdef"><b>Definition:</b> <a href="_thread_safe_stream_map_8h_source.html#l00036">ThreadSafeStreamMap.h:36</a></div></div>
+<div class="ttc" id="class_thread_safe_stream_map_html_aa10718812e4dedd8bf5456219a2e4cf8"><div class="ttname"><a href="class_thread_safe_stream_map.html#aa10718812e4dedd8bf5456219a2e4cf8">ThreadSafeStreamMap::m_mutexLock</a></div><div class="ttdeci">std::mutex m_mutexLock</div><div class="ttdef"><b>Definition:</b> <a href="_thread_safe_stream_map_8h_source.html#l00039">ThreadSafeStreamMap.h:39</a></div></div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -319,18 +324,18 @@ std::mutex &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el"
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>ofstream reference for corresponding output file </dd></dl>
 
-<p>Definition at line <a class="el" href="_thread_safe_stream_map_8cpp_source.html#l00010">10</a> of file <a class="el" href="_thread_safe_stream_map_8cpp_source.html">ThreadSafeStreamMap.cpp</a>.</p>
-<div class="fragment"><div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;{</div>
-<div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;    std::lock_guard&lt;std::mutex&gt; lock(<a class="code" href="class_thread_safe_stream_map.html#a8860131afc0d18d1a707b78bba13db53">m_ofstreamLock</a>);</div>
-<div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;    <span class="keyword">auto</span>&amp; stream = <a class="code" href="class_thread_safe_stream_map.html#a5c6e8007f1662da26ee71e36ab5272bb">m_map</a>[apid];</div>
-<div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;    <span class="keywordflow">if</span> (!stream.is_open())</div>
-<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;    {</div>
-<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;        stream.open(<span class="stringliteral">&quot;output/&quot;</span> + instrument + <span class="stringliteral">&quot;_&quot;</span> + std::to_string(apid) + <span class="stringliteral">&quot;.txt&quot;</span>, std::ios::ate);</div>
-<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;    }</div>
-<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;    <span class="keywordflow">return</span> stream;</div>
-<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;}</div>
-<div class="ttc" id="class_thread_safe_stream_map_html_a5c6e8007f1662da26ee71e36ab5272bb"><div class="ttname"><a href="class_thread_safe_stream_map.html#a5c6e8007f1662da26ee71e36ab5272bb">ThreadSafeStreamMap::m_map</a></div><div class="ttdeci">std::unordered_map&lt; uint32_t, std::ofstream &gt; m_map</div><div class="ttdef"><b>Definition:</b> <a href="_thread_safe_stream_map_8h_source.html#l00034">ThreadSafeStreamMap.h:34</a></div></div>
-<div class="ttc" id="class_thread_safe_stream_map_html_a8860131afc0d18d1a707b78bba13db53"><div class="ttname"><a href="class_thread_safe_stream_map.html#a8860131afc0d18d1a707b78bba13db53">ThreadSafeStreamMap::m_ofstreamLock</a></div><div class="ttdeci">std::mutex m_ofstreamLock</div><div class="ttdef"><b>Definition:</b> <a href="_thread_safe_stream_map_8h_source.html#l00036">ThreadSafeStreamMap.h:36</a></div></div>
+<p>Definition at line <a class="el" href="_thread_safe_stream_map_8cpp_source.html#l00011">11</a> of file <a class="el" href="_thread_safe_stream_map_8cpp_source.html">ThreadSafeStreamMap.cpp</a>.</p>
+<div class="fragment"><div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;{</div>
+<div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;    std::lock_guard&lt;std::mutex&gt; lock(<a class="code" href="class_thread_safe_stream_map.html#a8860131afc0d18d1a707b78bba13db53">m_ofstreamLock</a>);</div>
+<div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;    <span class="keyword">auto</span>&amp; stream = <a class="code" href="class_thread_safe_stream_map.html#a5c6e8007f1662da26ee71e36ab5272bb">m_map</a>[apid];</div>
+<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;    <span class="keywordflow">if</span> (!stream.is_open())</div>
+<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;    {</div>
+<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;        stream.open(<span class="stringliteral">&quot;output/&quot;</span> + instrument + <span class="stringliteral">&quot;_&quot;</span> + std::to_string(apid) + <span class="stringliteral">&quot;.txt&quot;</span>, std::ios::ate);</div>
+<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;    }</div>
+<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;    <span class="keywordflow">return</span> stream;</div>
+<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;}</div>
+<div class="ttc" id="class_thread_safe_stream_map_html_a5c6e8007f1662da26ee71e36ab5272bb"><div class="ttname"><a href="class_thread_safe_stream_map.html#a5c6e8007f1662da26ee71e36ab5272bb">ThreadSafeStreamMap::m_map</a></div><div class="ttdeci">std::unordered_map&lt; uint32_t, std::ofstream &gt; m_map</div><div class="ttdef"><b>Definition:</b> <a href="_thread_safe_stream_map_8h_source.html#l00035">ThreadSafeStreamMap.h:35</a></div></div>
+<div class="ttc" id="class_thread_safe_stream_map_html_a8860131afc0d18d1a707b78bba13db53"><div class="ttname"><a href="class_thread_safe_stream_map.html#a8860131afc0d18d1a707b78bba13db53">ThreadSafeStreamMap::m_ofstreamLock</a></div><div class="ttdeci">std::mutex m_ofstreamLock</div><div class="ttdef"><b>Definition:</b> <a href="_thread_safe_stream_map_8h_source.html#l00038">ThreadSafeStreamMap.h:38</a></div></div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -353,7 +358,7 @@ std::mutex &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el"
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="_thread_safe_stream_map_8h_source.html#l00034">34</a> of file <a class="el" href="_thread_safe_stream_map_8h_source.html">ThreadSafeStreamMap.h</a>.</p>
+<p>Definition at line <a class="el" href="_thread_safe_stream_map_8h_source.html#l00035">35</a> of file <a class="el" href="_thread_safe_stream_map_8h_source.html">ThreadSafeStreamMap.h</a>.</p>
 
 </div>
 </div>
@@ -375,7 +380,7 @@ std::mutex &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el"
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="_thread_safe_stream_map_8h_source.html#l00037">37</a> of file <a class="el" href="_thread_safe_stream_map_8h_source.html">ThreadSafeStreamMap.h</a>.</p>
+<p>Definition at line <a class="el" href="_thread_safe_stream_map_8h_source.html#l00039">39</a> of file <a class="el" href="_thread_safe_stream_map_8h_source.html">ThreadSafeStreamMap.h</a>.</p>
 
 </div>
 </div>
@@ -397,7 +402,7 @@ std::mutex &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el"
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="_thread_safe_stream_map_8h_source.html#l00035">35</a> of file <a class="el" href="_thread_safe_stream_map_8h_source.html">ThreadSafeStreamMap.h</a>.</p>
+<p>Definition at line <a class="el" href="_thread_safe_stream_map_8h_source.html#l00036">36</a> of file <a class="el" href="_thread_safe_stream_map_8h_source.html">ThreadSafeStreamMap.h</a>.</p>
 
 </div>
 </div>
@@ -419,7 +424,29 @@ std::mutex &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el"
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="_thread_safe_stream_map_8h_source.html#l00036">36</a> of file <a class="el" href="_thread_safe_stream_map_8h_source.html">ThreadSafeStreamMap.h</a>.</p>
+<p>Definition at line <a class="el" href="_thread_safe_stream_map_8h_source.html#l00038">38</a> of file <a class="el" href="_thread_safe_stream_map_8h_source.html">ThreadSafeStreamMap.h</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a58ed3814f91e935cff57a841e1d2f8ce"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::unordered_map&lt;uint32_t, std::mutex&gt; ThreadSafeStreamMap::m_tempLocks</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Definition at line <a class="el" href="_thread_safe_stream_map_8h_source.html#l00037">37</a> of file <a class="el" href="_thread_safe_stream_map_8h_source.html">ThreadSafeStreamMap.h</a>.</p>
 
 </div>
 </div>
