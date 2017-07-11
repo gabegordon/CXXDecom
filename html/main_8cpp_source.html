@@ -114,9 +114,9 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;        <span class="keywordtype">bool</span> allAPIDs = !!std::stoi(argv[4]);</div>
 <div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;        std::cout &lt;&lt; packetFile &lt;&lt; std::endl;</div>
 <div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;<span class="preprocessor">#ifdef __linux__</span></div>
-<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;<span class="preprocessor"></span>        system(<span class="stringliteral">&quot;cd output &amp;&amp; rm -f *.txt&quot;</span>);  <span class="comment">// Clear output directory</span></div>
+<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;<span class="preprocessor"></span>        <span class="keywordtype">int</span> val = system(<span class="stringliteral">&quot;cd output &amp;&amp; rm -f *.txt&quot;</span>);  <span class="comment">// Clear output directory</span></div>
 <div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;<span class="preprocessor">#else</span></div>
-<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;<span class="preprocessor"></span>        system(<span class="stringliteral">&quot;cd output &amp;&amp; del /Q *.txt 2&gt;NUL 1&gt;NUL&quot;</span>);</div>
+<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;<span class="preprocessor"></span>        <span class="keywordtype">int</span> val = system(<span class="stringliteral">&quot;cd output &amp;&amp; del /Q *.txt 2&gt;NUL 1&gt;NUL&quot;</span>);</div>
 <div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;<span class="preprocessor">#endif</span></div>
 <div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;<span class="preprocessor"></span>        <a class="code" href="class_database_reader.html">DatabaseReader</a> dr(paramsFile, allAPIDs);  <span class="comment">// Read databases</span></div>
 <div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;        <a class="code" href="class_decom.html">Decom</a> decomEngine(instrument, debug, dr.<a class="code" href="class_database_reader.html#abc73304f520dccd0557b254a3fb4333b">getEntries</a>());  <span class="comment">// Run decom</span></div>
@@ -126,7 +126,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;    end = std::chrono::system_clock::now();</div>
 <div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;    std::chrono::duration&lt;double&gt; elapsed_seconds = end-start;</div>
 <div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;    std::cout  &lt;&lt; <span class="stringliteral">&quot;elapsed time: &quot;</span> &lt;&lt; elapsed_seconds.count() &lt;&lt; <span class="stringliteral">&quot;s\n&quot;</span>;</div>
-<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;    system(<span class="stringliteral">&quot;pause&quot;</span>);</div>
+<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;    <span class="keywordtype">int</span> val = system(<span class="stringliteral">&quot;pause&quot;</span>);</div>
 <div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;    <span class="keywordflow">return</span> 0;</div>
 <div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;}</div>
 <div class="ttc" id="_decom_8h_html"><div class="ttname"><a href="_decom_8h.html">Decom.h</a></div></div>
