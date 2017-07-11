@@ -255,10 +255,10 @@ std::vector&lt; <a class="el" href="namespace_data_types.html#struct_data_types_
 <p>Handles any special formatting requirements for instrument science data.</p>
 <dl class="section return"><dt>Returns</dt><dd>N/A </dd></dl>
 
-<p>Definition at line <a class="el" href="_decom_8cpp_source.html#l00115">115</a> of file <a class="el" href="_decom_8cpp_source.html">Decom.cpp</a>.</p>
-<div class="fragment"><div class="line"><a name="l00116"></a><span class="lineno">  116</span>&#160;{</div>
-<div class="line"><a name="l00117"></a><span class="lineno">  117</span>&#160;    <a class="code" href="namespace_instrument_format.html#aa53f344d6460ae4dad1e2c26c3b7a4de">InstrumentFormat::formatATMS</a>();</div>
-<div class="line"><a name="l00118"></a><span class="lineno">  118</span>&#160;}</div>
+<p>Definition at line <a class="el" href="_decom_8cpp_source.html#l00114">114</a> of file <a class="el" href="_decom_8cpp_source.html">Decom.cpp</a>.</p>
+<div class="fragment"><div class="line"><a name="l00115"></a><span class="lineno">  115</span>&#160;{</div>
+<div class="line"><a name="l00116"></a><span class="lineno">  116</span>&#160;    <a class="code" href="namespace_instrument_format.html#aa53f344d6460ae4dad1e2c26c3b7a4de">InstrumentFormat::formatATMS</a>();</div>
+<div class="line"><a name="l00117"></a><span class="lineno">  117</span>&#160;}</div>
 <div class="ttc" id="namespace_instrument_format_html_aa53f344d6460ae4dad1e2c26c3b7a4de"><div class="ttname"><a href="namespace_instrument_format.html#aa53f344d6460ae4dad1e2c26c3b7a4de">InstrumentFormat::formatATMS</a></div><div class="ttdeci">void formatATMS()</div><div class="ttdef"><b>Definition:</b> <a href="_instrument_format_8cpp_source.html#l00129">InstrumentFormat.cpp:129</a></div></div>
 </div><!-- fragment -->
 </div>
@@ -293,32 +293,32 @@ std::vector&lt; <a class="el" href="namespace_data_types.html#struct_data_types_
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>N/A </dd></dl>
 
-<p>Definition at line <a class="el" href="_decom_8cpp_source.html#l00083">83</a> of file <a class="el" href="_decom_8cpp_source.html">Decom.cpp</a>.</p>
-<div class="fragment"><div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;{</div>
-<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;    <span class="keywordflow">if</span> (std::find(std::begin(<a class="code" href="class_decom.html#a8e375c58094d63dd788d8b2c6996ba62">m_missingAPIDs</a>), std::end(<a class="code" href="class_decom.html#a8e375c58094d63dd788d8b2c6996ba62">m_missingAPIDs</a>), APID) != std::end(<a class="code" href="class_decom.html#a8e375c58094d63dd788d8b2c6996ba62">m_missingAPIDs</a>)){  <span class="comment">// If we already determined apid was missing, then skip</span></div>
-<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;        <span class="keywordflow">return</span>;</div>
-<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;    }</div>
-<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;    <span class="keywordflow">if</span> (<a class="code" href="class_decom.html#a97978bd1b591e7b85d6568338d40991c">m_mapEntries</a>[APID].empty())  <span class="comment">// If we haven&#39;t already loaded entries for this apid</span></div>
-<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;    {</div>
-<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;        <span class="keywordtype">bool</span> foundEntry = <span class="keyword">false</span>;</div>
-<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;        <span class="keywordflow">for</span> (<span class="keyword">const</span> <span class="keyword">auto</span>&amp; entry : <a class="code" href="class_decom.html#a5ebe992c9feb463fb68f03c853cf65b7">m_entries</a>)  <span class="comment">// Loop through all entries</span></div>
-<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;        {</div>
-<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;            <span class="keywordflow">if</span> (entry.i_APID == APID)</div>
-<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;            {</div>
-<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;                <span class="keywordflow">if</span> (!entry.ignored)</div>
-<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;                {</div>
-<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;                    <a class="code" href="class_decom.html#a97978bd1b591e7b85d6568338d40991c">m_mapEntries</a>[APID].emplace_back(entry);</div>
-<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;                }</div>
-<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;                foundEntry = <span class="keyword">true</span>;</div>
-<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;            }</div>
-<div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;        }</div>
-<div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;        <span class="keywordflow">if</span> (!foundEntry)</div>
-<div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;        {</div>
-<div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160;            <a class="code" href="class_decom.html#a8e375c58094d63dd788d8b2c6996ba62">m_missingAPIDs</a>.emplace_back(APID);</div>
-<div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160;            std::cerr &lt;&lt; <span class="stringliteral">&quot;Couldn&#39;t find matching APID in database: &quot;</span> &lt;&lt; APID &lt;&lt; <span class="stringliteral">&quot;\n&quot;</span>;</div>
-<div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160;        }</div>
-<div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160;    }</div>
-<div class="line"><a name="l00108"></a><span class="lineno">  108</span>&#160;}</div>
+<p>Definition at line <a class="el" href="_decom_8cpp_source.html#l00082">82</a> of file <a class="el" href="_decom_8cpp_source.html">Decom.cpp</a>.</p>
+<div class="fragment"><div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;{</div>
+<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;    <span class="keywordflow">if</span> (std::find(std::begin(<a class="code" href="class_decom.html#a8e375c58094d63dd788d8b2c6996ba62">m_missingAPIDs</a>), std::end(<a class="code" href="class_decom.html#a8e375c58094d63dd788d8b2c6996ba62">m_missingAPIDs</a>), APID) != std::end(<a class="code" href="class_decom.html#a8e375c58094d63dd788d8b2c6996ba62">m_missingAPIDs</a>)){  <span class="comment">// If we already determined apid was missing, then skip</span></div>
+<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;        <span class="keywordflow">return</span>;</div>
+<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;    }</div>
+<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;    <span class="keywordflow">if</span> (<a class="code" href="class_decom.html#a97978bd1b591e7b85d6568338d40991c">m_mapEntries</a>[APID].empty())  <span class="comment">// If we haven&#39;t already loaded entries for this apid</span></div>
+<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;    {</div>
+<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;        <span class="keywordtype">bool</span> foundEntry = <span class="keyword">false</span>;</div>
+<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;        <span class="keywordflow">for</span> (<span class="keyword">const</span> <span class="keyword">auto</span>&amp; entry : <a class="code" href="class_decom.html#a5ebe992c9feb463fb68f03c853cf65b7">m_entries</a>)  <span class="comment">// Loop through all entries</span></div>
+<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;        {</div>
+<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;            <span class="keywordflow">if</span> (entry.i_APID == APID)</div>
+<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;            {</div>
+<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;                <span class="keywordflow">if</span> (!entry.ignored)</div>
+<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;                {</div>
+<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;                    <a class="code" href="class_decom.html#a97978bd1b591e7b85d6568338d40991c">m_mapEntries</a>[APID].emplace_back(entry);</div>
+<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;                }</div>
+<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;                foundEntry = <span class="keyword">true</span>;</div>
+<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;            }</div>
+<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;        }</div>
+<div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;        <span class="keywordflow">if</span> (!foundEntry)</div>
+<div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;        {</div>
+<div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;            <a class="code" href="class_decom.html#a8e375c58094d63dd788d8b2c6996ba62">m_missingAPIDs</a>.emplace_back(APID);</div>
+<div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160;            std::cerr &lt;&lt; <span class="stringliteral">&quot;Couldn&#39;t find matching APID in database: &quot;</span> &lt;&lt; APID &lt;&lt; <span class="stringliteral">&quot;\n&quot;</span>;</div>
+<div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160;        }</div>
+<div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160;    }</div>
+<div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160;}</div>
 <div class="ttc" id="class_decom_html_a5ebe992c9feb463fb68f03c853cf65b7"><div class="ttname"><a href="class_decom.html#a5ebe992c9feb463fb68f03c853cf65b7">Decom::m_entries</a></div><div class="ttdeci">std::vector&lt; DataTypes::Entry &gt; m_entries</div><div class="ttdef"><b>Definition:</b> <a href="_decom_8h_source.html#l00033">Decom.h:33</a></div></div>
 <div class="ttc" id="class_decom_html_a97978bd1b591e7b85d6568338d40991c"><div class="ttname"><a href="class_decom.html#a97978bd1b591e7b85d6568338d40991c">Decom::m_mapEntries</a></div><div class="ttdeci">std::unordered_map&lt; uint32_t, std::vector&lt; DataTypes::Entry &gt; &gt; m_mapEntries</div><div class="ttdef"><b>Definition:</b> <a href="_decom_8h_source.html#l00032">Decom.h:32</a></div></div>
 <div class="ttc" id="class_decom_html_a8e375c58094d63dd788d8b2c6996ba62"><div class="ttname"><a href="class_decom.html#a8e375c58094d63dd788d8b2c6996ba62">Decom::m_missingAPIDs</a></div><div class="ttdeci">std::vector&lt; uint32_t &gt; m_missingAPIDs</div><div class="ttdef"><b>Definition:</b> <a href="_decom_8h_source.html#l00040">Decom.h:40</a></div></div>
@@ -363,44 +363,43 @@ std::vector&lt; <a class="el" href="namespace_data_types.html#struct_data_types_
 <div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;    <a class="code" href="class_progress_bar.html">ProgressBar</a> readProgress(fileSize, <span class="stringliteral">&quot;Parsing&quot;</span>);  <span class="comment">// Create progress bar</span></div>
 <div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;</div>
 <div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;    <a class="code" href="class_thread_pool_server.html">ThreadPoolServer</a> pool(<a class="code" href="class_decom.html#a66fba3498fdefd22f4eef2375aa5f068">m_instrument</a>);  <span class="comment">// Create thread pool that we will be passing our packets to</span></div>
-<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;    pool.start();</div>
-<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;    <span class="keywordflow">while</span> (<span class="keyword">true</span>)  <span class="comment">// Loop until error or we reach end of file</span></div>
-<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;    {</div>
-<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;        <a class="code" href="class_decom.html#ad855b18ca3b253963b4bb693b0044541">m_progress</a> = <a class="code" href="class_decom.html#aa7b2640c09481e9b57d24b796ce191fe">m_infile</a>.tellg();  <span class="comment">// Get current progress</span></div>
-<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;        readProgress.Progressed(<a class="code" href="class_decom.html#ad855b18ca3b253963b4bb693b0044541">m_progress</a>);</div>
-<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;        <span class="keywordflow">if</span> (<a class="code" href="class_decom.html#aa7b2640c09481e9b57d24b796ce191fe">m_infile</a>.eof() || <a class="code" href="class_decom.html#ad855b18ca3b253963b4bb693b0044541">m_progress</a> &gt;= fileSize)  <span class="comment">// If reached end of file</span></div>
-<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;            <span class="keywordflow">break</span>;</div>
-<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;</div>
-<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;        std::tuple&lt;DataTypes::PrimaryHeader, DataTypes::SecondaryHeader, bool&gt; headers = <a class="code" href="namespace_header_decode.html#a2ff0278b4d5a9712975f2c85701dacc3">HeaderDecode::decodeHeaders</a>(<a class="code" href="class_decom.html#aa7b2640c09481e9b57d24b796ce191fe">m_infile</a>, <a class="code" href="class_decom.html#a96766728bb1397ee1e4a5dff24de624a">m_debug</a>);  <span class="comment">// Decode headers</span></div>
-<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;</div>
-<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;        <span class="keywordflow">if</span> (!std::get&lt;2&gt;(headers))  <span class="comment">// If header is invalid</span></div>
-<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;            <span class="keywordflow">break</span>;</div>
-<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;</div>
-<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;        <a class="code" href="class_decom.html#a75977045379b8485544e598f8f0a8c17">getEntries</a>(std::get&lt;0&gt;(headers).APID);  <span class="comment">// Get matching database entries from header APID</span></div>
-<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;</div>
-<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;        <a class="code" href="namespace_data_types.html#struct_data_types_1_1_packet">DataTypes::Packet</a> pack;</div>
-<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;        <a class="code" href="class_data_decode.html">DataDecode</a> dc(std::get&lt;0&gt;(headers), std::get&lt;1&gt;(headers), <a class="code" href="class_decom.html#a97978bd1b591e7b85d6568338d40991c">m_mapEntries</a>[std::get&lt;0&gt;(headers).APID], <a class="code" href="class_decom.html#a96766728bb1397ee1e4a5dff24de624a">m_debug</a>, <a class="code" href="class_decom.html#a66fba3498fdefd22f4eef2375aa5f068">m_instrument</a>);  <span class="comment">// Create new dataDecode object and pass headers/instrument info</span></div>
-<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;</div>
-<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;        <span class="keywordflow">if</span> (<a class="code" href="class_decom.html#a66fba3498fdefd22f4eef2375aa5f068">m_instrument</a> == <span class="stringliteral">&quot;OMPS&quot;</span>)  <span class="comment">// If omps then use special function</span></div>
-<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;            pack = dc.decodeOMPS(<a class="code" href="class_decom.html#aa7b2640c09481e9b57d24b796ce191fe">m_infile</a>);</div>
-<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;        <span class="keywordflow">else</span> <span class="keywordflow">if</span> (std::get&lt;0&gt;(headers).sequenceFlag == <a class="code" href="namespace_data_types.html#aff8a980d2c0f7ad1b7ed03da51a72b76af0a9e955849f616304e2de96c2c69cc3">DataTypes::FIRST</a>)  <span class="comment">// If segmented packet</span></div>
-<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;            pack = dc.decodeDataSegmented(<a class="code" href="class_decom.html#aa7b2640c09481e9b57d24b796ce191fe">m_infile</a>, <span class="keyword">false</span>);</div>
-<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;        <span class="keywordflow">else</span>  <span class="comment">// Otherwise standalone packet</span></div>
-<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;            pack = dc.decodeData(<a class="code" href="class_decom.html#aa7b2640c09481e9b57d24b796ce191fe">m_infile</a>, 0);</div>
-<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;</div>
-<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;        pack.<a class="code" href="namespace_data_types.html#aac1e55e08d67fafaa805378f47cdb2ed">apid</a> = std::get&lt;0&gt;(headers).APID;</div>
-<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;        pool.exec(std::move(std::make_unique&lt;DataTypes::Packet&gt;(pack)));  <span class="comment">// Push packet into our writer thread&#39;s queue</span></div>
-<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;    }</div>
-<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;    <a class="code" href="class_decom.html#aa7b2640c09481e9b57d24b796ce191fe">m_infile</a>.close(); <span class="comment">// Close input file</span></div>
-<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;    pool.join();  <span class="comment">// Wait for writer threads to join</span></div>
-<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;    cout &lt;&lt; endl;</div>
-<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;    <a class="code" href="class_decom.html#ade81e21fcea006b4e4a854758d2e9d63">formatInstruments</a>(); <span class="comment">// Check if we need to format instrument data</span></div>
-<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;}</div>
+<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;    <span class="keywordflow">while</span> (<span class="keyword">true</span>)  <span class="comment">// Loop until error or we reach end of file</span></div>
+<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;    {</div>
+<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;        <a class="code" href="class_decom.html#ad855b18ca3b253963b4bb693b0044541">m_progress</a> = <a class="code" href="class_decom.html#aa7b2640c09481e9b57d24b796ce191fe">m_infile</a>.tellg();  <span class="comment">// Get current progress</span></div>
+<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;        readProgress.Progressed(<a class="code" href="class_decom.html#ad855b18ca3b253963b4bb693b0044541">m_progress</a>);</div>
+<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;        <span class="keywordflow">if</span> (<a class="code" href="class_decom.html#aa7b2640c09481e9b57d24b796ce191fe">m_infile</a>.eof() || <a class="code" href="class_decom.html#ad855b18ca3b253963b4bb693b0044541">m_progress</a> &gt;= fileSize)  <span class="comment">// If reached end of file</span></div>
+<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;            <span class="keywordflow">break</span>;</div>
+<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;</div>
+<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;        std::tuple&lt;DataTypes::PrimaryHeader, DataTypes::SecondaryHeader, bool&gt; headers = <a class="code" href="namespace_header_decode.html#a2ff0278b4d5a9712975f2c85701dacc3">HeaderDecode::decodeHeaders</a>(<a class="code" href="class_decom.html#aa7b2640c09481e9b57d24b796ce191fe">m_infile</a>, <a class="code" href="class_decom.html#a96766728bb1397ee1e4a5dff24de624a">m_debug</a>);  <span class="comment">// Decode headers</span></div>
+<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;</div>
+<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;        <span class="keywordflow">if</span> (!std::get&lt;2&gt;(headers))  <span class="comment">// If header is invalid</span></div>
+<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;            <span class="keywordflow">break</span>;</div>
+<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;</div>
+<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;        <a class="code" href="class_decom.html#a75977045379b8485544e598f8f0a8c17">getEntries</a>(std::get&lt;0&gt;(headers).APID);  <span class="comment">// Get matching database entries from header APID</span></div>
+<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;</div>
+<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;        <a class="code" href="namespace_data_types.html#struct_data_types_1_1_packet">DataTypes::Packet</a> pack;</div>
+<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;        <a class="code" href="class_data_decode.html">DataDecode</a> dc(std::get&lt;0&gt;(headers), std::get&lt;1&gt;(headers), <a class="code" href="class_decom.html#a97978bd1b591e7b85d6568338d40991c">m_mapEntries</a>[std::get&lt;0&gt;(headers).APID], <a class="code" href="class_decom.html#a96766728bb1397ee1e4a5dff24de624a">m_debug</a>, <a class="code" href="class_decom.html#a66fba3498fdefd22f4eef2375aa5f068">m_instrument</a>);  <span class="comment">// Create new dataDecode object and pass headers/instrument info</span></div>
+<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;</div>
+<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;        <span class="keywordflow">if</span> (<a class="code" href="class_decom.html#a66fba3498fdefd22f4eef2375aa5f068">m_instrument</a> == <span class="stringliteral">&quot;OMPS&quot;</span>)  <span class="comment">// If omps then use special function</span></div>
+<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;            pack = dc.decodeOMPS(<a class="code" href="class_decom.html#aa7b2640c09481e9b57d24b796ce191fe">m_infile</a>);</div>
+<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;        <span class="keywordflow">else</span> <span class="keywordflow">if</span> (std::get&lt;0&gt;(headers).sequenceFlag == <a class="code" href="namespace_data_types.html#aff8a980d2c0f7ad1b7ed03da51a72b76af0a9e955849f616304e2de96c2c69cc3">DataTypes::FIRST</a>)  <span class="comment">// If segmented packet</span></div>
+<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;            pack = dc.decodeDataSegmented(<a class="code" href="class_decom.html#aa7b2640c09481e9b57d24b796ce191fe">m_infile</a>, <span class="keyword">false</span>);</div>
+<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;        <span class="keywordflow">else</span>  <span class="comment">// Otherwise standalone packet</span></div>
+<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;            pack = dc.decodeData(<a class="code" href="class_decom.html#aa7b2640c09481e9b57d24b796ce191fe">m_infile</a>, 0);</div>
+<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;</div>
+<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;        pack.<a class="code" href="namespace_data_types.html#aac1e55e08d67fafaa805378f47cdb2ed">apid</a> = std::get&lt;0&gt;(headers).APID;</div>
+<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;        pool.exec(std::move(std::make_unique&lt;DataTypes::Packet&gt;(pack)));  <span class="comment">// Push packet into our writer thread&#39;s queue</span></div>
+<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;    }</div>
+<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;    <a class="code" href="class_decom.html#aa7b2640c09481e9b57d24b796ce191fe">m_infile</a>.close(); <span class="comment">// Close input file</span></div>
+<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;    pool.join();  <span class="comment">// Wait for writer threads to join</span></div>
+<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;    cout &lt;&lt; endl;</div>
+<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;    <a class="code" href="class_decom.html#ade81e21fcea006b4e4a854758d2e9d63">formatInstruments</a>(); <span class="comment">// Check if we need to format instrument data</span></div>
+<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;}</div>
 <div class="ttc" id="class_progress_bar_html"><div class="ttname"><a href="class_progress_bar.html">ProgressBar</a></div><div class="ttdef"><b>Definition:</b> <a href="_progress_bar_8h_source.html#l00015">ProgressBar.h:15</a></div></div>
-<div class="ttc" id="class_decom_html_ade81e21fcea006b4e4a854758d2e9d63"><div class="ttname"><a href="class_decom.html#ade81e21fcea006b4e4a854758d2e9d63">Decom::formatInstruments</a></div><div class="ttdeci">void formatInstruments() const </div><div class="ttdef"><b>Definition:</b> <a href="_decom_8cpp_source.html#l00115">Decom.cpp:115</a></div></div>
+<div class="ttc" id="class_decom_html_ade81e21fcea006b4e4a854758d2e9d63"><div class="ttname"><a href="class_decom.html#ade81e21fcea006b4e4a854758d2e9d63">Decom::formatInstruments</a></div><div class="ttdeci">void formatInstruments() const </div><div class="ttdef"><b>Definition:</b> <a href="_decom_8cpp_source.html#l00114">Decom.cpp:114</a></div></div>
 <div class="ttc" id="namespace_header_decode_html_a2ff0278b4d5a9712975f2c85701dacc3"><div class="ttname"><a href="namespace_header_decode.html#a2ff0278b4d5a9712975f2c85701dacc3">HeaderDecode::decodeHeaders</a></div><div class="ttdeci">std::tuple&lt; DataTypes::PrimaryHeader, DataTypes::SecondaryHeader, bool &gt; decodeHeaders(std::ifstream &amp;infile, const bool &amp;debug)</div><div class="ttdef"><b>Definition:</b> <a href="_header_decode_8cpp_source.html#l00021">HeaderDecode.cpp:21</a></div></div>
 <div class="ttc" id="class_decom_html_aa7b2640c09481e9b57d24b796ce191fe"><div class="ttname"><a href="class_decom.html#aa7b2640c09481e9b57d24b796ce191fe">Decom::m_infile</a></div><div class="ttdeci">std::ifstream m_infile</div><div class="ttdef"><b>Definition:</b> <a href="_decom_8h_source.html#l00034">Decom.h:34</a></div></div>
-<div class="ttc" id="class_decom_html_a75977045379b8485544e598f8f0a8c17"><div class="ttname"><a href="class_decom.html#a75977045379b8485544e598f8f0a8c17">Decom::getEntries</a></div><div class="ttdeci">void getEntries(const uint32_t &amp;APID)</div><div class="ttdef"><b>Definition:</b> <a href="_decom_8cpp_source.html#l00083">Decom.cpp:83</a></div></div>
+<div class="ttc" id="class_decom_html_a75977045379b8485544e598f8f0a8c17"><div class="ttname"><a href="class_decom.html#a75977045379b8485544e598f8f0a8c17">Decom::getEntries</a></div><div class="ttdeci">void getEntries(const uint32_t &amp;APID)</div><div class="ttdef"><b>Definition:</b> <a href="_decom_8cpp_source.html#l00082">Decom.cpp:82</a></div></div>
 <div class="ttc" id="class_decom_html_a97978bd1b591e7b85d6568338d40991c"><div class="ttname"><a href="class_decom.html#a97978bd1b591e7b85d6568338d40991c">Decom::m_mapEntries</a></div><div class="ttdeci">std::unordered_map&lt; uint32_t, std::vector&lt; DataTypes::Entry &gt; &gt; m_mapEntries</div><div class="ttdef"><b>Definition:</b> <a href="_decom_8h_source.html#l00032">Decom.h:32</a></div></div>
 <div class="ttc" id="namespace_data_types_html_aac1e55e08d67fafaa805378f47cdb2ed"><div class="ttname"><a href="namespace_data_types.html#aac1e55e08d67fafaa805378f47cdb2ed">DataTypes::Packet::apid</a></div><div class="ttdeci">uint16_t apid</div><div class="ttdef"><b>Definition:</b> <a href="_data_types_8h_source.html#l00052">DataTypes.h:52</a></div></div>
 <div class="ttc" id="namespace_data_types_html_aff8a980d2c0f7ad1b7ed03da51a72b76af0a9e955849f616304e2de96c2c69cc3"><div class="ttname"><a href="namespace_data_types.html#aff8a980d2c0f7ad1b7ed03da51a72b76af0a9e955849f616304e2de96c2c69cc3">DataTypes::FIRST</a></div><div class="ttdef"><b>Definition:</b> <a href="_data_types_8h_source.html#l00009">DataTypes.h:9</a></div></div>
