@@ -85,10 +85,10 @@ DataTypes::PrimaryHeader decodePrimary(std::ifstream& infile, const bool& debug)
     // Account for secondary header length
     if (sh_flag)
     {
-        if (seq_flag == DataTypes::FIRST)
+        if (seq_flag == DataTypes::FIRST)  // Segmented packet has 2 byte number of grouped packets
             ph.packetLength -= 10;
         else
-            ph.packetLength -= 8;
+            ph.packetLength -= 8;  // Otherwise just 8 byte CCSDS time code
     }
 
     checkValidHeader(ph);

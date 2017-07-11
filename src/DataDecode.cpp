@@ -86,7 +86,7 @@ float DataDecode::getFloat(const std::vector<uint8_t>& buf, const DataTypes::Ent
 }
 
 /**
- * Set packet data from secondary header.
+ * Set packet data from headers.
  *
  * @param pack Packet to be set
  * @return N/A
@@ -97,6 +97,7 @@ void DataDecode::getHeaderData(DataTypes::Packet& pack)
     pack.millis = m_sHeader.millis;
     pack.micros = m_sHeader.micros;
     pack.sequenceCount = m_pHeader.packetSequence;
+    pack.apid = m_pHeader.APID;
 }
 
 /**

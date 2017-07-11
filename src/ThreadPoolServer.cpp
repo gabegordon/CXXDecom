@@ -88,7 +88,7 @@ void ThreadPoolServer::exec(std::unique_ptr<DataTypes::Packet> pack)
  */
 void ThreadPoolServer::join()
 {
-    std::cout << std::endl << "Waiting for writer threads to finish...";
+    std::cout << std::endl << "Waiting for writer threads to finish...\n";
     for (auto& q : m_queues)
         q.second.setInactive();
     for (auto& thread : m_threads)

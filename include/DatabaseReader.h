@@ -34,6 +34,6 @@ class DatabaseReader
     void printDataBase() const;
     bool bannedAPID(const std::string& mnem) const;
     const struct DataTypes::Entry defaults = {
-        "",DataTypes::NILL,0,0,0,0,true
+        "",DataTypes::NILL,0,0,0,0,false
     };
 };

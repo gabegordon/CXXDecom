@@ -5,6 +5,7 @@
 #include "DatabaseReader.h"
 #include "DataTypes.h"
 #include "CSVRow.h"
+#include "ReadFile.h"
 
 
 /**
@@ -98,12 +99,7 @@ void DatabaseReader::getByteBit(std::string& bytebit, uint32_t& i_byte, uint32_t
 void DatabaseReader::readAPIDList()
 {
     std::ifstream CXXParams(m_paramsFile);
-    if (!CXXParams || !CXXParams.is_open())
-    {
-        std::cerr << "Could not find CXXParams" << std::endl;
-        system("pause");
-        exit(0);
-    }
+    ReadFile::checkFile(CXXParams, m_paramsFile);
 
     CSVRow apidRow;
     while (CXXParams >> apidRow)
@@ -124,12 +120,7 @@ void DatabaseReader::readAPIDList()
 void DatabaseReader::readDatabase(const std::string& filename)
 {
     std::ifstream database(filename);
-    if (!database || !database.is_open())
-    {
-        std::cerr << "Could not find Database" << std::endl;
-        system("pause");
-        exit(0);
-    }
+    ReadFile::checkFile(database, filename);
 
     CSVRow dataRow;
     while (database >> dataRow)
@@ -140,9 +131,13 @@ void DatabaseReader::readDatabase(const std::string& filename)
             continue;
         }
 
+        std::string mnem = dataRow[0];
         std::string s_APID = dataRow[2];
-        s_APID.erase(0, 4);  // Remove APID string from ex. (APID0001)
+        std::string bytebit = dataRow[3];
+        DataTypes::Entry tmp = defaults;
         uint32_t i_APID = 0;
+
+        s_APID.erase(0, 4);  // Remove APID string from ex. (APID0001)
 
         try
         {
@@ -153,53 +148,33 @@ void DatabaseReader::readDatabase(const std::string& filename)
             std::cout << "i_APID stoul failed for: " << s_APID << std::endl;
         }
 
-        std::string mnem = dataRow[0];
-        DataTypes::Entry tmp = defaults;
-
-        if (m_allAPIDs)  // If not filtering APIDs, then add all entries
+        if(!m_allAPIDs)  // If filtering APIDs
         {
-            tmp.mnemonic = mnem;
-            tmp.type = DataTypes::hashIt(dataRow[1].substr(0, 1));
-            tmp.i_APID = i_APID;
-
-            std::string bytebit = dataRow[3];
-            uint32_t i_byte = 0;
-            uint32_t i_bitLower = 0;
-            uint32_t i_bitUpper = 0;
-            getByteBit(bytebit, i_byte, i_bitLower, i_bitUpper);
-
-            tmp.byte = i_byte;
-            tmp.bitLower = i_bitLower;
-            tmp.bitUpper = i_bitUpper;
-            tmp.length = std::stoi(dataRow[1].substr(1, std::string::npos));
-            tmp.ignored = false;
-        }
-        else  // Otherwise check if current entry is listed in our selected entries vector
-        {
-            tmp.ignored = false;
             if (std::find(m_APIDs.begin(), m_APIDs.end(), i_APID) == m_APIDs.end())  // If not found in selected vector
             {
                 tmp.ignored = true;
             }
-            tmp.mnemonic = mnem;
-            tmp.type = DataTypes::hashIt(dataRow[1].substr(0, 1));
-            tmp.i_APID = i_APID;
-
-            std::string bytebit = dataRow[3];
-            uint32_t i_byte = 0;
-            uint32_t i_bitLower = 0;
-            uint32_t i_bitUpper = 0;
-            getByteBit(bytebit, i_byte, i_bitLower, i_bitUpper);
-
-            tmp.byte = i_byte;
-            tmp.bitLower = i_bitLower;
-            tmp.bitUpper = i_bitUpper;
-            tmp.length = std::stoi(dataRow[1].substr(1, std::string::npos));
         }
+
+        tmp.mnemonic = mnem;
+        tmp.type = DataTypes::hashIt(dataRow[1].substr(0, 1));
+        tmp.i_APID = i_APID;
+
+        uint32_t i_byte = 0;
+        uint32_t i_bitLower = 0;
+        uint32_t i_bitUpper = 0;
+        getByteBit(bytebit, i_byte, i_bitLower, i_bitUpper);
+
+        tmp.byte = i_byte;
+        tmp.bitLower = i_bitLower;
+        tmp.bitUpper = i_bitUpper;
+        tmp.length = std::stoi(dataRow[1].substr(1, std::string::npos));
+
         if (bannedAPID(mnem))  // Skip entries containing header info, as we already decode it.
         {
             tmp.ignored = true;
         }
+
         m_entries.emplace_back(tmp);
     }
     m_firstRun = true;

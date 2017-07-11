@@ -1,8 +1,9 @@
 #pragma once
 #include <vector>
 #include <set>
-#include <fstream>
 #include <unordered_map>
+#include <fstream>
+#include <tuple>
 #include <string>
 #include "DataTypes.h"
 
@@ -16,7 +17,8 @@ class Decom
     m_entries(entries),
     m_instrument(instrument),
     m_progress(0),
-    m_debug(debug)
+    m_debug(debug),
+    m_headers()
     {};
     virtual ~Decom() {}
 
@@ -26,6 +28,9 @@ class Decom
     void getEntries(const uint32_t& APID);
     void formatInstruments() const;
     void storeAPID(const uint32_t& APID);
+    uint64_t getFileSize();
+    DataTypes::Packet decodeData();
+    bool getHeadersAndEntries();
 
     std::unordered_map<uint32_t, std::vector<DataTypes::Entry>> m_mapEntries;
     std::vector<DataTypes::Entry> m_entries;
@@ -36,4 +41,5 @@ class Decom
     bool m_debug;
     std::vector<uint32_t> m_missingAPIDs;
     std::set<uint32_t> m_APIDs;
+    std::tuple<DataTypes::PrimaryHeader, DataTypes::SecondaryHeader, bool> m_headers;
 };
