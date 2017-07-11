@@ -37,11 +37,6 @@ rm -rf *
 # to NO, which it is by default. So creating the file just in case.
 echo "" > .nojekyll
 
-<<<<<<< HEAD
-=======
-echo "<meta http-equiv=\"refresh\" content=\"0; url=https:/gabegordon.github.io/CXXDecom/html/index.html\" />" > index.html
-
->>>>>>> ae73b284fd55f4f5e8cd707dd9d3b96accacc27a
 ################################################################################
 ##### Generate the Doxygen code documentation and log the output.          #####
 echo 'Generating Doxygen code documentation...'
