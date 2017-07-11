@@ -23,9 +23,9 @@ int main(int argc, char* argv[])
         bool allAPIDs = !!std::stoi(argv[4]);
         std::cout << packetFile << std::endl;
 #ifdef __linux__
-        (void) system("cd output && rm -f *.txt");  // Clear output directory
+        system("cd output && rm -f *.txt");  // Clear output directory
 #else
-        (void) system("cd output && del /Q *.txt 2>NUL 1>NUL");
+        system("cd output && del /Q *.txt 2>NUL 1>NUL");
 #endif
         DatabaseReader dr(paramsFile, allAPIDs);  // Read databases
         Decom decomEngine(instrument, debug, dr.getEntries());  // Run decom
@@ -35,6 +35,6 @@ int main(int argc, char* argv[])
     end = std::chrono::system_clock::now();
     std::chrono::duration<double> elapsed_seconds = end-start;
     std::cout  << "elapsed time: " << elapsed_seconds.count() << "s\n";
-    (void) system("pause");
+    system("pause");
     return 0;
 }
