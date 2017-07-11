@@ -30,7 +30,7 @@ namespace ReadFile
         if (!stream || !stream.is_open())
         {
             std::cerr << "Failed to open " << name << " file." << std::endl;
-            int val = system("pause");
+            (void) system("pause");
             exit(0);
         }
     }
