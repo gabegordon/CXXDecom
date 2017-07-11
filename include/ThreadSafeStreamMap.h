@@ -10,6 +10,7 @@ class ThreadSafeStreamMap
   ThreadSafeStreamMap() :
     m_map(),
     m_mutices(),
+    m_tempLocks(),
     m_ofstreamLock(),
     m_mutexLock()
     {}
@@ -33,6 +34,7 @@ class ThreadSafeStreamMap
   private:
     std::unordered_map<uint32_t, std::ofstream> m_map;
     std::unordered_map<uint32_t, std::mutex> m_mutices;
+    std::unordered_map<uint32_t, std::mutex> m_tempLocks;
     mutable std::mutex m_ofstreamLock;
     mutable std::mutex m_mutexLock;
 };

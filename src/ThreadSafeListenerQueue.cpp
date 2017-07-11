@@ -33,13 +33,12 @@ std::tuple<std::unique_ptr<DataTypes::Packet>, std::mutex*> ThreadSafeListenerQu
         }
     }
 
-    auto frontPtr = std::move(q.front());  // Once woken up save front queue Packet
+    auto frontPtr = std::move(q.front());  // Once notified save front queue Packet
     q.pop();  // Then pop it
-
+    std::lock_guard<std::mutex> olock(orderLock);
+    lock.unlock();
     std::mutex* mut = m_map.getLock(frontPtr->apid);  // Get mutex ptr from map
-    mut->lock();  // Then lock the mutex ptr
-    lock.unlock();  // Unlock queue lock so other threads can pop front (saves a bit of time)
-
+    mut->lock();
     auto tmpTuple = std::make_tuple(std::move(frontPtr), mut);  // Create tuple to return
     retVal = 1;
     return tmpTuple;

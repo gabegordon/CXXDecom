@@ -61,3 +61,10 @@ build/*
 *.manifest
 build/makefile
 documentation/*
+My Advisor Results - CXXDecom/*
+My Amplifier XE Results - CXXDecom/*
+My Inspector Results - CXXDecom/*
+*.sln
+*.vcxproj
+*.vcxproj.filters
+*.vcxproj.user

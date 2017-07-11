@@ -27,6 +27,7 @@ class ThreadSafeListenerQueue
   private:
     std::queue<std::unique_ptr<DataTypes::Packet>> q;
     mutable std::mutex queueLock;
+    mutable std::mutex orderLock;
     std::condition_variable c;
     ThreadSafeStreamMap m_map;
 };
