@@ -118,9 +118,9 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;<span class="preprocessor">#else</span></div>
 <div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;<span class="preprocessor"></span>        system(<span class="stringliteral">&quot;cd output &amp;&amp; del /Q *.txt 2&gt;NUL 1&gt;NUL&quot;</span>);</div>
 <div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;<span class="preprocessor">#endif</span></div>
-<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;<span class="preprocessor"></span>        <a class="code" href="class_database_reader.html">DatabaseReader</a> dr(paramsFile, allAPIDs);  <span class="comment">// Read databases</span></div>
-<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;        <a class="code" href="class_decom.html">Decom</a> decomEngine(instrument, debug, dr.<a class="code" href="class_database_reader.html#abc73304f520dccd0557b254a3fb4333b">getEntries</a>());  <span class="comment">// Run decom</span></div>
-<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;        decomEngine.<a class="code" href="class_decom.html#ac43113071af9a3bbe5f0c503fa7a142c">init</a>(packetFile);</div>
+<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;<span class="preprocessor"></span>        <a class="code" href="class_database_reader.html">DatabaseReader</a> dr{paramsFile, allAPIDs};  <span class="comment">// Read databases</span></div>
+<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;        <a class="code" href="class_decom.html">Decom</a> decomEngine{instrument, debug, dr.<a class="code" href="class_decom.html#a75977045379b8485544e598f8f0a8c17">getEntries</a>()};  <span class="comment">// Run decom</span></div>
+<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;        decomEngine.init(packetFile);</div>
 <div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;    }</div>
 <div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;    std::cout &lt;&lt; std::endl;</div>
 <div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;    end = std::chrono::system_clock::now();</div>
@@ -130,10 +130,9 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;    <span class="keywordflow">return</span> 0;</div>
 <div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;}</div>
 <div class="ttc" id="_decom_8h_html"><div class="ttname"><a href="_decom_8h.html">Decom.h</a></div></div>
-<div class="ttc" id="class_decom_html_ac43113071af9a3bbe5f0c503fa7a142c"><div class="ttname"><a href="class_decom.html#ac43113071af9a3bbe5f0c503fa7a142c">Decom::init</a></div><div class="ttdeci">void init(const std::string &amp;infile)</div><div class="ttdef"><b>Definition:</b> <a href="_decom_8cpp_source.html#l00030">Decom.cpp:30</a></div></div>
 <div class="ttc" id="_database_reader_8h_html"><div class="ttname"><a href="_database_reader_8h.html">DatabaseReader.h</a></div></div>
+<div class="ttc" id="class_decom_html_a75977045379b8485544e598f8f0a8c17"><div class="ttname"><a href="class_decom.html#a75977045379b8485544e598f8f0a8c17">Decom::getEntries</a></div><div class="ttdeci">void getEntries(const uint32_t &amp;APID)</div><div class="ttdef"><b>Definition:</b> <a href="_decom_8cpp_source.html#l00067">Decom.cpp:67</a></div></div>
 <div class="ttc" id="class_database_reader_html"><div class="ttname"><a href="class_database_reader.html">DatabaseReader</a></div><div class="ttdef"><b>Definition:</b> <a href="_database_reader_8h_source.html#l00006">DatabaseReader.h:6</a></div></div>
-<div class="ttc" id="class_database_reader_html_abc73304f520dccd0557b254a3fb4333b"><div class="ttname"><a href="class_database_reader.html#abc73304f520dccd0557b254a3fb4333b">DatabaseReader::getEntries</a></div><div class="ttdeci">std::vector&lt; DataTypes::Entry &gt; getEntries()</div><div class="ttdef"><b>Definition:</b> <a href="_database_reader_8cpp_source.html#l00222">DatabaseReader.cpp:222</a></div></div>
 <div class="ttc" id="main_8cpp_html_a0ddf1224851353fc92bfbff6f499fa97"><div class="ttname"><a href="main_8cpp.html#a0ddf1224851353fc92bfbff6f499fa97">main</a></div><div class="ttdeci">int main(int argc, char *argv[])</div><div class="ttdef"><b>Definition:</b> <a href="main_8cpp_source.html#l00008">main.cpp:8</a></div></div>
 <div class="ttc" id="class_decom_html"><div class="ttname"><a href="class_decom.html">Decom</a></div><div class="ttdef"><b>Definition:</b> <a href="_decom_8h_source.html#l00012">Decom.h:12</a></div></div>
 </div><!-- fragment --></div><!-- contents -->

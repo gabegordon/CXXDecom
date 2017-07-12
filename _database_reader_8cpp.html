@@ -113,61 +113,8 @@ Include dependency graph for DatabaseReader.cpp:</div>
 Functions</h2></td></tr>
 <tr class="memitem:ac2c0b2d1ccc5f44ad4a24f6411cc1d34"><td class="memItemLeft" align="right" valign="top">std::istream &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_database_reader_8cpp.html#ac2c0b2d1ccc5f44ad4a24f6411cc1d34">operator&gt;&gt;</a> (std::istream &amp;str, <a class="el" href="class_c_s_v_row.html">CSVRow</a> &amp;data)</td></tr>
 <tr class="separator:ac2c0b2d1ccc5f44ad4a24f6411cc1d34"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a0795acb9c367760d5dd0dc4f32178e7b"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_database_reader_8cpp.html#a0795acb9c367760d5dd0dc4f32178e7b">compareByAPID</a> (const <a class="el" href="namespace_data_types.html#struct_data_types_1_1_entry">DataTypes::Entry</a> &amp;a, const <a class="el" href="namespace_data_types.html#struct_data_types_1_1_entry">DataTypes::Entry</a> &amp;b)</td></tr>
-<tr class="separator:a0795acb9c367760d5dd0dc4f32178e7b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Function Documentation</h2>
-<a class="anchor" id="a0795acb9c367760d5dd0dc4f32178e7b"></a>
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">bool compareByAPID </td>
-          <td>(</td>
-          <td class="paramtype">const <a class="el" href="namespace_data_types.html#struct_data_types_1_1_entry">DataTypes::Entry</a> &amp;&#160;</td>
-          <td class="paramname"><em>a</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">const <a class="el" href="namespace_data_types.html#struct_data_types_1_1_entry">DataTypes::Entry</a> &amp;&#160;</td>
-          <td class="paramname"><em>b</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-<p>Helper function to allow sorting of entries. Compares by APID and then by byte:bit.</p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">a</td><td>Entry </td></tr>
-    <tr><td class="paramname">b</td><td>Entry </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd>True if Entry a is "smaller" </dd></dl>
-
-<p>Definition at line <a class="el" href="_database_reader_8cpp_source.html#l00203">203</a> of file <a class="el" href="_database_reader_8cpp_source.html">DatabaseReader.cpp</a>.</p>
-<div class="fragment"><div class="line"><a name="l00204"></a><span class="lineno">  204</span>&#160;{</div>
-<div class="line"><a name="l00205"></a><span class="lineno">  205</span>&#160;    <span class="keywordflow">if</span> (a.<a class="code" href="namespace_data_types.html#a10f25e65e9643f405117a1886eacbea9">i_APID</a> != b.<a class="code" href="namespace_data_types.html#a10f25e65e9643f405117a1886eacbea9">i_APID</a>)</div>
-<div class="line"><a name="l00206"></a><span class="lineno">  206</span>&#160;        <span class="keywordflow">return</span> a.<a class="code" href="namespace_data_types.html#a10f25e65e9643f405117a1886eacbea9">i_APID</a> &lt; b.<a class="code" href="namespace_data_types.html#a10f25e65e9643f405117a1886eacbea9">i_APID</a>;</div>
-<div class="line"><a name="l00207"></a><span class="lineno">  207</span>&#160;    <span class="keywordflow">else</span></div>
-<div class="line"><a name="l00208"></a><span class="lineno">  208</span>&#160;    {</div>
-<div class="line"><a name="l00209"></a><span class="lineno">  209</span>&#160;        <span class="keywordflow">if</span> (a.<a class="code" href="namespace_data_types.html#a63b70cfbc213d6a962ff02e81b8a5e68">byte</a> != b.<a class="code" href="namespace_data_types.html#a63b70cfbc213d6a962ff02e81b8a5e68">byte</a>)</div>
-<div class="line"><a name="l00210"></a><span class="lineno">  210</span>&#160;            <span class="keywordflow">return</span> a.<a class="code" href="namespace_data_types.html#a63b70cfbc213d6a962ff02e81b8a5e68">byte</a> &lt; b.<a class="code" href="namespace_data_types.html#a63b70cfbc213d6a962ff02e81b8a5e68">byte</a>;</div>
-<div class="line"><a name="l00211"></a><span class="lineno">  211</span>&#160;        <span class="keywordflow">else</span></div>
-<div class="line"><a name="l00212"></a><span class="lineno">  212</span>&#160;            <span class="keywordflow">return</span> a.<a class="code" href="namespace_data_types.html#a8879d535712dc7a2f27376ba5a2b72d1">bitLower</a> &lt; b.<a class="code" href="namespace_data_types.html#a8879d535712dc7a2f27376ba5a2b72d1">bitLower</a>;</div>
-<div class="line"><a name="l00213"></a><span class="lineno">  213</span>&#160;    }</div>
-<div class="line"><a name="l00214"></a><span class="lineno">  214</span>&#160;}</div>
-<div class="ttc" id="namespace_data_types_html_a63b70cfbc213d6a962ff02e81b8a5e68"><div class="ttname"><a href="namespace_data_types.html#a63b70cfbc213d6a962ff02e81b8a5e68">DataTypes::Entry::byte</a></div><div class="ttdeci">uint32_t byte</div><div class="ttdef"><b>Definition:</b> <a href="_data_types_8h_source.html#l00026">DataTypes.h:26</a></div></div>
-<div class="ttc" id="namespace_data_types_html_a10f25e65e9643f405117a1886eacbea9"><div class="ttname"><a href="namespace_data_types.html#a10f25e65e9643f405117a1886eacbea9">DataTypes::Entry::i_APID</a></div><div class="ttdeci">uint32_t i_APID</div><div class="ttdef"><b>Definition:</b> <a href="_data_types_8h_source.html#l00025">DataTypes.h:25</a></div></div>
-<div class="ttc" id="namespace_data_types_html_a8879d535712dc7a2f27376ba5a2b72d1"><div class="ttname"><a href="namespace_data_types.html#a8879d535712dc7a2f27376ba5a2b72d1">DataTypes::Entry::bitLower</a></div><div class="ttdeci">uint32_t bitLower</div><div class="ttdef"><b>Definition:</b> <a href="_data_types_8h_source.html#l00027">DataTypes.h:27</a></div></div>
-</div><!-- fragment -->
-</div>
-</div>
 <a class="anchor" id="ac2c0b2d1ccc5f44ad4a24f6411cc1d34"></a>
 <div class="memitem">
 <div class="memproto">
