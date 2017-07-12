@@ -17,7 +17,10 @@ using namespace ByteManipulation;
  */
 bool DataDecode::loadData(const std::vector<uint8_t>& buf, const DataTypes::Entry& currEntry)
 {
+    if(currEntry.byte - m_offset >= buf.size())
+        return false;
     m_initialByte = buf.at(currEntry.byte - m_offset);
+
     uint32_t length = currEntry.length;
     if (length > 24)  // Four bytes
     {
@@ -125,12 +128,13 @@ uint8_t DataDecode::getOffset()
 DataTypes::Packet DataDecode::decodeData(std::ifstream& infile, const uint32_t& index)
 {
     DataTypes::Packet pack;
-    if (!checkPackEntries(pack))
-        return pack;
 
     std::vector<uint8_t> buf(m_pHeader.packetLength);  // reserve space for bytes
     infile.read(reinterpret_cast<char*>(buf.data()), buf.size());  // read bytes
     pack.data.reserve(m_entries.size() * sizeof(DataTypes::Numeric) * 2);
+
+    if (!checkPackEntries(pack))
+        return pack;
 
     uint32_t entryIndex;
     uint64_t size = m_entries.size();
@@ -140,6 +144,7 @@ DataTypes::Packet DataDecode::decodeData(std::ifstream& infile, const uint32_t& 
     {
         if (!loadData(buf, m_entries.at(entryIndex)) || m_entries.at(entryIndex).byte - m_offset >= buf.size())  // Make sure we don't go past array bounds (entries not contained in packet)
         {
+            std::cout << "Went out of bounds for entry: " << m_entries.at(entryIndex).mnemonic << "," << m_entries.at(entryIndex).byte << std::endl;
             continue;
         }
         DataTypes::DataType dtype = m_entries.at(entryIndex).type;
