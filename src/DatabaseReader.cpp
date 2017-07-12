@@ -32,6 +32,7 @@ void DatabaseReader::init()
     readDatabase("databases/scdatabase.csv");
     readDatabase("databases/atmsdatabase.csv");
     readDatabase("databases/ompsdatabase.csv");
+    readDatabase("databases/ceresdatabase.csv");
 }
 
 /**
@@ -194,37 +195,28 @@ void DatabaseReader::printDataBase() const
 }
 
 /**
- * Helper function to allow sorting of entries. Compares by APID and then by byte:bit.
- *
- * @param a Entry
- * @param b Entry
- * @return True if Entry a is "smaller"
- */
-bool compareByAPID(const DataTypes::Entry& a, const DataTypes::Entry& b)
-{
-    if (a.i_APID != b.i_APID)
-        return a.i_APID < b.i_APID;
-    else
-    {
-        if (a.byte != b.byte)
-            return a.byte < b.byte;
-        else
-            return a.bitLower < b.bitLower;
-    }
-}
-
-/**
  * Getter function for member vector containing all entries.
  * Output is sorted before being returned.
  *
- * @return
+ * @return Sorted Entry vector
  */
 std::vector<DataTypes::Entry> DatabaseReader::getEntries()
 {
-    std::sort(m_entries.begin(), m_entries.end(), compareByAPID);
+    auto sortLambda = [] (const DataTypes::Entry& a, const DataTypes::Entry& b) -> bool
+    {
+        if (a.i_APID != b.i_APID)
+            return a.i_APID < b.i_APID;
+        else
+        {
+            if (a.byte != b.byte)
+                return a.byte < b.byte;
+            else
+                return a.bitLower < b.bitLower;
+        }
+    };
+    std::sort(m_entries.begin(), m_entries.end(), sortLambda);
     return m_entries;
 }
-
 
 /**
  * Database contains entries for decoding Primary and Secondary header information. As this information is already hardcoded, these entries can be ignored.

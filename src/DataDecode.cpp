@@ -9,78 +9,77 @@
 using namespace ByteManipulation;
 
 /**
- * Loads bytes from buffer vector based on entry length and adjusts offset to account for database entries included header bytes.
+ * Loads bytes from buffer vector based on entry length and use offset to account for database entries included header bytes.
  *
  * @param buf Vector containing binary data
- * @param bytes Number of bytes that need to be loaded
  * @param currEntry Entry we are using to decode
- * @param offset Offset based on whether we have headers
  * @return True if successful. False if outside vector bounds
  */
-bool DataDecode::loadData(const std::vector<uint8_t>& buf, Bytes& bytes, const DataTypes::Entry& currEntry, const uint32_t& offset)
+bool DataDecode::loadData(const std::vector<uint8_t>& buf, const DataTypes::Entry& currEntry)
 {
+    m_initialByte = buf.at(currEntry.byte - m_offset);
     uint32_t length = currEntry.length;
     if (length > 24)  // Four bytes
     {
-        if (currEntry.byte - offset + 1 >= buf.size() || currEntry.byte - offset + 2 >= buf.size() || currEntry.byte - offset + 3 >= buf.size())  // Ensure we don't exceed vector boundaries
+        if (currEntry.byte - m_offset + 1 >= buf.size() || currEntry.byte - m_offset + 2 >= buf.size() || currEntry.byte - m_offset + 3 >= buf.size())  // Ensure we don't exceed vector boundaries
             return false;
-        m_byte1 = buf.at(currEntry.byte - offset + 1);
-        m_byte2 = buf.at(currEntry.byte - offset + 2);
-        m_byte3 = buf.at(currEntry.byte - offset + 3);
-        bytes = FOUR;
+        m_byte1 = buf.at(currEntry.byte - m_offset + 1);
+        m_byte2 = buf.at(currEntry.byte - m_offset + 2);
+        m_byte3 = buf.at(currEntry.byte - m_offset + 3);
+        m_numBytes = FOUR;
     }
     else if (length > 16)  // Three bytes
     {
-        if (currEntry.byte - offset + 1 >= buf.size() || currEntry.byte - offset + 2 >= buf.size())
+        if (currEntry.byte - m_offset + 1 >= buf.size() || currEntry.byte - m_offset + 2 >= buf.size())
             return false;
-        m_byte1 = buf.at(currEntry.byte - offset + 1);
-        m_byte2 = buf.at(currEntry.byte - offset + 2);
-        bytes = THREE;
+        m_byte1 = buf.at(currEntry.byte - m_offset + 1);
+        m_byte2 = buf.at(currEntry.byte - m_offset + 2);
+        m_numBytes = THREE;
     }
     else if (length > 8)  // Two bytes
     {
-        if (currEntry.byte - offset + 1 >= buf.size())
+        if (currEntry.byte - m_offset + 1 >= buf.size())
             return false;
-        m_byte1 = buf.at(currEntry.byte - offset + 1);
-        bytes = TWO;
+        m_byte1 = buf.at(currEntry.byte - m_offset + 1);
+        m_numBytes = TWO;
     }
     else
     {
-        bytes = ONE;
+        m_numBytes = ONE;
     }
     return true;
 }
 
 /**
- * Special function to handle loading all eight bytes for a floating point entry.
+ * Special function to handle loading all bytes for a floating point entry.
  *
  * @param buf Vector containing binary data
  * @param currEntry Entry we are using to decode
- * @param offset Offset based on whether we have headers
- * @param initialByte First byte that was loaded previously
  * @return Final floating point value
  */
-float DataDecode::getFloat(const std::vector<uint8_t>& buf, const DataTypes::Entry& currEntry, const uint32_t& offset, uint8_t initialByte)
+float DataDecode::getFloat(const std::vector<uint8_t>& buf, const DataTypes::Entry& currEntry)
 {
+
+    m_initialByte = buf.at(currEntry.byte - m_offset);
     uint8_t b1, b2, b3, b4, b5, b6, b7;
     if (currEntry.length == 64)
     {
-        b1 = buf.at(currEntry.byte - offset + 1);
-        b2 = buf.at(currEntry.byte - offset + 2);
-        b3 = buf.at(currEntry.byte - offset + 3);
-        b4 = buf.at(currEntry.byte - offset + 4);
-        b5 = buf.at(currEntry.byte - offset + 5);
-        b6 = buf.at(currEntry.byte - offset + 6);
-        b7 = buf.at(currEntry.byte - offset + 7);
-        uint64_t result = mergeBytes64(initialByte, b1, b2, b3, b4, b5, b6, b7);
+        b1 = buf.at(currEntry.byte - m_offset + 1);
+        b2 = buf.at(currEntry.byte - m_offset + 2);
+        b3 = buf.at(currEntry.byte - m_offset + 3);
+        b4 = buf.at(currEntry.byte - m_offset + 4);
+        b5 = buf.at(currEntry.byte - m_offset + 5);
+        b6 = buf.at(currEntry.byte - m_offset + 6);
+        b7 = buf.at(currEntry.byte - m_offset + 7);
+        uint64_t result = mergeBytes64(m_initialByte, b1, b2, b3, b4, b5, b6, b7);
         return static_cast<float>(result);
     }
     else  // Length is 32
     {
-        b1 = buf.at(currEntry.byte - offset + 1);
-        b2 = buf.at(currEntry.byte - offset + 2);
-        b3 = buf.at(currEntry.byte - offset + 3);
-        uint32_t result = mergeBytes(initialByte,b1,b2,b3,4);
+        b1 = buf.at(currEntry.byte - m_offset + 1);
+        b2 = buf.at(currEntry.byte - m_offset + 2);
+        b3 = buf.at(currEntry.byte - m_offset + 3);
+        uint32_t result = mergeBytes(m_initialByte,b1,b2,b3,4);
         return static_cast<float>(result);
     }
 }
@@ -126,138 +125,27 @@ uint8_t DataDecode::getOffset()
 DataTypes::Packet DataDecode::decodeData(std::ifstream& infile, const uint32_t& index)
 {
     DataTypes::Packet pack;
-
-    if (m_entries.size() < 1)  // If no entries for this APID, then it is ignored
-    {
-        if (m_pHeader.packetLength != 0)
-        {
-            pack.ignored = true;
-        }
-        else  // Unless it is an APID that only contains header info (data length of 0)
-        {
-            getHeaderData(pack);
-            return pack;
-        }
-    }
-    else
-        pack.ignored = false;
+    if (!checkPackEntries(pack))
+        return pack;
 
     std::vector<uint8_t> buf(m_pHeader.packetLength);  // reserve space for bytes
     infile.read(reinterpret_cast<char*>(buf.data()), buf.size());  // read bytes
     pack.data.reserve(m_entries.size() * sizeof(DataTypes::Numeric) * 2);
 
-    uint8_t offset = getOffset();
     uint32_t entryIndex;
     uint64_t size = m_entries.size();
+    m_offset = getOffset();
 
-    for (entryIndex = index; entryIndex < size; entryIndex++)  // Loop through all database entries until we reach end or are about to go out of bounds
+    for (entryIndex = index; entryIndex < size; ++entryIndex)  // Loop through all database entries until we reach end or are about to go out of bounds
     {
-        DataTypes::Numeric num;
-        Bytes numBytes;
-
-        if (!loadData(buf, numBytes, m_entries.at(entryIndex), offset) || m_entries.at(entryIndex).byte - offset >= buf.size())  // Make sure we don't go past array bounds (entries not contained in packet)
+        if (!loadData(buf, m_entries.at(entryIndex)) || m_entries.at(entryIndex).byte - m_offset >= buf.size())  // Make sure we don't go past array bounds (entries not contained in packet)
         {
             continue;
         }
-
-        uint8_t initialByte = buf.at(m_entries.at(entryIndex).byte - offset);
-
         DataTypes::DataType dtype = m_entries.at(entryIndex).type;
-
-        if (dtype == DataTypes::FLOAT)
-        {
-            num.f64 = getFloat(buf, m_entries.at(entryIndex), offset, initialByte);
-        }
-        else
-        {
-            switch (numBytes)
-            {
-            case ONE:  // One byte
-            {
-                if (m_entries.at(entryIndex).bitUpper == 0 && m_entries.at(entryIndex).bitLower == 0)  // If no bit range, then use whole byte
-                {
-                    if (dtype == DataTypes::SIGNED)
-                        num.i32 = initialByte;
-                    else
-                        num.u32 = initialByte;
-                }
-                else  // Otherwise extract specific bit(s)
-                {
-                    if (dtype == DataTypes::SIGNED)
-                        num.i32 = ByteManipulation::extract8Signed(initialByte, m_entries.at(entryIndex).bitLower, (m_entries.at(entryIndex).bitUpper + 1));
-                    else
-                        num.u32 = ByteManipulation::extract8(initialByte, m_entries.at(entryIndex).bitLower, (m_entries.at(entryIndex).bitUpper - m_entries.at(entryIndex).bitLower) + 1);
-                }
-                break;
-            }
-            case TWO:
-            {
-                uint16_t result = mergeBytes16(initialByte, m_byte1);
-                if (m_entries.at(entryIndex).bitUpper == 0 && m_entries.at(entryIndex).bitLower == 0)
-                {
-                    if (dtype == DataTypes::SIGNED)
-                        num.i32 = static_cast<int16_t>(result);
-                    else
-                        num.u32 = result;
-                }
-                else
-                {
-                    if (dtype == DataTypes::SIGNED)
-                        num.i32 = static_cast<int16_t>(ByteManipulation::extract16(result, m_entries.at(entryIndex).bitLower, (m_entries.at(entryIndex).bitUpper - m_entries.at(entryIndex).bitLower) + 1));
-                    else
-                        num.u32 = ByteManipulation::extract16(result, m_entries.at(entryIndex).bitLower, (m_entries.at(entryIndex).bitUpper - m_entries.at(entryIndex).bitLower) + 1);
-                }
-                break;
-            }
-            case THREE:
-            {
-                uint32_t result = mergeBytes(initialByte, m_byte1, m_byte2, m_byte3, 3);
-                if (m_entries.at(entryIndex).bitUpper == 0 && m_entries.at(entryIndex).bitLower == 0)
-                {
-                    if (dtype == DataTypes::SIGNED)
-                        num.i32 = static_cast<int32_t>(result);
-                    else
-                        num.u32 = result;
-                }
-                else
-                {
-                    if (dtype == DataTypes::SIGNED)
-                        num.i32 = static_cast<int32_t>(ByteManipulation::extract32(result, m_entries.at(entryIndex).bitLower, (m_entries.at(entryIndex).bitUpper - m_entries.at(entryIndex).bitLower) + 1));
-                    else
-                        num.u32 = ByteManipulation::extract32(result, m_entries.at(entryIndex).bitLower, (m_entries.at(entryIndex).bitUpper - m_entries.at(entryIndex).bitLower) + 1);
-                }
-                break;
-            }
-            case FOUR:
-            {
-                uint32_t result = mergeBytes(initialByte, m_byte1, m_byte2, m_byte3, 4);
-                if (m_entries.at(entryIndex).bitUpper == 0 && m_entries.at(entryIndex).bitLower == 0)
-                {
-                    if (dtype == DataTypes::SIGNED)
-                        num.i32 = static_cast<int32_t>(result);
-                    else
-                        num.u32 = result;
-                }
-                else
-                {
-                    if (dtype == DataTypes::SIGNED)
-                        num.i32 = static_cast<int32_t>(ByteManipulation::extract32(result, m_entries.at(entryIndex).bitLower, (m_entries.at(entryIndex).bitUpper - m_entries.at(entryIndex).bitLower) + 1));
-                    else
-                        num.u32 = ByteManipulation::extract32(result, m_entries.at(entryIndex).bitLower, (m_entries.at(entryIndex).bitUpper - m_entries.at(entryIndex).bitLower) + 1);
-                }
-                break;
-            }
-            }
-
-            if (dtype == DataTypes::SIGNED)
-                num.tag = DataTypes::Numeric::I32;
-            else
-                num.tag = DataTypes::Numeric::U32;
-
-            num.mnem = m_entries.at(entryIndex).mnemonic;
-            pack.data.emplace_back(num);
-        }
+        pack.data.emplace_back(getNum(dtype, buf, entryIndex));
     }
+
     segmentLastByte = entryIndex;  // Save our last entry position in case this is a segmented packet
     getHeaderData(pack);  // Load time data
     return pack;
@@ -330,7 +218,7 @@ DataTypes::Packet DataDecode::decodeOMPS(std::ifstream& infile)
                 {
                     std::tuple<DataTypes::PrimaryHeader, DataTypes::SecondaryHeader, bool> headers = HeaderDecode::decodeHeaders(infile, m_debug);
                     m_pHeader = std::get<0>(headers);
-                    m_pHeader.packetLength -= 8;
+                    m_pHeader.packetLength -= 4;
                     uint64_t ompsHeader;
                     ReadFile::read(ompsHeader, infile);
                 }
@@ -341,4 +229,188 @@ DataTypes::Packet DataDecode::decodeOMPS(std::ifstream& infile)
         }
     }
     return segPack;
+}
+
+/**
+ * Given an entry get corresponding numerical value.
+ *
+ * @param dtype Data type of current entry
+ * @param buf Byte buffer to read from
+ * @param entryIndex Index of current entry in vector
+ * @return Numerical value for entry
+ */
+DataTypes::Numeric DataDecode::getNum(const DataTypes::DataType& dtype, const std::vector<uint8_t>& buf, const uint32_t& entryIndex)
+{
+    DataTypes::Numeric num;
+    if (dtype == DataTypes::FLOAT)
+    {
+        num.f64 = getFloat(buf, m_entries.at(entryIndex));
+        return num;
+    }
+    else
+    {
+        switch (m_numBytes)
+        {
+        case ONE:  // One byte
+        {
+            decodeOne(dtype, entryIndex, num);
+            break;
+        }
+        case TWO:
+        {
+            decodeTwo(dtype, entryIndex, num);
+            break;
+        }
+        case THREE:
+        {
+            decodeThree(dtype, entryIndex, num);
+            break;
+        }
+        case FOUR:
+        {
+            decodeThree(dtype, entryIndex, num);
+            break;
+        }
+        }
+
+        if (dtype == DataTypes::SIGNED)
+            num.tag = DataTypes::Numeric::I32;
+        else
+            num.tag = DataTypes::Numeric::U32;
+
+        num.mnem = m_entries.at(entryIndex).mnemonic;
+        return num;
+    }
+}
+
+/**
+ * Decode an entry for a 1 byte value.
+ *
+ * @param dtype Data type of current entry
+ * @param entryIndex Index of current entry in vector
+ * @param num Numerical value to update
+ * @return N/A
+ */
+void DataDecode::decodeOne(const DataTypes::DataType& dtype, const uint32_t& entryIndex, DataTypes::Numeric& num)
+{
+    if (m_entries.at(entryIndex).bitUpper == 0 && m_entries.at(entryIndex).bitLower == 0)  // If no bit range, then use whole byte
+    {
+        if (dtype == DataTypes::SIGNED)
+            num.i32 = m_initialByte;
+        else
+            num.u32 = m_initialByte;
+    }
+    else  // Otherwise extract specific bit(s)
+    {
+        if (dtype == DataTypes::SIGNED)
+            num.i32 = ByteManipulation::extract8Signed(m_initialByte, m_entries.at(entryIndex).bitLower, (m_entries.at(entryIndex).bitUpper + 1));
+        else
+            num.u32 = ByteManipulation::extract8(m_initialByte, m_entries.at(entryIndex).bitLower, (m_entries.at(entryIndex).bitUpper - m_entries.at(entryIndex).bitLower) + 1);
+    }
+}
+
+/**
+ * Decode an entry for a 2 byte value.
+ *
+ * @param dtype Data type of current entry
+ * @param entryIndex Index of current entry in vector
+ * @param num Numerical value to update
+ * @return N/A
+ */
+void DataDecode::decodeTwo(const DataTypes::DataType& dtype, const uint32_t& entryIndex, DataTypes::Numeric& num)
+{
+    uint16_t result = mergeBytes16(m_initialByte, m_byte1);
+    if (m_entries.at(entryIndex).bitUpper == 0 && m_entries.at(entryIndex).bitLower == 0)
+    {
+        if (dtype == DataTypes::SIGNED)
+            num.i32 = static_cast<int16_t>(result);
+        else
+            num.u32 = result;
+    }
+    else
+    {
+        if (dtype == DataTypes::SIGNED)
+            num.i32 = static_cast<int16_t>(ByteManipulation::extract16(result, m_entries.at(entryIndex).bitLower, (m_entries.at(entryIndex).bitUpper - m_entries.at(entryIndex).bitLower) + 1));
+        else
+            num.u32 = ByteManipulation::extract16(result, m_entries.at(entryIndex).bitLower, (m_entries.at(entryIndex).bitUpper - m_entries.at(entryIndex).bitLower) + 1);
+    }
+}
+
+/**
+ * Decode an entry for a 3 byte value.
+ *
+ * @param dtype Data type of current entry
+ * @param entryIndex Index of current entry in vector
+ * @param num Numerical value to update
+ * @return N/A
+ */
+void DataDecode::decodeThree(const DataTypes::DataType& dtype, const uint32_t& entryIndex, DataTypes::Numeric& num)
+{
+    uint32_t result = mergeBytes(m_initialByte, m_byte1, m_byte2, m_byte3, 3);
+    if (m_entries.at(entryIndex).bitUpper == 0 && m_entries.at(entryIndex).bitLower == 0)
+    {
+        if (dtype == DataTypes::SIGNED)
+            num.i32 = static_cast<int32_t>(result);
+        else
+            num.u32 = result;
+    }
+    else
+    {
+        if (dtype == DataTypes::SIGNED)
+            num.i32 = static_cast<int32_t>(ByteManipulation::extract32(result, m_entries.at(entryIndex).bitLower, (m_entries.at(entryIndex).bitUpper - m_entries.at(entryIndex).bitLower) + 1));
+        else
+            num.u32 = ByteManipulation::extract32(result, m_entries.at(entryIndex).bitLower, (m_entries.at(entryIndex).bitUpper - m_entries.at(entryIndex).bitLower) + 1);
+    }
+}
+
+/**
+ * Decode an entry for a 4 byte value.
+ *
+ * @param dtype Data type of current entry
+ * @param entryIndex Index of current entry in vector
+ * @param num Numerical value to update
+ * @return N/A
+ */
+void DataDecode::decodeFour(const DataTypes::DataType& dtype, const uint32_t& entryIndex, DataTypes::Numeric& num)
+{
+    uint32_t result = mergeBytes(m_initialByte, m_byte1, m_byte2, m_byte3, 4);
+    if (m_entries.at(entryIndex).bitUpper == 0 && m_entries.at(entryIndex).bitLower == 0)
+    {
+        if (dtype == DataTypes::SIGNED)
+            num.i32 = static_cast<int32_t>(result);
+        else
+            num.u32 = result;
+    }
+    else
+    {
+        if (dtype == DataTypes::SIGNED)
+            num.i32 = static_cast<int32_t>(ByteManipulation::extract32(result, m_entries.at(entryIndex).bitLower, (m_entries.at(entryIndex).bitUpper - m_entries.at(entryIndex).bitLower) + 1));
+        else
+            num.u32 = ByteManipulation::extract32(result, m_entries.at(entryIndex).bitLower, (m_entries.at(entryIndex).bitUpper - m_entries.at(entryIndex).bitLower) + 1);
+    }
+}
+
+/**
+ * Checks if a packet is missing entries (ignored) or is a header only packet.
+ *
+ * @param pack Packet to check
+ * @return True if we should continue parsing packet
+ */
+bool DataDecode::checkPackEntries(DataTypes::Packet& pack)
+{
+    if (m_entries.size() < 1)  // If no entries for this APID, then it is ignored
+    {
+        if (m_pHeader.packetLength != 0)
+        {
+            pack.ignored = true;
+            return false;
+        }
+        else  // Unless it is an APID that only contains header info (data length of 0)
+        {
+            getHeaderData(pack);
+            return false;
+        }
+    }
+    pack.ignored = false;
+    return true;
 }

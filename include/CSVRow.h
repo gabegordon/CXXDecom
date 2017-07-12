@@ -7,7 +7,7 @@ class CSVRow
 {
   public:
   CSVRow() :
-    m_data()
+    m_data{}
     {};
     virtual ~CSVRow() {}
 

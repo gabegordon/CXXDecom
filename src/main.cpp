@@ -27,8 +27,8 @@ int main(int argc, char* argv[])
 #else
         system("cd output && del /Q *.txt 2>NUL 1>NUL");
 #endif
-        DatabaseReader dr(paramsFile, allAPIDs);  // Read databases
-        Decom decomEngine(instrument, debug, dr.getEntries());  // Run decom
+        DatabaseReader dr{paramsFile, allAPIDs};  // Read databases
+        Decom decomEngine{instrument, debug, dr.getEntries()};  // Run decom
         decomEngine.init(packetFile);
     }
     std::cout << std::endl;

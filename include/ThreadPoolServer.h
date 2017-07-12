@@ -11,8 +11,8 @@ class ThreadPoolServer
 {
   public:
   ThreadPoolServer(const std::string& instrument) :
-    m_queues(),
-    m_instrument(instrument)
+    m_queues{},
+    m_instrument{instrument}
     {}
 
     ~ThreadPoolServer() {}

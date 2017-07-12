@@ -13,12 +13,12 @@ class Decom
 {
   public:
   Decom(const std::string& instrument, const bool& debug, const std::vector<DataTypes::Entry>& entries) :
-    m_mapEntries(),
-    m_entries(entries),
-    m_instrument(instrument),
-    m_progress(0),
-    m_debug(debug),
-    m_headers()
+    m_mapEntries{},
+    m_entries{entries},
+    m_instrument{instrument},
+    m_progress{0},
+    m_debug{debug},
+    m_headers{}
     {};
     virtual ~Decom() {}
 

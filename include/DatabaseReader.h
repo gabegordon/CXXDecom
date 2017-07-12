@@ -7,11 +7,11 @@ class DatabaseReader
 {
   public:
   DatabaseReader(const std::string& paramsfile, const bool allAPIDs) :
-    m_APIDs(),
-    m_entries(),
-    m_firstRun(true),
-    m_allAPIDs(allAPIDs),
-    m_paramsFile(paramsfile)
+    m_APIDs{},
+    m_entries{},
+    m_firstRun{true},
+    m_allAPIDs{allAPIDs},
+    m_paramsFile{paramsfile}
     {
         init();
     };

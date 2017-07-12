@@ -35,7 +35,7 @@ void Decom::init(const std::string& infile)
     uint64_t fileSize = getFileSize();
     ProgressBar readProgress(fileSize, "Parsing");  // Create progress bar
 
-    ThreadPoolServer pool(m_instrument);  // Create thread pool that we will be passing our packets to
+    ThreadPoolServer pool{m_instrument};  // Create thread pool that we will be passing our packets to
 
     while (true)  // Loop until error or we reach end of file
     {
@@ -103,7 +103,6 @@ void Decom::formatInstruments() const
         InstrumentFormat::formatATMS();
 }
 
-
 /**
  * Stores set of all APIDs that we have processed.
  *
@@ -135,7 +134,7 @@ uint64_t Decom::getFileSize()
  */
 DataTypes::Packet Decom::decodeData()
 {
-    DataDecode dc(std::get<0>(m_headers), std::get<1>(m_headers), m_mapEntries[std::get<0>(m_headers).APID], m_debug, m_instrument);  // Create new dataDecode object and pass headers/instrument info
+    DataDecode dc{std::get<0>(m_headers), std::get<1>(m_headers), m_mapEntries[std::get<0>(m_headers).APID], m_debug, m_instrument};  // Create new dataDecode object and pass headers/instrument info
 
     if (m_instrument == "OMPS")  // If omps then use special function
     {
