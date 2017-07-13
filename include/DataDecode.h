@@ -25,9 +25,9 @@ class DataDecode
     m_sHeader{sh},
     m_debug{debug},
     m_offset{}
-    {};
+    {}
 
-    virtual ~DataDecode() {};
+    virtual ~DataDecode() {}
 
     DataTypes::Packet decodeData(std::ifstream& infile, const uint32_t& index);
     DataTypes::Packet decodeDataSegmented(std::ifstream& infile, const bool omps);
