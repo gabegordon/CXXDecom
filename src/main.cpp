@@ -4,7 +4,6 @@
 #include <chrono>
 #include "Decom.h"
 #include "DatabaseReader.h"
-#include "h5Decode.h"
 
 int main(int argc, char* argv[])
 {
@@ -15,7 +14,7 @@ int main(int argc, char* argv[])
         std::cout << "Specify: database and instrument\n";
         return 0;
     }
-    else if( argc > 8)
+    else
     {
         std::string instrument = argv[1];
         std::string packetFile = argv[2];
@@ -31,10 +30,6 @@ int main(int argc, char* argv[])
         DatabaseReader dr{paramsFile, allAPIDs};  // Read databases
         Decom decomEngine{instrument, debug, dr.getEntries()};  // Run decom
         decomEngine.init(packetFile);
-    }
-    else
-    {
-        h5Decode("data");
     }
     std::cout << std::endl;
     end = std::chrono::system_clock::now();
