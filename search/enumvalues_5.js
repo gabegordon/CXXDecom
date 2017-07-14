@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['one',['ONE',['../class_data_decode.html#a532e492a353aa3218722fad9626b8fd1acb033824fb97f64e6959bffe95634cbf',1,'DataDecode']]]
+  ['nill',['NILL',['../namespace_data_types.html#a59662e1d481e0fe14076418c8b3b714ba4414a57a0db7096abf9ad4bdafa2cb51',1,'DataTypes::Numeric::NILL()'],['../namespace_data_types.html#a2b6a16988e8ecbed83d193ad09ae2601a3f9d53ef43c3f18f9183fa145ce915ad',1,'DataTypes::NILL()']]]
 ];

@@ -1,7 +1,7 @@
 var searchData=
 [
-  ['f64',['F64',['../namespace_data_types.html#a59662e1d481e0fe14076418c8b3b714ba2a348a5736c8476e5c60cf7ce4a3b254',1,'DataTypes::Numeric']]],
-  ['first',['FIRST',['../namespace_data_types.html#aff8a980d2c0f7ad1b7ed03da51a72b76af0a9e955849f616304e2de96c2c69cc3',1,'DataTypes']]],
-  ['float',['FLOAT',['../namespace_data_types.html#a2b6a16988e8ecbed83d193ad09ae2601afc484ad000497bcec6f402381cc34ba2',1,'DataTypes']]],
-  ['four',['FOUR',['../class_data_decode.html#a532e492a353aa3218722fad9626b8fd1a00995beff43d0d2ed37c1cefd1829799',1,'DataDecode']]]
+  ['create_5fds_5f0',['CREATE_DS_0',['../namespaceh5cpp.html#a490c8d9159164b43aee98d117dfecb34acb4ccb5f69554dcc8f30416fd792ead6',1,'h5cpp']]],
+  ['create_5fds_5fchunked',['CREATE_DS_CHUNKED',['../namespaceh5cpp.html#a490c8d9159164b43aee98d117dfecb34abd80e1b941df00b77d33fa06eda2424a',1,'h5cpp']]],
+  ['create_5fds_5fcompressed',['CREATE_DS_COMPRESSED',['../namespaceh5cpp.html#a490c8d9159164b43aee98d117dfecb34aa83395a73946441922b32df2d880ce35',1,'h5cpp']]],
+  ['create_5fds_5fdefault',['CREATE_DS_DEFAULT',['../namespaceh5cpp.html#a490c8d9159164b43aee98d117dfecb34a56e483527c87de3cb465c9e51ea4991b',1,'h5cpp']]]
 ];

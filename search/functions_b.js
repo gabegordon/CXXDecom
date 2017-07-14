@@ -1,6 +1,7 @@
 var searchData=
 [
-  ['operator_3c_3c',['operator&lt;&lt;',['../namespace_byte_manipulation.html#aaf0d62f7fc9d5377874762182619bca3',1,'ByteManipulation::operator&lt;&lt;(std::ostream &amp;os, char c)'],['../namespace_byte_manipulation.html#a61c96508f96d77ae60d2ab965cf279d9',1,'ByteManipulation::operator&lt;&lt;(std::ostream &amp;os, signed char c)'],['../namespace_byte_manipulation.html#a5619a8caf30bdb12fa07dc332f716c70',1,'ByteManipulation::operator&lt;&lt;(std::ostream &amp;os, unsigned char c)']]],
-  ['operator_3e_3e',['operator&gt;&gt;',['../_database_reader_8cpp.html#ac2c0b2d1ccc5f44ad4a24f6411cc1d34',1,'operator&gt;&gt;():&#160;DatabaseReader.cpp'],['../namespace_instrument_format.html#a14b96f126903351cbcbc6e164faddb5b',1,'InstrumentFormat::operator&gt;&gt;()']]],
-  ['operator_5b_5d',['operator[]',['../class_c_s_v_row.html#aacb579d99c6f033c24e1d49d63f7fac9',1,'CSVRow']]]
+  ['main',['main',['../main_8cpp.html#a0ddf1224851353fc92bfbff6f499fa97',1,'main.cpp']]],
+  ['mergebytes',['mergeBytes',['../namespace_byte_manipulation.html#a9e78a08ed490628f45232777b6b6a231',1,'ByteManipulation']]],
+  ['mergebytes16',['mergeBytes16',['../namespace_byte_manipulation.html#a834408615d563a144bcc5b00d98e4e39',1,'ByteManipulation']]],
+  ['mergebytes64',['mergeBytes64',['../namespace_byte_manipulation.html#aabdc36dfca828b5463b19d07d43de069',1,'ByteManipulation']]]
 ];

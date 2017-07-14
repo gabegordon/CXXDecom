@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['headerdecode',['HeaderDecode',['../namespace_header_decode.html',1,'']]]
+  ['getfiles',['getFiles',['../namespaceget_files.html',1,'']]]
 ];

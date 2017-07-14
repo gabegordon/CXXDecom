@@ -1,4 +1,6 @@
 var searchData=
 [
-  ['init',['init',['../class_database_reader.html#a58c5d7789896918bef02829c37d8f5de',1,'DatabaseReader::init()'],['../class_decom.html#ac43113071af9a3bbe5f0c503fa7a142c',1,'Decom::init()']]]
+  ['h5decode',['h5Decode',['../classh5_decode.html#a02a09a2cdde362d29b6ac6cf8aa68cb9',1,'h5Decode']]],
+  ['h5infolder',['h5InFolder',['../namespaceget_files.html#aed068b3197106af37021e506d65b0e27',1,'getFiles']]],
+  ['hashit',['hashIt',['../namespace_data_types.html#ad4012457774a17ebf68099ef4636cf35',1,'DataTypes']]]
 ];

@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['local',['Local',['../namespace_local.html',1,'']]]
+  ['instrumentformat',['InstrumentFormat',['../namespace_instrument_format.html',1,'']]]
 ];

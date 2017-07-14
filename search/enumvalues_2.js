@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['last',['LAST',['../namespace_data_types.html#aff8a980d2c0f7ad1b7ed03da51a72b76aa69b60b98ce23b6f903529e4a01f3b78',1,'DataTypes']]]
+  ['i32',['I32',['../namespace_data_types.html#a59662e1d481e0fe14076418c8b3b714ba8f111e9bd6a1ca3e5277a7625edaf959',1,'DataTypes::Numeric']]]
 ];

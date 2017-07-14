@@ -1,0 +1,10 @@
+<map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
+<area shape="rect" id="node1" href="$classh5cpp_1_1_object.html" title="h5cpp::Object" alt="" coords="6,157,109,184"/>
+<area shape="rect" id="node2" href="$classh5cpp_1_1_attribute.html" title="h5cpp::Attribute" alt="" coords="164,5,279,32"/>
+<area shape="rect" id="node3" href="$classh5cpp_1_1_dataset.html" title="h5cpp::Dataset" alt="" coords="166,56,277,83"/>
+<area shape="rect" id="node4" href="$classh5cpp_1_1_dataspace.html" title="h5cpp::Dataspace" alt="" coords="157,107,285,133"/>
+<area shape="rect" id="node5" href="$classh5cpp_1_1_datatype.html" title="h5cpp::Datatype" alt="" coords="162,157,281,184"/>
+<area shape="rect" id="node6" href="$classh5cpp_1_1_file.html" title="h5cpp::File" alt="" coords="178,208,265,235"/>
+<area shape="rect" id="node7" href="$classh5cpp_1_1_group.html" title="h5cpp::Group" alt="" coords="171,259,271,285"/>
+<area shape="rect" id="node8" href="$classh5cpp_1_1_properties.html" title="h5cpp::Properties" alt="" coords="159,309,283,336"/>
+</map>

@@ -63,6 +63,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
     <ul class="tablist">
       <li><a href="annotated.html"><span>Class&#160;List</span></a></li>
       <li><a href="classes.html"><span>Class&#160;Index</span></a></li>
+      <li><a href="inherits.html"><span>Class&#160;Hierarchy</span></a></li>
       <li><a href="functions.html"><span>Class&#160;Members</span></a></li>
     </ul>
   </div>
@@ -71,7 +72,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
      onmouseover="return searchBox.OnSearchSelectShow()"
      onmouseout="return searchBox.OnSearchSelectHide()"
      onkeydown="return searchBox.OnSearchSelectKey(event)">
-<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Classes</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Namespaces</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Files</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(5)"><span class="SelectionMark">&#160;</span>Variables</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(6)"><span class="SelectionMark">&#160;</span>Typedefs</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(7)"><span class="SelectionMark">&#160;</span>Enumerations</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(8)"><span class="SelectionMark">&#160;</span>Enumerator</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(9)"><span class="SelectionMark">&#160;</span>Macros</a></div>
+<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Classes</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Namespaces</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Files</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(5)"><span class="SelectionMark">&#160;</span>Variables</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(6)"><span class="SelectionMark">&#160;</span>Typedefs</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(7)"><span class="SelectionMark">&#160;</span>Enumerations</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(8)"><span class="SelectionMark">&#160;</span>Enumerator</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(9)"><span class="SelectionMark">&#160;</span>Properties</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(10)"><span class="SelectionMark">&#160;</span>Friends</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(11)"><span class="SelectionMark">&#160;</span>Macros</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(12)"><span class="SelectionMark">&#160;</span>Pages</a></div>
 
 <!-- iframe showing the search results (closed by default) -->
 <div id="MSearchResultsWindow">
@@ -481,7 +482,7 @@ Private Attributes</h2></td></tr>
 <div class="fragment"><div class="line"><a name="l00190"></a><span class="lineno">  190</span>&#160;{</div>
 <div class="line"><a name="l00191"></a><span class="lineno">  191</span>&#160;    <span class="keywordflow">for</span> (<span class="keyword">const</span> <span class="keyword">auto</span>&amp; entry : <a class="code" href="class_database_reader.html#ac7ef1211c150b66b7b87b2f59e53b637">m_entries</a>)</div>
 <div class="line"><a name="l00192"></a><span class="lineno">  192</span>&#160;    {</div>
-<div class="line"><a name="l00193"></a><span class="lineno">  193</span>&#160;        std::cout &lt;&lt; entry.mnemonic &lt;&lt; <span class="stringliteral">&quot;,&quot;</span> &lt;&lt; entry.type &lt;&lt; <span class="stringliteral">&quot;,&quot;</span> &lt;&lt; entry.i_APID &lt;&lt; <span class="stringliteral">&quot;,&quot;</span> &lt;&lt; entry.byte &lt;&lt; <span class="stringliteral">&quot;,&quot;</span> &lt;&lt; entry.bitLower &lt;&lt; <span class="stringliteral">&quot;,&quot;</span> &lt;&lt; entry.bitUpper &lt;&lt; <span class="stringliteral">&quot;\n&quot;</span>;</div>
+<div class="line"><a name="l00193"></a><span class="lineno">  193</span>&#160;        std::cerr &lt;&lt; entry.mnemonic &lt;&lt; <span class="stringliteral">&quot;,&quot;</span> &lt;&lt; entry.type &lt;&lt; <span class="stringliteral">&quot;,&quot;</span> &lt;&lt; entry.i_APID &lt;&lt; <span class="stringliteral">&quot;,&quot;</span> &lt;&lt; entry.byte &lt;&lt; <span class="stringliteral">&quot;,&quot;</span> &lt;&lt; entry.bitLower &lt;&lt; <span class="stringliteral">&quot;,&quot;</span> &lt;&lt; entry.bitUpper &lt;&lt; <span class="stringliteral">&quot;\n&quot;</span>;</div>
 <div class="line"><a name="l00194"></a><span class="lineno">  194</span>&#160;    }</div>
 <div class="line"><a name="l00195"></a><span class="lineno">  195</span>&#160;}</div>
 <div class="ttc" id="class_database_reader_html_ac7ef1211c150b66b7b87b2f59e53b637"><div class="ttname"><a href="class_database_reader.html#ac7ef1211c150b66b7b87b2f59e53b637">DatabaseReader::m_entries</a></div><div class="ttdeci">std::vector&lt; DataTypes::Entry &gt; m_entries</div><div class="ttdef"><b>Definition:</b> <a href="_database_reader_8h_source.html#l00024">DatabaseReader.h:24</a></div></div>
@@ -591,7 +592,7 @@ Private Attributes</h2></td></tr>
 <div class="line"><a name="l00146"></a><span class="lineno">  146</span>&#160;        }</div>
 <div class="line"><a name="l00147"></a><span class="lineno">  147</span>&#160;        <span class="keywordflow">catch</span> (...)</div>
 <div class="line"><a name="l00148"></a><span class="lineno">  148</span>&#160;        {</div>
-<div class="line"><a name="l00149"></a><span class="lineno">  149</span>&#160;            std::cout &lt;&lt; <span class="stringliteral">&quot;i_APID stoul failed for: &quot;</span> &lt;&lt; s_APID &lt;&lt; std::endl;</div>
+<div class="line"><a name="l00149"></a><span class="lineno">  149</span>&#160;            std::cerr &lt;&lt; <span class="stringliteral">&quot;i_APID stoul failed for: &quot;</span> &lt;&lt; s_APID &lt;&lt; std::endl;</div>
 <div class="line"><a name="l00150"></a><span class="lineno">  150</span>&#160;        }</div>
 <div class="line"><a name="l00151"></a><span class="lineno">  151</span>&#160;</div>
 <div class="line"><a name="l00152"></a><span class="lineno">  152</span>&#160;        <span class="keywordflow">if</span>(!<a class="code" href="class_database_reader.html#a2432cbc742558867d4b422f9eb783524">m_allAPIDs</a>)  <span class="comment">// If filtering APIDs</span></div>
@@ -806,8 +807,8 @@ Private Attributes</h2></td></tr>
 </div>
 </div>
 <hr/>The documentation for this class was generated from the following files:<ul>
-<li>/home/travis/build/gabegordon/CXXDecom/include/<a class="el" href="_database_reader_8h_source.html">DatabaseReader.h</a></li>
-<li>/home/travis/build/gabegordon/CXXDecom/src/<a class="el" href="_database_reader_8cpp_source.html">DatabaseReader.cpp</a></li>
+<li>/home/travis/build/gabegordon/CXXDecomQt/include/<a class="el" href="_database_reader_8h_source.html">DatabaseReader.h</a></li>
+<li>/home/travis/build/gabegordon/CXXDecomQt/src/<a class="el" href="_database_reader_8cpp_source.html">DatabaseReader.cpp</a></li>
 </ul>
 </div><!-- contents -->
 <!-- start footer part -->
